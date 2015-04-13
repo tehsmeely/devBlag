@@ -30,9 +30,9 @@ DEPRECATED_SDK_REPO = "https://storage.googleapis.com/appengine-sdks/deprecated/
 
 if __name__ == "__main__":
     #Make sure the user has everything they need
-    for command in REQUIREMENTS:
-        if not subprocess.check_output(["which", command]).strip():
-            raise RuntimeError("You must install the '%s' command" % command)
+    # for command in REQUIREMENTS:
+    #     if not subprocess.check_output(["which", command], shell=True).strip():
+    #         raise RuntimeError("You must install the '%s' command" % command)
 
     if not os.path.exists(TARGET_DIR):
         print('Creating `sitepackages` directory for dependencies...')
@@ -74,4 +74,4 @@ if __name__ == "__main__":
             os.remove(path)
 
     print("Running pip...")
-    subprocess.check_output(["pip", "install", "-r", REQUIREMENTS_FILE, "-t", TARGET_DIR, "-I"])
+    subprocess.check_output(["pip", "install", "-r", REQUIREMENTS_FILE, "-t", TARGET_DIR, "-I"], shell=True)
