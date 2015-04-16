@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'csp',
     'djangae.contrib.gauth',
     'djangae', # Djangae should be after Django core/contrib things
+    'devBlag',
 )
 
 MIDDLEWARE_CLASSES = (
