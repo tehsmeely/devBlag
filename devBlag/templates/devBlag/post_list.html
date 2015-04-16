@@ -1,5 +1,11 @@
 <html>
 	<body>
 		<h2>Hello World</h2>
+
+		{% for post in posts %}
+			<h3>{{post.title}}</h3>
+			<p>{{post.text|linebreaks}}</p>
+			<br>
+		{% endfor %}
 	</body>
 </html>
