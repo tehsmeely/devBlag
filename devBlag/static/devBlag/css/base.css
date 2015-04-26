@@ -7,6 +7,17 @@ body{
 	margin: 0px;
 }
 
+
+/*
+	code block for code resource
+*/
+code {
+	margin-left: 6px;
+	margin-right: 6px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
 /*
 	Centred container to main body	
 */

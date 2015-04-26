@@ -97,9 +97,13 @@ def handleBody(body):
 def get_replaceString(resource):
 
 	if resource.contentType == "image":
-		replaceString = "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
+		return "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
+
 	elif resource.contentType == "code":
 		language = resource.language
+		#return "<pre><code class='{}'>".format(language) + resource.content + "</code></pre>"
+		return "<pre><code class='python'>" + "print hello world" + "</code></pre>"
+
 	else:
 		print "CONTENT TYPE NOT FOUND"
 		replaceString = ""
