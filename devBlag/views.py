@@ -87,14 +87,19 @@ def handleBody(body):
 		print "TAGE: ", tag
 		resNum = int(tag[5:-2])
 		resource = Resource.objects.get(resID=resNum)
-		if resource.contentType == "image":
-			replaceString = "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
-		else:
-			print "CONTENT TYPE NOT FOUND"
-			replaceString = ""
-		#replaceString = "<img src='{% static " + resource.filePath + "%}'>"
+		replaceString = get_replaceString(resource)
 		print "\nhandleBody Replace before:\n", body
 		body = body.replace(tag, replaceString)
 		print "\nhandleBody Replace after:\n", body
 	print "\nhandleBody after:\n", body
 	return body
+
+def get_replaceString(resource):
+
+	if resource.contentType == "image":
+		replaceString = "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
+	elif resource.contentType == "code":
+		language = resource.language
+	else:
+		print "CONTENT TYPE NOT FOUND"
+		replaceString = ""
