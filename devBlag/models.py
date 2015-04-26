@@ -10,8 +10,8 @@ class Project(models.Model):
 	image = models.ForeignKey('Resource')
 	dateStarted = models.DateTimeField(default=timezone.now)
 	inProgress = models.BooleanField()
-	language = models.CharField(max_length=200, blank=True, null=True)
-	engine = models.CharField(max_length=200, blank=True, null=True)
+	language = models.CharField(max_length=200, blank=True)
+	engine = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
 		return self.title
@@ -45,10 +45,11 @@ class Resource_map(models.Model):
 
 class Resource(models.Model):
 	resID = models.IntegerField(unique=True)
-	filePath = models.CharField(max_length=260) #this is the full path
-	caption = models.TextField()
-	contentType = models.CharField(max_length=50)
+	filePath = models.CharField(max_length=260 ,blank=True) #this is the full path
+	caption = models.TextField(blank=True)
+	contentType = models.CharField(max_length=50, help_text="(image/code)")
 	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
 	language = models.CharField(max_length=50, blank=True)
+	code = models.TextField(blank=True)
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
