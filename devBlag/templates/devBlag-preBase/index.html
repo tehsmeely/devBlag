@@ -1,0 +1,97 @@
+{% load staticfiles %}
+<head>
+
+	<link rel="stylesheet" href="{% static 'devBlag/css/base.css' %}">
+
+	<!-- jQuery(UI) -->
+	<link rel="stylesheet" href="{% static 'devBlag/css/jQuery/jquery-ui.min.css' %}">
+	<script src="{% static 'devBlag/js/jQuery/external/jquery/jquery.js' %}"></script>
+	<script src="{% static 'devBlag/js/jQuery/jquery-ui.min.js' %}"></script>
+
+	<style>
+		.circleLink
+		{
+			margin: 20px;
+			width: 160px;
+			height: 160px;
+			border-radius: 80px;
+			-webkit-border-radius: 80px;
+			-moz-border-radius: 80px;
+			/*background: url("treeSq2.png") no-repeat;*/
+			border: solid black 1px;
+			cursor: pointer;
+			opacity: 0.7;
+		}
+		.circleLink:hover
+		{
+			opacity: 1;
+		}
+
+		
+	</style>
+
+
+	<script>
+		$(function(){
+
+			$("td").tooltip({
+				content: function(){
+					//collect info
+					var title = $(this).attr("title");
+					var inProgress = $(this).attr("inProgress");
+					var engine = $(this).attr("engine");
+					var language = $(this).attr("language");
+					//Convert inProgress boolean to text inDev
+					if (inProgress == "True") {
+						var inDev = "In Progress";
+					} else {
+						var inDev = "Completed";
+					}
+					/*
+					var output = 	"<p>"+title+"</p>"+
+									"<p>"+inDev+"</p>"+
+									"<p>E: "+engine+"</p>"+
+									"<p>L: "+language+"</p>";
+					*/
+					var output = 	title+"<br>"+
+									inDev+"<br>"+
+									(engine == "" ? "" : "E: "+engine+"<br>")+
+									(language == "" ? "" : "L: "+language+"<br>");
+					return output;
+				}
+			});
+
+		})
+	</script>
+</head>
+
+
+
+<body style="min-height: 100%;">
+
+	<div class="banner">
+		<div class="floatingLogInOut">You are not logged in. <a href="">Log In</a></div>
+		<div class="titleText">DevBlag</div>
+	</div>
+	<div class="container">
+		<br>
+		<br>
+		<p class="headerText">Projects</p>
+		<bR>
+		<table>
+			{% for quadProj in projects %}
+			<tr>
+				{% for proj in quadProj %}
+					<!--<td><div class="circleLink" style="background: url('treeSq.png') no-repeat;"></div></td>-->
+					<a href="/project/{{ proj.title }}">
+					<td>
+						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
+						class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
+					</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+</body>

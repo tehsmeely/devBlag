@@ -1,0 +1,84 @@
+{% extends 'devBlag/base.html' %}
+
+
+{% block headerInsert %}
+
+	<style>
+		.circleLink
+		{
+			margin: 20px;
+			width: 160px;
+			height: 160px;
+			border-radius: 80px;
+			-webkit-border-radius: 80px;
+			-moz-border-radius: 80px;
+			/*background: url("treeSq2.png") no-repeat;*/
+			border: solid black 1px;
+			cursor: pointer;
+			opacity: 0.7;
+		}
+		.circleLink:hover
+		{
+			opacity: 1;
+		}
+
+		
+	</style>
+
+
+	<script>
+		$(function(){
+
+			$("td").tooltip({
+				content: function(){
+					//collect info
+					var title = $(this).attr("title");
+					var inProgress = $(this).attr("inProgress");
+					var engine = $(this).attr("engine");
+					var language = $(this).attr("language");
+					//Convert inProgress boolean to text inDev
+					if (inProgress == "True") {
+						var inDev = "In Progress";
+					} else {
+						var inDev = "Completed";
+					}
+					/*
+					var output = 	"<p>"+title+"</p>"+
+									"<p>"+inDev+"</p>"+
+									"<p>E: "+engine+"</p>"+
+									"<p>L: "+language+"</p>";
+					*/
+					var output = 	title+"<br>"+
+									inDev+"<br>"+
+									(engine == "" ? "" : "E: "+engine+"<br>")+
+									(language == "" ? "" : "L: "+language+"<br>");
+					return output;
+				}
+			});
+
+		})
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br>
+	<br>
+	<p class="headerText">Projects</p>
+	<bR>
+	<table>
+		{% for quadProj in projects %}
+		<tr>
+			{% for proj in quadProj %}
+				<!--<td><div class="circleLink" style="background: url('treeSq.png') no-repeat;"></div></td>-->
+				<td>
+					<a href="/project/{{ proj.id }}">
+						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
+						class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
+					</a>
+				</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

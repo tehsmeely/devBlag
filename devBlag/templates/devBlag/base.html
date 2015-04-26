@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<head>
+
+	<link rel="stylesheet" href="{% static 'devBlag/css/base.css' %}">
+
+	<!-- jQuery(UI) -->
+	<link rel="stylesheet" href="{% static 'devBlag/css/jQuery/jquery-ui.min.css' %}">
+	<script src="{% static 'devBlag/js/jQuery/external/jquery/jquery.js' %}"></script>
+	<script src="{% static 'devBlag/js/jQuery/jquery-ui.min.js' %}"></script>
+
+	<style>
+		/* Fonts! */
+		@font-face {
+			font-family: 
+		}
+		
+	</style>
+
+
+	<script>
+		$(function(){
+
+		})
+	</script>
+
+	{% block headerInsert %}
+	{% endblock %}
+
+</head>
+
+
+
+<body style="min-height: 100%;">
+	{% block banner %}
+	<div class="banner">
+		<div class="floatingLogInOut">You are not logged in. <a href="">Log In</a></div>
+		<div class="titleText">DevBlag</div>
+	</div>
+	{% endblock %}
+
+	<div class="container">
+		{% block container %}
+			<p>Container!</p>
+		{% endblock %}
+	</div>
+
+</body>

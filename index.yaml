@@ -16,12 +16,32 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: auth_permission
+  properties:
+  - name: content_type_id
+  - name: codename
+
 - kind: devBlag_post
   properties:
   - name: __key__
     direction: desc
 
+- kind: devBlag_post
+  properties:
+  - name: project_id
+  - name: publishedDate
+
+- kind: devBlag_project
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: devBlag_resource
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: devBlag_resource_map
   properties:
   - name: __key__
     direction: desc
@@ -39,6 +59,12 @@ indexes:
 - kind: djangae_group
   properties:
   - name: __key__
+    direction: desc
+
+- kind: django_admin_log
+  properties:
+  - name: content_type_id
+  - name: action_time
     direction: desc
 
 - kind: django_admin_log

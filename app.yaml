@@ -15,6 +15,10 @@ handlers:
   static_dir: sitepackages/django/contrib/admin/static/admin/
   secure: always
 
+- url: /static/devBlag/
+  static_dir: devBlag/static/devBlag
+  secure: always
+
 # Set Django admin to be login:admin as well as Django's is_staff restriction
 - url: /admin.*
   script: scaffold.wsgi.application

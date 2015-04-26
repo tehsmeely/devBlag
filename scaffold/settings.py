@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangosecure',
     'csp',
+    'django_extensions',
     'djangae.contrib.gauth',
     'djangae', # Djangae should be after Django core/contrib things
     'devBlag',
