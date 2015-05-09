@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.utils import timezone
+from djangae.contrib.gauth.models import GaeDatastoreUser
 from .models import Post, Resource, Resource_map, Project
-from scaffold.settings import BASE_DIR, STATIC_URL
+from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 import os, re
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -27,6 +28,14 @@ def index(request):
 		quadProj.append(subGroup)
 	print "projects:  ", projects
 	print "quadProj:  ", quadProj
+
+	users = GaeDatastoreUser.objects.all()
+	for user in users:
+		print "USER"
+		for item in user.__dict__:
+			print item, getattr(user, item)
+
+	print "AUTH USER MODEL", AUTH_USER_MODEL
 	return render(request, "devBlag/index.html", {"projects": quadProj, "STATIC_PATH":STATIC_PATH})
 
 
@@ -102,7 +111,7 @@ def get_replaceString(resource):
 	elif resource.contentType == "code":
 		language = resource.language
 		#return "<pre><code class='{}'>".format(language) + resource.content + "</code></pre>"
-		return "<pre><code class='python'>" + "print hello world" + "</code></pre>"
+		return "<pre><code class='" + resource.language + "'>" + resource.code + "</code></pre>"
 
 	else:
 		print "CONTENT TYPE NOT FOUND"

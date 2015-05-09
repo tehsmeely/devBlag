@@ -4,6 +4,20 @@ from django.utils import timezone
 from . import settings
 import scaffold.settings
 
+
+class Developer(models.Model):
+	# Additional information for developer users
+	user = models.OneToOneField(scaffold.settings.AUTH_USER_MODEL)
+	thumbnail = models.ForeignKey('Resource')
+	
+
+#mapping for many-to-many recording of developers to projects
+class DevProj_mapping(models.Model):
+	developer = models.ForeignKey('Developer')
+	project = models.ForeignKey('Project')
+
+
+
 class Project(models.Model):
 	title = models.CharField(max_length=200, unique=True)
 	description = models.TextField()
@@ -19,7 +33,8 @@ class Project(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(scaffold.settings.AUTH_USER_MODEL)
+    #author = models.ForeignKey(scaffold.settings.AUTH_USER_MODEL)
+    author = models.ForeignKey('Developer')
     title = models.CharField(max_length=200)
     body = models.TextField()
     createdDate = models.DateTimeField(default=timezone.now)
