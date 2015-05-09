@@ -6,7 +6,7 @@
 	<style>
 		.circleLink
 		{
-			margin: 20px;
+			margin: 0px;
 			width: 160px;
 			height: 160px;
 			border-radius: 80px;
@@ -22,6 +22,38 @@
 			opacity: 1;
 		}
 
+		.circleBlock
+		{
+			display: inline-block;
+			margin-top: 19px;
+			margin-bottom: 19px;
+		}
+
+		.circles4
+		{
+			/* width = (400/num circles) - 80 - 2 */
+			margin-left: 19px;
+			margin-right: 19px;
+		}
+
+		.circles3
+		{
+			margin-left: 53px;
+			margin-right: 53px;
+		}
+
+		.circles2
+		{
+			margin-left: 120px;
+			margin-right: 120px;
+		}
+
+		.circles1
+		{
+			margin-left: 318px;
+			margin-right: 318px;
+		}
+
 		
 	</style>
 
@@ -29,7 +61,7 @@
 	<script>
 		$(function(){
 
-			$("td").tooltip({
+			$(".projTT").tooltip({
 				content: function(){
 					//collect info
 					var title = $(this).attr("title");
@@ -70,13 +102,49 @@
 		{% for quadProj in projects %}
 		<tr>
 			{% for proj in quadProj %}
-				<!--<td><div class="circleLink" style="background: url('treeSq.png') no-repeat;"></div></td>-->
+			<!--
+				<!--<td><div class="circleLink" style="background: url('treeSq.png') no-repeat;"></div></td> ->
 				<td>
+					<div class="circles{{quadProj|length}}">
+						<a href="/project/{{ proj.id }}">
+							<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
+							class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
+						</a>
+					</div>
+				</td>
+			-->
+				<div class="projTT circleBlock circles{{quadProj|length}}">
+					<a href="/project/{{ proj.id }}">
+						<div name= class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
+					</a>
+				</div>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+	<br><br>
+	<p class="headerText">Developers</p>
+	<table>
+		{% for quadDevs in developers %}
+		<tr>
+			{% for dev in quadDevs %}
+			<!--
+				<!--<td><div class="circleLink" style="background: url('treeSq.png') no-repeat;"></div></td> ->
+				<td>
+					<div class="circles{{quadProj|length}}">
+						<a href="/project/{{ proj.id }}">
+							<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
+							class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
+						</a>
+					</div>
+				</td>
+			-->
+				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/project/{{ proj.id }}">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
 						class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
 					</a>
-				</td>
+				</div>
 			{% endfor %}
 		</tr>
 		{% endfor %}
