@@ -66,5 +66,7 @@ class Resource(models.Model):
 	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
 	language = models.CharField(max_length=50, blank=True)
 	code = models.TextField(blank=True)
+	owner = models.ForeignKey('developer')
+	associatedProject = models.ForeignKey('Project', blank=True)
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
