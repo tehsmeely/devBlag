@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils import timezone
 from djangae.contrib.gauth.models import GaeDatastoreUser
-from .models import Post, Resource, Resource_map, Project
+from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 import os, re
 
@@ -12,52 +12,49 @@ def index(request):
 	projects = Project.objects.all().order_by("title")
 	##group projects in groups of 4
 	#projects[subGroup1[p1, p2, p3, p4], subGroup2[p5, p6, p7, p8], subGroup3[p9, p10]]
-	quadProj = []
+	# quadProj = []
+	# i = 0
+	# subGroup = []
+	# for project in projects:
+	# 	subGroup.append(project)
+	# 	if i == 3:
+	# 		quadProj.append(subGroup)
+	# 		subGroup = []
+	# 		i = 0
+	# 	else:
+	# 		i += 1
+	# ##If there is an unfilled on left, add it on anyway
+	# if subGroup != []:
+	# 	quadProj.append(subGroup)
+	quadProj = sortToNumGroups(projects, 4)
+	print "projects:  ", projects
+	print "quadProj:  ", quadProj
+
+	developers = Developer.objects.all()
+	quadDev = sortToNumGroups(developers, 4)
+
+	print "AUTH USER MODEL", AUTH_USER_MODEL
+	return render(request, "devBlag/index.html", {"projects": quadProj, "developers": quadDev, "STATIC_PATH":STATIC_PATH})
+
+#sorts a group into smaller subgroups of a given number
+def sortToNumGroups(items, groupNum):
+	groups = []
 	i = 0
-	subGroup = []
-	for project in projects:
-		subGroup.append(project)
-		if i == 3:
-			quadProj.append(subGroup)
-			subGroup = []
+	group = []
+	for item in items:
+		group.append(item)
+		if i == groupNum-1:
+			groups.append(group)
+			group = []
 			i = 0
 		else:
 			i += 1
 	##If there is an unfilled on left, add it on anyway
-	if subGroup != []:
-		quadProj.append(subGroup)
-	print "projects:  ", projects
-	print "quadProj:  ", quadProj
+	if len(group) > 0:
+		groups.append(group)
 
-	users = GaeDatastoreUser.objects.all()
-	for user in users:
-		print "USER"
-		for item in user.__dict__:
-			print item, getattr(user, item)
+	return groups
 
-	print "AUTH USER MODEL", AUTH_USER_MODEL
-	return render(request, "devBlag/index.html", {"projects": quadProj, "STATIC_PATH":STATIC_PATH})
-
-
-def post_list(request):
-	posts = Post.objects.filter(publishedDate__lte=timezone.now()).order_by("publishedDate")
-	
-	resources = []
-	for post in posts:
-		postRes = []
-		## for each post, grab the resources
-		maps = Resource_map.objects.filter(post=post)
-		for rmap in maps:
-			fp = os.path.join(STATIC_PATH, rmap.resource.filePath)
-			print "full fp", fp
-			if os.path.isfile(fp):
-				resources.append(rmap.resource)
-				postRes.append(rmap.resource)
-		print "\nbody before:\n", post.body
-		post.body = handleBody(post.body)
-		print "\nbody after:\n", post.body
-
-	return render(request, 'devBlag/post_list.html', {'posts':posts, 'resources':resources})
 
 def projectPosts(request, pid):
 	project = Project.objects.get(id=pid)
