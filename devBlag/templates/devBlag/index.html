@@ -111,7 +111,7 @@
 			{% for proj in quadProj %}
 			
 				<div class="circleBlock circles{{quadProj|length}}">
-					<a href="/project/{{ proj.id }}">
+					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
 						class="circleLink" style="background: url('static/{{proj.image.filePath}}') no-repeat;"></div>
 					</a>
@@ -126,7 +126,7 @@
 		<!--<tr>-->
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
-					<a href="/project/">
+					<a href="/developer/{{dev.user.id}}/">
 						<div title="{{dev.user.username}}"
 						class="circleLink" style="background: url('static/{{dev.thumbnail.filePath}}') no-repeat;"></div>
 					</a>

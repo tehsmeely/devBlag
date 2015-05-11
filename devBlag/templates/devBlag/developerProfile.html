@@ -1,0 +1,32 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+	<style>
+		.profilePic
+		{
+			float: right;
+			border-radius: 10px;
+			border: solid 1px black;
+		}
+	</style>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	<img class="profilePic" src="{% static developer.thumbnail.filePath %}">
+	<p><b>Name:</b> {{developer.user.first_name}} {{developer.user.last_name}}</p>
+	<p><b>Date Joined:</b> {{developer.user.date_joined}}</p>
+	<br><br><br><br><br>
+	<p class="headerText">Recent Posts</p>
+	{% for post in latestPosts %}
+		<div class="post">
+			<h3>{{post.title}}</h3>
+			{{post.body|safe|linebreaksbr}}
+			<br>
+		</div>
+		<br>
+	{% endfor %}
+{% endblock %}

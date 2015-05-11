@@ -63,8 +63,17 @@ code {
 	position: absolute;
 	left: 20%;
 	font-family: juice;
-
 }
+
+.blankLink
+{
+	text-decoration: none;
+}
+.blankLink:hover
+{
+	
+}
+
 .headerText
 {
 	text-align: center;

@@ -9,12 +9,18 @@ class Developer(models.Model):
 	# Additional information for developer users
 	user = models.OneToOneField(scaffold.settings.AUTH_USER_MODEL)
 	thumbnail = models.ForeignKey('Resource')
+
+	def __str__(self):
+		return str(self.user.first_name) + " " + str(self.user.last_name)
 	
 
 #mapping for many-to-many recording of developers to projects
 class DevProj_mapping(models.Model):
 	developer = models.ForeignKey('Developer')
 	project = models.ForeignKey('Project')
+
+	def __str__(self):
+		return str(self.developer) + "--" + str(self.project)
 
 
 
@@ -67,6 +73,6 @@ class Resource(models.Model):
 	language = models.CharField(max_length=50, blank=True)
 	code = models.TextField(blank=True)
 	owner = models.ForeignKey('developer')
-	associatedProject = models.ForeignKey('Project', blank=True)
+	associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
