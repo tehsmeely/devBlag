@@ -3,7 +3,7 @@ from django.utils import timezone
 from djangae.contrib.gauth.models import GaeDatastoreUser
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
-from .settings import DEFAULT_POST_ORDER
+from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 import os, re
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -60,7 +60,7 @@ def sortToNumGroups(items, groupNum):
 def projectPosts(request, pid):
 	project = Project.objects.get(id=pid)
 
-	posts = Post.objects.filter(project=project).order_by("publishedDate")
+	
 
 	#sort by newest first "nf" or oldest first "of"
 	sortCrit = request.GET.get("order", DEFAULT_POST_ORDER)
@@ -71,6 +71,14 @@ def projectPosts(request, pid):
 	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
 		orderByCrit = DEFAULT_POST_ORDER_BY
 
+	if sortCrit == "nf":
+		order_byStr = orderByCrit
+	else:
+		order_byStr = "-" + orderByCrit
+
+	print order_byStr
+
+	posts = Post.objects.filter(project=project).order_by(order_byStr)
 
 
 
@@ -81,13 +89,13 @@ def projectPosts(request, pid):
 		maps = Resource_map.objects.filter(post=post)
 		for rmap in maps:
 			fp = os.path.join(STATIC_PATH, rmap.resource.filePath)
-			print "full fp", fp
+			#print "full fp", fp
 			if os.path.isfile(fp):
 				resources.append(rmap.resource)
 				postRes.append(rmap.resource)
-		print "\nbody before:\n", post.body
+		#print "\nbody before:\n", post.body
 		post.body = handleBody(post.body)
-		print "\nbody after:\n", post.body
+		#print "\nbody after:\n", post.body
 
 	return render(request, 'devBlag/projectPosts.html', {'posts':posts, 'resources':resources})
 
@@ -132,5 +140,7 @@ def get_replaceString(resource):
 
 def developerProfile(request, did):
 	developer = Developer.objects.get(user__id=did)
-	latestPosts = Post.objects.all().order_by("publishedDate")[:10]
+	latestPosts = Post.objects.all().order_by("-publishedDate")[:10]
+	for post in latestPosts:
+		post.body = handleBody(post.body)
 	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
