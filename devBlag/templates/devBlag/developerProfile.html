@@ -10,7 +10,20 @@
 			border-radius: 10px;
 			border: solid 1px black;
 		}
+
+		.floatProjectLink
+		{
+			float:right;
+		}
 	</style>
+
+	<script>
+		$(function(){
+			$('pre code').each(function(i, block) {
+				hljs.highlightBlock(block);
+			});
+		})
+	</script>
 {% endblock %}
 
 
@@ -23,6 +36,7 @@
 	<p class="headerText">Recent Posts</p>
 	{% for post in latestPosts %}
 		<div class="post">
+			<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>
 			<h3>{{post.title}}</h3>
 			{{post.body|safe|linebreaksbr}}
 			<br>
