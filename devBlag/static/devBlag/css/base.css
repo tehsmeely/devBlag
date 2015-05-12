@@ -87,3 +87,10 @@ code {
 	padding-top: 5px;
 	padding-right: 5px;
 }
+
+.post
+{
+	border: solid black 1px;
+	border-radius: 4px;
+	padding: 5px;
+}
