@@ -11,9 +11,10 @@
 			border: solid 1px black;
 		}
 
-		.floatProjectLink
+		.floatProjectImg
 		{
 			float:right;
+			border-radius: 8px;
 		}
 	</style>
 
@@ -36,7 +37,8 @@
 	<p class="headerText">Recent Posts</p>
 	{% for post in latestPosts %}
 		<div class="post">
-			<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>
+			<!--<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>-->
+			<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{% static post.project.image.filePath %}" width="40" height="40"></a>
 			<h3>{{post.title}}</h3>
 			{{post.body|safe|linebreaksbr}}
 			<br>

@@ -4,3 +4,19 @@ TODO
 
 
 Add Logging
+
+
+Post Entry
+Project Creation
+User Creation
+User -> Developer upgrading
+Post Comments
+
+
+Ideas:
+
+Post tags
+User chosen post background colours - need a non-intrusive way of picking
+	perhaps a dropdown list of a limited set of presets
+
+CSRF

@@ -4,11 +4,21 @@ from djangae.contrib.gauth.models import GaeDatastoreUser
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
+from .forms import PostForm
 import os, re
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
 
+
+# View functions are labels as below:
+
+###VIEW <url>
+
+#all other functions are helpers and usually roughly just after the views that use them.
+
+
+###VIEW /
 def index(request):
 	projects = Project.objects.all().order_by("title")
 	##group projects in groups of 4
@@ -56,8 +66,8 @@ def sortToNumGroups(items, groupNum):
 
 	return groups
 
-
-def projectPosts(request, pid):
+##VIEW project/<pid>
+def projectPosts(request, pid): #project id
 	project = Project.objects.get(id=pid)
 
 	
@@ -99,6 +109,13 @@ def projectPosts(request, pid):
 
 	return render(request, 'devBlag/projectPosts.html', {'posts':posts, 'resources':resources})
 
+###VIEW /developer/<did>
+def developerProfile(request, did):  #developer id
+	developer = Developer.objects.get(user__id=did)
+	latestPosts = Post.objects.all().order_by("-publishedDate")[:10]
+	for post in latestPosts:
+		post.body = handleBody(post.body)
+	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
 
 def handleBody(body):
 ## Takes the body and handles it to be ready to inject
@@ -138,9 +155,14 @@ def get_replaceString(resource):
 
 
 
-def developerProfile(request, did):
-	developer = Developer.objects.get(user__id=did)
-	latestPosts = Post.objects.all().order_by("-publishedDate")[:10]
-	for post in latestPosts:
-		post.body = handleBody(post.body)
-	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
+###VIEW /addPost
+def addPost(request):
+	if request.method == "POST":
+		form = PostForm(request.POST)
+		if form.is_valid():
+			return HttpResponseRedirect("/")
+
+	else:
+		form = PostForm()
+
+	return render(request, "devBlag/addPost.html", {"form": form})
