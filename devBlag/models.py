@@ -46,6 +46,7 @@ class Post(models.Model):
     createdDate = models.DateTimeField(default=timezone.now)
     publishedDate = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey('Project')
+    backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
 
     def publish(self):
             self.published_date = timezone.now()

@@ -13,10 +13,62 @@ from djangae.settings_base import * #Set up some AppEngine specific stuff
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+print "base dir ", BASE_DIR
+
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+
+
+## Logging doesnt seem to work:
+#  ValueError: Unable to configure handler 'All': [Errno 30] Read-only file system: '/home/jonty/devBlag/logs/fullLogs.log'
+## giving up for now,
+
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+#             'datefmt' : "%d/%b/%Y %H:%M:%S"
+#         },
+#         'simple': {
+#             'format': '%(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'All': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, "logs", "fullLogs.log"),
+#             #'filename': "fullLogs.log",
+#             'formatter': 'verbose'
+#         },
+#         'ErrorCritical': {
+#             'level': 'ERROR',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, "logs", "ErrorLogs.log"),
+#             #'filename': "errorLogs.log",
+#             'formatter': 'verbose'
+#         }
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers':['All', 'ErrorCritical'],
+#             'propagate': True,
+#             'level':'DEBUG',
+#         },
+#         'devBlag': {
+#             'handlers': ['All', 'ErrorCritical'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }
+
+
 
 from .boot import get_app_config
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -111,6 +163,8 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+
+
 
 
 from djangae.contrib.gauth.settings import *

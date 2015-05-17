@@ -36,7 +36,7 @@
 	<br><br><br><br><br>
 	<p class="headerText">Recent Posts</p>
 	{% for post in latestPosts %}
-		<div class="post">
+		<div class="post" style="background-color:#{{post.backgroundColour}}">
 			<!--<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>-->
 			<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{% static post.project.image.filePath %}" width="40" height="40"></a>
 			<h3>{{post.title}}</h3>

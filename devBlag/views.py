@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
+from django.template import RequestContext
 from djangae.contrib.gauth.models import GaeDatastoreUser
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
@@ -10,6 +11,8 @@ import os, re
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
 
+
+print "devBlag/views.py my __name__:", __name__
 
 # View functions are labels as below:
 
@@ -81,7 +84,7 @@ def projectPosts(request, pid): #project id
 	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
 		orderByCrit = DEFAULT_POST_ORDER_BY
 
-	if sortCrit == "nf":
+	if sortCrit == "of":
 		order_byStr = orderByCrit
 	else:
 		order_byStr = "-" + orderByCrit
@@ -153,16 +156,31 @@ def get_replaceString(resource):
 		print "CONTENT TYPE NOT FOUND"
 		replaceString = ""
 
-
+from django.views.decorators.csrf import csrf_exempt
 
 ###VIEW /addPost
+@csrf_exempt #bodging with exempt, gettinf CSRF errors even thought csrf_token is in template
 def addPost(request):
 	if request.method == "POST":
 		form = PostForm(request.POST)
 		if form.is_valid():
-			return HttpResponseRedirect("/")
+			print "boop"
+			#return HttpResponseRedirect("/addPost")
 
 	else:
 		form = PostForm()
 
-	return render(request, "devBlag/addPost.html", {"form": form})
+	print "form.body:"
+	for i in form['body'].__dict__:
+		print i
+
+	allResources = Resource.objects.all()
+	myResources = allResources.objects.get(user)
+
+	c = {
+	"form": form,
+	"myResources": myResources,
+	"allResources": allResources
+	}
+	#return render(request, "devBlag/addPost.html", {"form": form})
+	return render(request, "devBlag/addPost.html", c)
