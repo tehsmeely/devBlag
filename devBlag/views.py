@@ -5,7 +5,7 @@ from djangae.contrib.gauth.models import GaeDatastoreUser
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm
+from .forms import PostForm, LoginForm
 import os, re
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -20,6 +20,14 @@ print "devBlag/views.py my __name__:", __name__
 
 #all other functions are helpers and usually roughly just after the views that use them.
 
+
+#### ##    ## ########  ######## ##     ##
+ ##  ###   ## ##     ## ##        ##   ##
+ ##  ####  ## ##     ## ##         ## ##
+ ##  ## ## ## ##     ## ######      ###
+ ##  ##  #### ##     ## ##         ## ##
+ ##  ##   ### ##     ## ##        ##   ##
+#### ##    ## ########  ######## ##     ##
 
 ###VIEW /
 def index(request):
@@ -69,6 +77,39 @@ def sortToNumGroups(items, groupNum):
 
 	return groups
 
+
+##        #######   ######   #### ##    ##
+##       ##     ## ##    ##   ##  ###   ##
+##       ##     ## ##         ##  ####  ##
+##       ##     ## ##   ####  ##  ## ## ##
+##       ##     ## ##    ##   ##  ##  ####
+##       ##     ## ##    ##   ##  ##   ###
+########  #######   ######   #### ##    ##
+
+##VIEW /login
+def login(request):
+
+	if request.method == "POST":
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			print "boop"
+			#return HttpResponseRedirect("/addPost")
+
+	else:
+		form = LoginForm()
+
+	return render(request, "devBlag/login.html", {"form": form})
+
+
+
+########  ########   #######        ## ########  ######  ########
+##     ## ##     ## ##     ##       ## ##       ##    ##    ##
+##     ## ##     ## ##     ##       ## ##       ##          ##
+########  ########  ##     ##       ## ######   ##          ##
+##        ##   ##   ##     ## ##    ## ##       ##          ##
+##        ##    ##  ##     ## ##    ## ##       ##    ##    ##
+##        ##     ##  #######   ######  ########  ######     ##
+
 ##VIEW project/<pid>
 def projectPosts(request, pid): #project id
 	project = Project.objects.get(id=pid)
@@ -111,6 +152,15 @@ def projectPosts(request, pid): #project id
 		#print "\nbody after:\n", post.body
 
 	return render(request, 'devBlag/projectPosts.html', {'posts':posts, 'resources':resources})
+
+
+########  ######## ##     ## ######## ##        #######  ########  ######## ########
+##     ## ##       ##     ## ##       ##       ##     ## ##     ## ##       ##     ##
+##     ## ##       ##     ## ##       ##       ##     ## ##     ## ##       ##     ##
+##     ## ######   ##     ## ######   ##       ##     ## ########  ######   ########
+##     ## ##        ##   ##  ##       ##       ##     ## ##        ##       ##   ##
+##     ## ##         ## ##   ##       ##       ##     ## ##        ##       ##    ##
+########  ########    ###    ######## ########  #######  ##        ######## ##     ##
 
 ###VIEW /developer/<did>
 def developerProfile(request, did):  #developer id
@@ -158,6 +208,15 @@ def get_replaceString(resource):
 
 from django.views.decorators.csrf import csrf_exempt
 
+
+   ###    ########  ########  ########   #######   ######  ########
+  ## ##   ##     ## ##     ## ##     ## ##     ## ##    ##    ##
+ ##   ##  ##     ## ##     ## ##     ## ##     ## ##          ##
+##     ## ##     ## ##     ## ########  ##     ##  ######     ##
+######### ##     ## ##     ## ##        ##     ##       ##    ##
+##     ## ##     ## ##     ## ##        ##     ## ##    ##    ##
+##     ## ########  ########  ##         #######   ######     ##
+
 ###VIEW /addPost
 @csrf_exempt #bodging with exempt, gettinf CSRF errors even thought csrf_token is in template
 def addPost(request):
@@ -174,13 +233,14 @@ def addPost(request):
 	for i in form['body'].__dict__:
 		print i
 
-	allResources = Resource.objects.all()
-	myResources = allResources.objects.get(user)
+	allResources = Resource.objects.all().order_by("resID")
+	#myResources = Resources.objects.get(user)
 
 	c = {
 	"form": form,
-	"myResources": myResources,
+	#"myResources": myResources,
 	"allResources": allResources
 	}
 	#return render(request, "devBlag/addPost.html", {"form": form})
 	return render(request, "devBlag/addPost.html", c)
+

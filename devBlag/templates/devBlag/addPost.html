@@ -80,7 +80,7 @@
 
 	<br><br>
 	<div class="addForm">
-		<form action="/addPost" method="post">{% csrf_token %}
+		<form action="/addPost/" method="post">{% csrf_token %}
 			<p>
 	    		<label for="{{ form.title.id_for_label }}">Title:</label>
 	    		{{ form.title }}
@@ -112,6 +112,11 @@
 		<button>Mine</button><button>All</button>
 
 		<div class="resourceList">
+			<ul>
+				{% for res in allResources %}
+					<li>{{res}}</li>
+				{% endfor %}
+			</ul>
 		</div>
 		<br>
 	</div>

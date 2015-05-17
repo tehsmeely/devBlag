@@ -20,3 +20,6 @@ class PostForm(forms.ModelForm):
 		fields = ('title', 'body', 'project', "backgroundColour")
 
 
+class LoginForm(forms.Form):
+	emailAddress = forms.EmailField()
+	password = forms.CharField(widget=forms.PasswordInput)

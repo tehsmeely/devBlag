@@ -1,0 +1,23 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+{% endblock %}
+
+
+{% block container %}
+	<form action="/login/" method="post">{% csrf_token %}
+		<p>
+			<label for="{{ form.emailAddress.id_for_label }}">Email Address:</label>
+			{{ form.emailAddress }}
+			{{ form.emailAddress.errors }}
+		</p>
+		<p>
+			<label for="{{ form.password.id_for_label }}">Password:</label>
+			{{ form.password }}
+			{{ form.password.errors }}
+		</p>
+	</form>
+{% endblock %}
