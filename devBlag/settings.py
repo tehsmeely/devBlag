@@ -6,3 +6,6 @@ print "RES DIR", RESOURCE_DIR
 DEFAULT_POST_ORDER_BY = "publishedDate"
 ## current options "nf" (newest first), "of" (oldest first)
 DEFAULT_POST_ORDER = "nf"
+
+
+

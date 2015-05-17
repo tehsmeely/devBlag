@@ -12,8 +12,11 @@ class ProjectForm(forms.ModelForm):
 
 class PostForm(forms.ModelForm):
 
+	#Force background colour to use class "color" for the colour picker JS addin
+	backgroundColour = forms.CharField(widget=forms.TextInput(attrs={'class': "color"}))
+
 	class Meta:
 		model = Post
-		fields = ('title', 'body', 'project')
+		fields = ('title', 'body', 'project', "backgroundColour")
 
 
