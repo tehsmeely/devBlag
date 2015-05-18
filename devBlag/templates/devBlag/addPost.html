@@ -39,6 +39,13 @@
 			width: 500px;
 			resize: vertical;
 		}
+
+		.resource
+		{
+			cursor: pointer;
+			background-color: #eee;
+			border-radius: 5px;
+		}
 	</style>
 
 	<script>
@@ -60,9 +67,7 @@
 		    return /*"#" + */componentToHex(parseInt(rgb[0])) + componentToHex(parseInt(rgb[1])) + componentToHex(parseInt(rgb[2]));
 		}
 
-
-
-
+		//The updaste button sets the background of the form to the entered colour
 		$("#updateCol").click(function(event){
 			var colour = $(".color").val();
 			console.log(colour);
@@ -70,6 +75,27 @@
 			$(".addForm").css("background-color", "#" + colour);
 			return false;
 		});
+
+
+		function typeInTextarea(el, newText) {
+			var start = el.prop("selectionStart")
+			var end = el.prop("selectionEnd")
+			var text = el.val()
+			var before = text.substring(0, start)
+			var after  = text.substring(end, text.length)
+			el.val(before + newText + after)
+			el[0].selectionStart = el[0].selectionEnd = start + newText.length
+			el.focus()
+			return false
+		}
+
+		$(".resource").on("click", function() {
+			typeInTextarea($("#{{form.body.id_for_label}}"), $(this).text())
+			return false
+		})
+
+
+
 	})
 	</script>
 
@@ -114,7 +140,8 @@
 		<div class="resourceList">
 			<ul>
 				{% for res in allResources %}
-					<li>{{res}}</li>
+					<li class="resource">{{res}}</li>
+					<br>
 				{% endfor %}
 			</ul>
 		</div>
