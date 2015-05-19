@@ -40,11 +40,22 @@
 			resize: vertical;
 		}
 
-		.resource
+		
+
+		.resourceTable
+		{
+			width:100%;
+		}
+
+		tr.resourceTr
 		{
 			cursor: pointer;
 			background-color: #eee;
-			border-radius: 5px;
+		}
+
+		td.resourceTd
+		{
+			text-align: center;
 		}
 	</style>
 
@@ -89,8 +100,9 @@
 			return false
 		}
 
-		$(".resource").on("click", function() {
-			typeInTextarea($("#{{form.body.id_for_label}}"), $(this).text())
+
+		$(".resourceTr").on("click", function() {
+			typeInTextarea($("#{{form.body.id_for_label}}"), "<<id:"+$(this).attr("resID")+">>")
 			return false
 		})
 
@@ -138,12 +150,20 @@
 		<button>Mine</button><button>All</button>
 
 		<div class="resourceList">
-			<ul>
+			<table class="resourceTable">
+				<tr>
+					<th>ID</th>
+					<th>caption</th>
+					<th>type</th>
+				</tr>
 				{% for res in allResources %}
-					<li class="resource">{{res}}</li>
-					<br>
+				<tr resID="{{res.resID}}" class="resourceTr">
+					<td class="resourceTd">{{res.resID}}</td>
+					<td class="resourceTd">{{res.caption}}</td>
+					<td class="resourceTd">{{res.contentType}}</td>
+				<tr>
 				{% endfor %}
-			</ul>
+			</table>
 		</div>
 		<br>
 	</div>

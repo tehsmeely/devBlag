@@ -67,7 +67,7 @@ class Resource_map(models.Model):
 
 class Resource(models.Model):
 	resID = models.IntegerField(unique=True)
-	filePath = models.CharField(max_length=260 ,blank=True) #this is the full path
+	filePath = models.CharField(max_length=260, blank=True) #this is the full path
 	caption = models.TextField(blank=True)
 	contentType = models.CharField(max_length=50, help_text="(image/code)")
 	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
