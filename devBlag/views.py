@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.utils import timezone
 from django.template import RequestContext
 from djangae.contrib.gauth.models import GaeDatastoreUser
+from django.contrib.auth.decorators import login_required
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm, LoginForm
+from .forms import PostForm
 import os, re
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -76,29 +77,6 @@ def sortToNumGroups(items, groupNum):
 		groups.append(group)
 
 	return groups
-
-
-##        #######   ######   #### ##    ##
-##       ##     ## ##    ##   ##  ###   ##
-##       ##     ## ##         ##  ####  ##
-##       ##     ## ##   ####  ##  ## ## ##
-##       ##     ## ##    ##   ##  ##  ####
-##       ##     ## ##    ##   ##  ##   ###
-########  #######   ######   #### ##    ##
-
-##VIEW /login
-def login(request):
-
-	if request.method == "POST":
-		form = LoginForm(request.POST)
-		if form.is_valid():
-			print "boop"
-			#return HttpResponseRedirect("/addPost")
-
-	else:
-		form = LoginForm()
-
-	return render(request, "devBlag/login.html", {"form": form})
 
 
 
@@ -218,15 +196,17 @@ from django.views.decorators.csrf import csrf_exempt
 ##     ## ########  ########  ##         #######   ######     ##
 
 ###VIEW /addPost
-@csrf_exempt #bodging with exempt, gettinf CSRF errors even thought csrf_token is in template
+@login_required
 def addPost(request):
 	if request.method == "POST":
+		#form = PostForm(request.POST)
 		form = PostForm(request.POST)
 		if form.is_valid():
 			print "boop"
 			#return HttpResponseRedirect("/addPost")
 
 	else:
+		#form = PostForm()
 		form = PostForm()
 
 	print "form.body:"
@@ -244,3 +224,15 @@ def addPost(request):
 	#return render(request, "devBlag/addPost.html", {"form": form})
 	return render(request, "devBlag/addPost.html", c)
 
+
+
+##        #######   ######    #######  ##     ## ########
+##       ##     ## ##    ##  ##     ## ##     ##    ##
+##       ##     ## ##        ##     ## ##     ##    ##
+##       ##     ## ##   #### ##     ## ##     ##    ##
+##       ##     ## ##    ##  ##     ## ##     ##    ##
+##       ##     ## ##    ##  ##     ## ##     ##    ##
+########  #######   ######    #######   #######     ##
+###VIEW /addPost
+def logout(request):
+    return HttpResponseRedirect(users.create_logout_url(dest_url=request.GET.get('next', '/')))

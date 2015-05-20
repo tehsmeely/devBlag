@@ -73,7 +73,11 @@
 <body style="min-height: 100%;">
 	{% block banner %}
 	<div class="banner">
-		<div class="floatingLogInOut">You are not logged in. <a href="/login/">Log In</a></div>
+		{% if user.is_authenticated %}
+		<div class="floatingLogInOut">You are logged in as {{user.first_name}} <a href="/logout/?next={{ request.path }}">Log Out</a></div>
+		{% else %}
+		<div class="floatingLogInOut">You are not logged in. <a href="{% url 'djangae_login_redirect' %}?next={{ request.path }}">Log In</a></div>
+		{% endif %}
 		<a class="blankLink" href="/"><div class="titleText">DevBlag</div></a>
 	</div>
 	{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+
+{% block container %}
+
+	<br><br>
+	<div class="addForm">
+		<form action="/addPost/" method="post">{% csrf_token %}
+			{{ form.as_p }}
+	    	
+	   	</form>
+	</div>
+	<br>
+
+	<br><br>
+
+{% endblock %}

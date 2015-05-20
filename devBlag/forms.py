@@ -17,9 +17,5 @@ class PostForm(forms.ModelForm):
 
 	class Meta:
 		model = Post
-		fields = ('title', 'body', 'project', "backgroundColour")
+		fields = ('title', 'body', "backgroundColour")
 
-
-class LoginForm(forms.Form):
-	emailAddress = forms.EmailField()
-	password = forms.CharField(widget=forms.PasswordInput)
