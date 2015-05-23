@@ -16,30 +16,17 @@ indexes:
   - name: __key__
     direction: desc
 
-- kind: auth_permission
+- kind: cspreports_cspreport
   properties:
-  - name: content_type_id
-  - name: codename
+  - name: created
+    direction: desc
+  - name: __key__
+    direction: desc
 
 - kind: devBlag_developer
   properties:
   - name: __key__
     direction: desc
-
-- kind: devBlag_devproj_mapping
-  properties:
-  - name: __key__
-    direction: desc
-
-- kind: devBlag_post
-  properties:
-  - name: __key__
-    direction: desc
-
-- kind: devBlag_post
-  properties:
-  - name: project_id
-  - name: publishedDate
 
 - kind: devBlag_post
   properties:
@@ -57,16 +44,6 @@ indexes:
   - name: __key__
     direction: desc
 
-- kind: devBlag_resource_map
-  properties:
-  - name: __key__
-    direction: desc
-
-- kind: devBlag_resources
-  properties:
-  - name: __key__
-    direction: desc
-
 - kind: djangae_gaedatastoreuser
   properties:
   - name: __key__
@@ -79,12 +56,6 @@ indexes:
 
 - kind: django_admin_log
   properties:
-  - name: content_type_id
-  - name: action_time
-    direction: desc
-
-- kind: django_admin_log
-  properties:
   - name: user_id
   - name: action_time
     direction: desc
@@ -92,4 +63,9 @@ indexes:
 - kind: django_content_type
   properties:
   - name: app_label
+  - name: name
+
+- kind: django_migrations
+  properties:
+  - name: app
   - name: name

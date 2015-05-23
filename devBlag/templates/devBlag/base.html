@@ -19,41 +19,103 @@
 		/* Fonts! */
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Regular.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Regular.ttf' %});
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Bold.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Bold.ttf' %});
 			font-weight: bold;
 			font-style: normal;
 		}
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Bold_Italic.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Bold_Italic.ttf' %});
 			font-weight: bold;
 			font-style: italic;
 		}
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Light.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Light.ttf' %});
 			font-weight: 500;
 			font-size: normal;
 		}
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Light_Italic.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Light_Italic.ttf' %});
 			font-weight: 500;
 			font-size: italic;
 		}
 		@font-face {
 			font-family: juice;
-			src: url(% static 'devBlag/fonts/juice/JUICE_Italic.ttf' %});
+			src: url({% static 'devBlag/fonts/juice/JUICE_Italic.ttf' %});
 			font-weight: normal;
 			font-style: italic;
 		}
-		
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Regular.ttf' %});
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Bold.ttf' %});
+			font-weight: bold;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Italic.ttf' %});
+			font-weight: normal;
+			font-style: italic;
+		}
+
+		.menuButton
+		{
+			display: inline-block;
+			padding: 12px;
+			margin: 0px 20px;
+			position: relative;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			float: right;
+			text-align: center;
+			border: solid black 1px;
+			background-color: #ccc;
+			cursor: pointer;
+			color: #000;
+			font-family: juice;
+			font-weight: bold;
+			/*font-size: 1.2em;*/
+			/*opacity: 0.5;*/
+		}
+		.menuButton:hover
+		{
+			background-color: #bbb;
+		}
+
+		.userText
+		{
+			color: #fff;
+			float:right;
+			margin-right: 20px;
+			position: relative;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			font-family: roboto;
+		}
 	</style>
 
 
@@ -74,9 +136,11 @@
 	{% block banner %}
 	<div class="banner">
 		{% if user.is_authenticated %}
-		<div class="floatingLogInOut">You are logged in as {{user.first_name}} <a href="/logout/?next={{ request.path }}">Log Out</a></div>
+			<a class="blankLink" href="/logout/?next={{ request.path }}"><div class="menuButton">Log Out</div></a>
+			<a class="blankLink" href="/profile/"><div class="menuButton">Profile</div></a>
+			<div class="userText"><b>{{user.email}}</b></div>
 		{% else %}
-		<div class="floatingLogInOut">You are not logged in. <a href="{% url 'djangae_login_redirect' %}?next={{ request.path }}">Log In</a></div>
+			<a class="blankLink" href="/login/?next={{ request.path }}"><div class="menuButton">Log In</div></a>
 		{% endif %}
 		<a class="blankLink" href="/"><div class="titleText">DevBlag</div></a>
 	</div>

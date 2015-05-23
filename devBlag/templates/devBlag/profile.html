@@ -1,0 +1,21 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+{% endblock %}
+
+
+{% block container %}
+	
+	<p>First Name: {{user.first_name}}</p>
+	<p>Last Name: {{user.last_name}}</p>
+	<p>Email Address: {{user.email}}
+
+	{% if isDeveloper %}
+		<p>You're a developer!</p>
+	{% endif %}
+
+
+{% endblock %}

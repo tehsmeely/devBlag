@@ -1,4 +1,4 @@
-application: dark-foundry-91520
+application: djangae-scaffold
 version: 1
 runtime: python27
 api_version: 1
@@ -16,7 +16,7 @@ handlers:
   secure: always
 
 - url: /static/devBlag/
-  static_dir: devBlag/static/devBlag
+  static_dir: devBlag/static/devBlag/
   secure: always
 
 # Set Django admin to be login:admin as well as Django's is_staff restriction
@@ -35,4 +35,5 @@ skip_files:
     - install_deps
     - requirements.txt
     - sitepackages/google_appengine*
+    - \.storage.*
     - (.*)\.pyc

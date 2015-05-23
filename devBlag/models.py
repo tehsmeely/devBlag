@@ -8,7 +8,7 @@ import scaffold.settings
 class Developer(models.Model):
 	# Additional information for developer users
 	user = models.OneToOneField(scaffold.settings.AUTH_USER_MODEL)
-	thumbnail = models.ForeignKey('Resource')
+	thumbnail = models.ForeignKey('Resource', blank=True, null=True)
 
 	def __str__(self):
 		return str(self.user.first_name) + " " + str(self.user.last_name)
@@ -29,7 +29,7 @@ class Project(models.Model):
 	description = models.TextField()
 	image = models.ForeignKey('Resource')
 	dateStarted = models.DateTimeField(default=timezone.now)
-	inProgress = models.BooleanField()
+	inProgress = models.BooleanField(default=True)
 	language = models.CharField(max_length=200, blank=True)
 	engine = models.CharField(max_length=200, blank=True)
 

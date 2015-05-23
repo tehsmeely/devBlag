@@ -1,8 +1,9 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.utils import timezone
 from django.template import RequestContext
-from djangae.contrib.gauth.models import GaeDatastoreUser
+from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
 from django.contrib.auth.decorators import login_required
+from google.appengine.api import users
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
@@ -33,22 +34,7 @@ print "devBlag/views.py my __name__:", __name__
 ###VIEW /
 def index(request):
 	projects = Project.objects.all().order_by("title")
-	##group projects in groups of 4
-	#projects[subGroup1[p1, p2, p3, p4], subGroup2[p5, p6, p7, p8], subGroup3[p9, p10]]
-	# quadProj = []
-	# i = 0
-	# subGroup = []
-	# for project in projects:
-	# 	subGroup.append(project)
-	# 	if i == 3:
-	# 		quadProj.append(subGroup)
-	# 		subGroup = []
-	# 		i = 0
-	# 	else:
-	# 		i += 1
-	# ##If there is an unfilled on left, add it on anyway
-	# if subGroup != []:
-	# 	quadProj.append(subGroup)
+	##group projects in groups of 4 for the table
 	quadProj = sortToNumGroups(projects, 4)
 	print "projects:  ", projects
 	print "quadProj:  ", quadProj
@@ -196,8 +182,9 @@ from django.views.decorators.csrf import csrf_exempt
 ##     ## ########  ########  ##         #######   ######     ##
 
 ###VIEW /addPost
-@login_required
+@login_required()
 def addPost(request):
+	print request.user
 	if request.method == "POST":
 		#form = PostForm(request.POST)
 		form = PostForm(request.POST)
@@ -225,6 +212,16 @@ def addPost(request):
 	return render(request, "devBlag/addPost.html", c)
 
 
+##        #######   ######   #### ##    ##
+##       ##     ## ##    ##   ##  ###   ##
+##       ##     ## ##         ##  ####  ##
+##       ##     ## ##   ####  ##  ## ## ##
+##       ##     ## ##    ##   ##  ##  ####
+##       ##     ## ##    ##   ##  ##   ###
+########  #######   ######   #### ##    ##
+###VIEW /login/
+def login(request):
+	return redirect(users.create_login_url(dest_url=request.GET.get('next', '/')))
 
 ##        #######   ######    #######  ##     ## ########
 ##       ##     ## ##    ##  ##     ## ##     ##    ##
@@ -233,6 +230,39 @@ def addPost(request):
 ##       ##     ## ##    ##  ##     ## ##     ##    ##
 ##       ##     ## ##    ##  ##     ## ##     ##    ##
 ########  #######   ######    #######   #######     ##
-###VIEW /addPost
+###VIEW /logout/
 def logout(request):
-    return HttpResponseRedirect(users.create_logout_url(dest_url=request.GET.get('next', '/')))
+    return redirect(users.create_logout_url(dest_url=request.GET.get('next', '/')))
+
+
+
+
+########  ########   #######  ######## #### ##       ########
+##     ## ##     ## ##     ## ##        ##  ##       ##
+##     ## ##     ## ##     ## ##        ##  ##       ##
+########  ########  ##     ## ######    ##  ##       ######
+##        ##   ##   ##     ## ##        ##  ##       ##
+##        ##    ##  ##     ## ##        ##  ##       ##
+##        ##     ##  #######  ##       #### ######## ########
+###VIEW /profile/
+@login_required()
+def profile(request):
+	gaeUser = users.get_current_user()
+	if gaeUser is None: # if there isnt a current user somehow, redirect to index
+		redirect("/")
+	
+	#userss = GaeDatastoreUser.objects.all()#str(gaeUser.user_id()))
+	user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
+	devGroup = Group.objects.get(name="developers")
+
+	print devGroup.id
+
+	for d in user.__dict__:
+		print d
+	print "user: ", user.first_name, user.last_name, "grps: ", user.groups_ids
+
+	if devGroup.id in user.groups_ids:
+		isDeveloper = True
+	else:
+		isDeveloper = False
+	return render(request, "devBlag/profile.html", {"user":user, "isDeveloper":isDeveloper})
