@@ -1,0 +1,7 @@
+libjpeg-dev
+lib32z1-dev
+lib32z1
+libtiff-dev
+libfreetype6
+libwebp-dev
+libopenjpeg-dev
