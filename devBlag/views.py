@@ -8,7 +8,7 @@ from google.appengine.api import users
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm, ResourceForm
+from .forms import PostForm#, ResourceForm
 import os, re, json
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")

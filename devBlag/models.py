@@ -8,7 +8,7 @@ import scaffold.settings
 class Developer(models.Model):
 	# Additional information for developer users
 	user = models.OneToOneField(scaffold.settings.AUTH_USER_MODEL)
-	thumbnail = models.ForeignKey('Resource', blank=True, null=True)
+	thumbnail = models.ForeignKey('Resource_image', blank=True, null=True)
 	displayName = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
@@ -28,7 +28,7 @@ class DevProj_mapping(models.Model):
 class Project(models.Model):
 	title = models.CharField(max_length=200, unique=True)
 	description = models.TextField()
-	image = models.ForeignKey('Resource')
+	image = models.ForeignKey('Resource_image')
 	dateStarted = models.DateTimeField(default=timezone.now)
 	inProgress = models.BooleanField(default=True)
 	language = models.CharField(max_length=200, blank=True)
@@ -59,7 +59,7 @@ class Post(models.Model):
 ## maps mmultiple rousources defined in Resourse_base to Post
 class Resource_map(models.Model):
 	post = models.ForeignKey('Post')
-	resource = models.ForeignKey('Resource')
+	resource = models.ForeignKey('Resource_image')
 
 
 	def __str__(self):
@@ -88,14 +88,13 @@ class Resource(models.Model):
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
 
-class Resource_Image(Resource):
+class Resource_image(Resource):
 	imageFile = models.ImageField(blank=False)
 	thumbnail = models.ImageField(null=True, blank=True)
 
-class Resource_Code(Resource):
+class Resource_code(Resource):
 	language = models.CharField(max_length=50, blank=True)
 	code = models.TextField(blank=True)
 
-class Resource_Download(Resource):
+class Resource_download(Resource):
 	resFile = models.FileField(blank=False)
-	

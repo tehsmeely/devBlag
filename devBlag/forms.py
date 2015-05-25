@@ -21,10 +21,6 @@ class PostForm(forms.ModelForm):
 
 
 
-class ResourceForm(forms.ModelForm):
-	class Meta:
-		model = Resource
-		fields = ('resID','filePath','caption','contentType','thumbnail','language','code','owner','associatedProject')
 
 
 

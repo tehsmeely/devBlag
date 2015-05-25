@@ -44,6 +44,12 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: devBlag_resource
+  properties:
+  - name: class
+  - name: __key__
+    direction: desc
+
 - kind: devBlag_testresource
   properties:
   - name: __key__
