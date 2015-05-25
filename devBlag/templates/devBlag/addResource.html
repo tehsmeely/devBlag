@@ -1,0 +1,86 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+	<style>
+		.resourceContainer
+		{
+			width: 100%;
+			background-color: #fdd;
+			border: solid black 2px;
+			-webkit-border-radius: 8px;
+			-moz-border-radius: 8px;
+			border-radius: 8px;
+			text-align: center;
+		}
+	</style>
+
+	<script>
+		$(function(){
+			$("input[name=fileType]").change(updateFieldDisplay);
+
+			function updateFieldDisplay()
+			{
+				var type = $("input[name=fileType]:checked").val();
+				if (type == "image")
+				{
+					$("#fileInp").show();
+					$("#captInp").show();
+					$("#langInp").hide();
+					$("#codeInp").hide();
+				} else if (type == "code") {
+					$("#fileInp").hide();
+					$("#captInp").show();
+					$("#langInp").show();
+					$("#codeInp").show();
+				} else { //type==download
+					$("#fileInp").show();
+					$("#captInp").show();
+					$("#langInp").hide();
+					$("#codeInp").hide();
+				}
+
+			};
+
+			function uploadResource(){
+				$.post($AJAX_URL_EDIT, {"newName": newVal}, function(data){
+					if (newVal == ""){
+						var spanVal = "(blank - displays as full name)";
+					} else {
+						var spanVal = newVal;
+					} 
+					span.html(spanVal);
+					span.attr("actualVal", newVal);
+					editButton.switchClass("fa-check", "fa-pencil");
+					editButton.attr("state", "0");
+				});
+			};
+
+			updateFieldDisplay();
+		});
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	<div class="resourceContainer">
+		<form action="/addResource/" method="post">{% csrf_token %}
+			<p style="text-align: center;"><u>Resources</u></p>
+			<br>
+			<p>Type:
+				<input type="radio" name="fileType" value="image" checked="checked">Image 
+				<input type="radio" name="fileType" value="code">Code 
+				<input type="radio" name="fileType" value="download">Download 
+			</p>
+			<p id="fileInp">File: <input type="file" name="file"></p>
+			<p id="captInp">Caption: <textarea name="caption"></textarea></p>
+			<p id="langInp">Language: <input type="text" name="language"></p>
+			<p id="codeInp">Code: <textarea name="code"></textarea></p>
+			<p><input type="submit" value="Add Resource"></p>
+		</form>
+		<br><br>
+	</div>
+{% endblock %}

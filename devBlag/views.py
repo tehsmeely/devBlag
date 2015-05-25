@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.utils import timezone
 from django.template import RequestContext
@@ -7,14 +8,13 @@ from google.appengine.api import users
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm
-import os, re
+from .forms import PostForm, ResourceForm
+import os, re, json
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
 
 
-print "devBlag/views.py my __name__:", __name__
 
 # View functions are labels as below:
 
@@ -172,14 +172,31 @@ def get_replaceString(resource):
 
 from django.views.decorators.csrf import csrf_exempt
 
+   ###    ########  ########     ########  ########  ######   #######  ##     ## ########   ######  ########
+  ## ##   ##     ## ##     ##    ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##
+ ##   ##  ##     ## ##     ##    ##     ## ##       ##       ##     ## ##     ## ##     ## ##       ##
+##     ## ##     ## ##     ##    ########  ######    ######  ##     ## ##     ## ########  ##       ######
+######### ##     ## ##     ##    ##   ##   ##             ## ##     ## ##     ## ##   ##   ##       ##
+##     ## ##     ## ##     ##    ##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##
+##     ## ########  ########     ##     ## ########  ######   #######   #######  ##     ##  ######  ########
+###VIEW /addResource
+@login_required
+def addResource(request):
+	if request.method == "POST":
+		print request.GET
+		print request.FILE
+	else:
+		print "GET"
 
-   ###    ########  ########  ########   #######   ######  ########
-  ## ##   ##     ## ##     ## ##     ## ##     ## ##    ##    ##
- ##   ##  ##     ## ##     ## ##     ## ##     ## ##          ##
-##     ## ##     ## ##     ## ########  ##     ##  ######     ##
-######### ##     ## ##     ## ##        ##     ##       ##    ##
-##     ## ##     ## ##     ## ##        ##     ## ##    ##    ##
-##     ## ########  ########  ##         #######   ######     ##
+	return render(request, "devBlag/addResource.html")
+
+   ###    ########  ########     ########   #######   ######  ########
+  ## ##   ##     ## ##     ##    ##     ## ##     ## ##    ##    ##
+ ##   ##  ##     ## ##     ##    ##     ## ##     ## ##          ##
+##     ## ##     ## ##     ##    ########  ##     ##  ######     ##
+######### ##     ## ##     ##    ##        ##     ##       ##    ##
+##     ## ##     ## ##     ##    ##        ##     ## ##    ##    ##
+##     ## ########  ########     ##         #######   ######     ##
 
 ###VIEW /addPost
 @login_required()
@@ -263,6 +280,31 @@ def profile(request):
 
 	if devGroup.id in user.groups_ids:
 		isDeveloper = True
+		developer = Developer.objects.get(user=user)
 	else:
 		isDeveloper = False
-	return render(request, "devBlag/profile.html", {"user":user, "isDeveloper":isDeveloper})
+		developer = None
+
+	print "developer", developer
+	return render(request, "devBlag/profile.html", {"user":user, "isDeveloper":isDeveloper, "developer": developer}, )
+
+
+###VIEW /updateProfile/
+@login_required()
+def updateProfile(request):
+	returnContext = {}
+	returnContext["nameUpdated"] = False
+	if request.method == "GET":
+		#context = RequestContext(request)
+		newName = request.GET.get("newName", None)
+
+		if newName is not None:
+			print "NEW NAME!"
+			returnContext["nameUpdated"] = True
+			#return HttpResponse(json.dumps(returnContext))
+			return JsonResponse(returnContext)
+
+	##,function(){function t(t){var i,s,n=t.ownerDocument.defaultView?t.ownerDoc
+
+
+	return JsonResponse(returnContext)

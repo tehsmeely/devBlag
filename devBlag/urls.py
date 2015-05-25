@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^developer/(?P<did>[0-9]+)/$', views.developerProfile),
     url(r'^addPost/$', views.addPost),
     url(r'^profile/$', views.profile),
+    url(r'^updateProfile/$', views.updateProfile),
+    url(r'^addResource/$', views.addResource),
 ]
 
 

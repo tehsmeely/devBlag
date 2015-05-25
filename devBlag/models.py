@@ -9,6 +9,7 @@ class Developer(models.Model):
 	# Additional information for developer users
 	user = models.OneToOneField(scaffold.settings.AUTH_USER_MODEL)
 	thumbnail = models.ForeignKey('Resource', blank=True, null=True)
+	displayName = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
 		return str(self.user.first_name) + " " + str(self.user.last_name)
@@ -65,15 +66,36 @@ class Resource_map(models.Model):
 		return str(self.post) + "->" + str(self.resource)
 # this leaves resource and post independant
 
+# class Resource(models.Model):
+# 	resID = models.IntegerField(unique=True)
+# 	filePath = models.CharField(max_length=260, blank=True) #this is the full path
+# 	caption = models.TextField(blank=True)
+# 	contentType = models.CharField(max_length=50, help_text="(image/code)")
+# 	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
+# 	language = models.CharField(max_length=50, blank=True)
+# 	code = models.TextField(blank=True)
+# 	owner = models.ForeignKey('developer')
+# 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+# 	def __str__(self):
+# 		return str(self.resID) + ": " + str(self.caption)
+
+
 class Resource(models.Model):
 	resID = models.IntegerField(unique=True)
-	filePath = models.CharField(max_length=260, blank=True) #this is the full path
 	caption = models.TextField(blank=True)
-	contentType = models.CharField(max_length=50, help_text="(image/code)")
-	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
-	language = models.CharField(max_length=50, blank=True)
-	code = models.TextField(blank=True)
 	owner = models.ForeignKey('developer')
 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
+
+class Resource_Image(Resource):
+	imageFile = models.ImageField(blank=False)
+	thumbnail = models.ImageField(null=True, blank=True)
+
+class Resource_Code(Resource):
+	language = models.CharField(max_length=50, blank=True)
+	code = models.TextField(blank=True)
+
+class Resource_Download(Resource):
+	resFile = models.FileField(blank=False)
+	

@@ -110,6 +110,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
+
+
 if DEBUG:
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 

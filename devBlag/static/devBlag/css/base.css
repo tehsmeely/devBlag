@@ -81,11 +81,20 @@ code {
 	font-family: juice
 }
 
+/*
 .floatingLogInOut
 {
 	float: right;
 	padding-top: 5px;
 	padding-right: 5px;
+}
+*/
+
+.profilePic
+{
+	float: right;
+	border-radius: 10px;
+	border: solid 1px black;
 }
 
 .post

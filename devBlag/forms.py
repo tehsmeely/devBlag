@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Post, Project
+from .models import Post, Project, Resource
 
 
 class ProjectForm(forms.ModelForm):
@@ -19,3 +19,13 @@ class PostForm(forms.ModelForm):
 		model = Post
 		fields = ('title', 'body', "backgroundColour")
 
+
+
+class ResourceForm(forms.ModelForm):
+	class Meta:
+		model = Resource
+		fields = ('resID','filePath','caption','contentType','thumbnail','language','code','owner','associatedProject')
+
+
+
+#'resID','filePath','caption','contentType','thumbnail','language','code','owner','associatedProject'
