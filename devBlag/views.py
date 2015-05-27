@@ -8,7 +8,7 @@ from google.appengine.api import users
 from .models import Post, Resource, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm#, ResourceForm
+from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
 import os, re, json
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -21,6 +21,11 @@ RES_REGEX = re.compile("(<<id:\w>>)+")
 ###VIEW <url>
 
 #all other functions are helpers and usually roughly just after the views that use them.
+
+
+def getCurrentUser():
+	#returns the current gauth user, using gae users api to get the user id
+	return GaeDatastoreUser.objects.get(username = str(users.get_current_user().user_id()))
 
 
 #### ##    ## ########  ######## ##     ##
@@ -182,13 +187,55 @@ from django.views.decorators.csrf import csrf_exempt
 ###VIEW /addResource
 @login_required
 def addResource(request):
+	context = {}
 	if request.method == "POST":
-		print request.GET
-		print request.FILE
-	else:
-		print "GET"
+		print "POST"
+		print request.POST
+		print request
+		##initialise form vars to None, to fill with unbound if
+		##page needs to be re-rendered
+		imageForm = None
+		codeForm = None
+		downloadForm = None
 
-	return render(request, "devBlag/addResource.html")
+		#Bind the correct form based on the type
+		resType = request.POST.get("resType")
+		if resType == "image":
+			print "image"
+			imageForm = ResourceImageForm(request.POST, request.FILES)
+			if imageForm.is_valid():
+				imageRes = imageForm.save()
+				print imageRes
+				return redirect("/") ## to be to ResourceList page
+		if resType == "code":
+			print "code"
+			codeForm = ResourceCodeForm(request.POST)
+			if codeForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+		if resType == "download":
+			print "download"
+			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
+			if downloadForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+
+		#now find the unused forms to fill unbound to send back to page
+		if imageForm is None:
+			imageForm = ResourceImageForm()
+		if codeForm is None:
+			codeForm = ResourceCodeForm()
+		if downloadForm is None:
+			downloadForm = ResourceDownloadForm()
+		context["imageForm"] = imageForm
+		context["codeForm"] = codeForm
+		context["downloadForm"] = downloadForm
+		
+	else:
+		##Unbound forms
+		context["imageForm"] = ResourceImageForm()
+		context["codeForm"] = ResourceCodeForm()
+		context["downloadForm"] = ResourceDownloadForm()
+
+	return render(request, "devBlag/addResource.html", context)
 
    ###    ########  ########     ########   #######   ######  ########
   ## ##   ##     ## ##     ##    ##     ## ##     ## ##    ##    ##
@@ -198,6 +245,15 @@ def addResource(request):
 ##     ## ##     ## ##     ##    ##        ##     ## ##    ##    ##
 ##     ## ########  ########     ##         #######   ######     ##
 
+    # author = models.ForeignKey('Developer')
+    # title = models.CharField(max_length=200)
+    # body = models.TextField()
+    # createdDate = models.DateTimeField(default=timezone.now)
+    # publishedDate = models.DateTimeField(blank=True, null=True)
+    # project = models.ForeignKey('Project')
+    # backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
+
+
 ###VIEW /addPost
 @login_required()
 def addPost(request):
@@ -206,7 +262,13 @@ def addPost(request):
 		#form = PostForm(request.POST)
 		form = PostForm(request.POST)
 		if form.is_valid():
-			print "boop"
+			print "Form is Valid"
+			post = form.save(commit=False)
+			developer = Developer.objects.get(user=getCurrentUser())
+			post.author_id = developer.id
+			post.project_id = Project.objects.all()[0].id #placehold
+			post.save()
+			print "finished"
 			#return HttpResponseRedirect("/addPost")
 
 	else:
@@ -269,7 +331,8 @@ def profile(request):
 		redirect("/")
 	
 	#userss = GaeDatastoreUser.objects.all()#str(gaeUser.user_id()))
-	user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
+	#user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
+	user = getCurrentUser()
 	devGroup = Group.objects.get(name="developers")
 
 	print devGroup.id
