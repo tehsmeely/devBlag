@@ -10,7 +10,11 @@ from .models import Post, Resource_image, Resource_code, Resource_download, Reso
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
+<<<<<<< HEAD
 import os, re, json, urlparse
+=======
+import os, re, json
+>>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
@@ -28,9 +32,12 @@ def getCurrentUser():
 	#returns the current gauth user, using gae users api to get the user id
 	return GaeDatastoreUser.objects.get(username = str(users.get_current_user().user_id()))
 
+<<<<<<< HEAD
 def getServingURLPath(blobID):
 	return urlparse.urlparse(get_serving_url(blobID)).path
 
+=======
+>>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
 
 #### ##    ## ########  ######## ##     ##
  ##  ###   ## ##     ## ##        ##   ##
@@ -282,7 +289,11 @@ def addPost(request):
 		if form.is_valid():
 			print "Form is Valid"
 			post = form.save(commit=False)
+<<<<<<< HEAD
 			#developer = Developer.objects.get(user=getCurrentUser())
+=======
+			developer = Developer.objects.get(user=getCurrentUser())
+>>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
 			post.author_id = developer.id
 			post.project_id = Project.objects.all()[0].id #placehold
 			post.save()
