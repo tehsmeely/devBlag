@@ -20,6 +20,7 @@
 	<script>
 		$(function(){
 			$("input[name=fileType]").change(updateFieldDisplay);
+			$("input[name=fileType2]").change(updateFieldDisplay2);
 
 			function updateFieldDisplay()
 			{
@@ -44,21 +45,31 @@
 
 			};
 
-			function uploadResource(){
-				$.post($AJAX_URL_EDIT, {"newName": newVal}, function(data){
-					if (newVal == ""){
-						var spanVal = "(blank - displays as full name)";
-					} else {
-						var spanVal = newVal;
-					} 
-					span.html(spanVal);
-					span.attr("actualVal", newVal);
-					editButton.switchClass("fa-check", "fa-pencil");
-					editButton.attr("state", "0");
-				});
+			function updateFieldDisplay2()
+			{
+				console.log("2");
+				var type = $("input[name=fileType2]:checked").val();
+				if (type == "image")
+				{
+					$("#imageForm").show();
+					$("#codeForm").hide();
+					$("#downloadForm").hide();
+				} else if (type == "code") {
+					$("#imageForm").hide();
+					$("#codeForm").show();
+					$("#downloadForm").hide();
+				} else { //type==download
+					$("#imageForm").hide();
+					$("#codeForm").hide();
+					$("#downloadForm").show();
+				}
+
 			};
 
+
+
 			updateFieldDisplay();
+			updateFieldDisplay2();
 		});
 	</script>
 {% endblock %}
@@ -67,7 +78,8 @@
 {% block container %}
 	<br><br>
 	<div class="resourceContainer">
-		<form action="/addResource/" method="post">{% csrf_token %}
+		<!--
+		<form enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
 			<p style="text-align: center;"><u>Resources</u></p>
 			<br>
 			<p>Type:
@@ -80,7 +92,33 @@
 			<p id="langInp">Language: <input type="text" name="language"></p>
 			<p id="codeInp">Code: <textarea name="code"></textarea></p>
 			<p><input type="submit" value="Add Resource"></p>
-		</form>
+		</form> -->
 		<br><br>
+		<p>Type:
+			<input type="radio" name="fileType2" value="image" checked="checked">Image 
+			<input type="radio" name="fileType2" value="code">Code 
+			<input type="radio" name="fileType2" value="download">Download 
+		</p>
+		<!-- Image form -->
+		<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<input type="hidden" name="resType" value="image">
+			<p style="text-align: center;"><u>Image</u></p>
+			{{ imageForm.as_p }}
+			<p><input type="submit" value="Add Resource"></p>
+		</form>
+		<!-- Code form -->
+		<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<input type="hidden" name="resType" value="code">
+			<p style="text-align: center;"><u>Image</u></p>
+			{{ codeForm.as_p }}
+			<p><input type="submit" value="Add Resource"></p>
+		</form>
+		<!-- Download form -->
+		<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<input type="hidden" name="resType" value="download">
+			<p style="text-align: center;"><u>Image</u></p>
+			{{ downloadForm.as_p }}
+			<p><input type="submit" value="Add Resource"></p>
+		</form>
 	</div>
 {% endblock %}

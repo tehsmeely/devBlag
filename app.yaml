@@ -4,6 +4,10 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
+libraries:
+- name: PIL
+  version: latest
+
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup).*

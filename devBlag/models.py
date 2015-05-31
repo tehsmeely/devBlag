@@ -1,7 +1,8 @@
-import os
+import os, urlparse
 from django.db import models
 from django.utils import timezone
 from . import settings
+from google.appengine.api import images
 import scaffold.settings
 
 
@@ -80,21 +81,43 @@ class Resource_map(models.Model):
 # 		return str(self.resID) + ": " + str(self.caption)
 
 
-class Resource(models.Model):
+class Resource_image(models.Model):
 	resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
+	imageFile = models.ImageField(blank=False)
+	thumbnail = models.ImageField(null=True, blank=True)
 	owner = models.ForeignKey('developer')
 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	public = models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
 
-class Resource_image(Resource):
-	imageFile = models.ImageField(blank=False)
-	thumbnail = models.ImageField(null=True, blank=True)
+	
 
-class Resource_code(Resource):
-	language = models.CharField(max_length=50, blank=True)
+	def getServingURLPath(self):
+		return urlparse.urlparse(images.get_serving_url(self.imageFile)).path
+	def getServingURL(self):
+		return images.get_serving_url(self.imageFile)
+
+class Resource_code(models.Model):
+	resID = models.IntegerField(unique=True)
+	caption = models.TextField(blank=True)
 	code = models.TextField(blank=True)
+	language = models.CharField(max_length=50, blank=True)
+	owner = models.ForeignKey('developer')
+	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	public = models.BooleanField(default=False)
+	def __str__(self):
+		return str(self.resID) + ": " + str(self.caption)
 
-class Resource_download(Resource):
+
+class Resource_download(models.Model):
+	resID = models.IntegerField(unique=True)
+	caption = models.TextField(blank=True)
 	resFile = models.FileField(blank=False)
+	owner = models.ForeignKey('developer')
+	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	public = models.BooleanField(default=False)
+	def __str__(self):
+		return str(self.resID) + ": " + str(self.caption)
+

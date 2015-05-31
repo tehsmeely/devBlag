@@ -5,11 +5,12 @@ from django.template import RequestContext
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
 from django.contrib.auth.decorators import login_required
 from google.appengine.api import users
-from .models import Post, Resource, Resource_map, Project, Developer
+from google.appengine.api.images import get_serving_url
+from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm#, ResourceForm
-import os, re, json
+from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
+import os, re, json, urlparse
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
@@ -21,6 +22,14 @@ RES_REGEX = re.compile("(<<id:\w>>)+")
 ###VIEW <url>
 
 #all other functions are helpers and usually roughly just after the views that use them.
+
+
+def getCurrentUser():
+	#returns the current gauth user, using gae users api to get the user id
+	return GaeDatastoreUser.objects.get(username = str(users.get_current_user().user_id()))
+
+def getServingURLPath(blobID):
+	return urlparse.urlparse(get_serving_url(blobID)).path
 
 
 #### ##    ## ########  ######## ##     ##
@@ -39,8 +48,15 @@ def index(request):
 	print "projects:  ", projects
 	print "quadProj:  ", quadProj
 
+
 	developers = Developer.objects.all()
 	quadDev = sortToNumGroups(developers, 4)
+
+	rc_dl = Resource_download.objects.all()[0]
+	print rc_dl
+	for item in rc_dl.__dict__:
+		print item
+	print rc_dl.resFile
 
 	print "AUTH USER MODEL", AUTH_USER_MODEL
 	return render(request, "devBlag/index.html", {"projects": quadProj, "developers": quadDev, "STATIC_PATH":STATIC_PATH})
@@ -148,7 +164,7 @@ def handleBody(body):
 	for tag in r:
 		print "TAGE: ", tag
 		resNum = int(tag[5:-2])
-		resource = Resource.objects.get(resID=resNum)
+		resource = Resource.objects.get(resID=resNum)                     
 		replaceString = get_replaceString(resource)
 		print "\nhandleBody Replace before:\n", body
 		body = body.replace(tag, replaceString)
@@ -182,13 +198,55 @@ from django.views.decorators.csrf import csrf_exempt
 ###VIEW /addResource
 @login_required
 def addResource(request):
+	context = {}
 	if request.method == "POST":
-		print request.GET
-		print request.FILE
-	else:
-		print "GET"
+		print "POST"
+		print request.POST
+		print request
+		##initialise form vars to None, to fill with unbound if
+		##page needs to be re-rendered
+		imageForm = None
+		codeForm = None
+		downloadForm = None
 
-	return render(request, "devBlag/addResource.html")
+		#Bind the correct form based on the type
+		resType = request.POST.get("resType")
+		if resType == "image":
+			print "image"
+			imageForm = ResourceImageForm(request.POST, request.FILES)
+			if imageForm.is_valid():
+				imageRes = imageForm.save()
+				print imageRes
+				return redirect("/") ## to be to ResourceList page
+		if resType == "code":
+			print "code"
+			codeForm = ResourceCodeForm(request.POST)
+			if codeForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+		if resType == "download":
+			print "download"
+			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
+			if downloadForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+
+		#now find the unused forms to fill unbound to send back to page
+		if imageForm is None:
+			imageForm = ResourceImageForm()
+		if codeForm is None:
+			codeForm = ResourceCodeForm()
+		if downloadForm is None:
+			downloadForm = ResourceDownloadForm()
+		context["imageForm"] = imageForm
+		context["codeForm"] = codeForm
+		context["downloadForm"] = downloadForm
+		
+	else:
+		##Unbound forms
+		context["imageForm"] = ResourceImageForm()
+		context["codeForm"] = ResourceCodeForm()
+		context["downloadForm"] = ResourceDownloadForm()
+
+	return render(request, "devBlag/addResource.html", context)
 
    ###    ########  ########     ########   #######   ######  ########
   ## ##   ##     ## ##     ##    ##     ## ##     ## ##    ##    ##
@@ -198,15 +256,37 @@ def addResource(request):
 ##     ## ##     ## ##     ##    ##        ##     ## ##    ##    ##
 ##     ## ########  ########     ##         #######   ######     ##
 
+    # author = models.ForeignKey('Developer')
+    # title = models.CharField(max_length=200)
+    # body = models.TextField()
+    # createdDate = models.DateTimeField(default=timezone.now)
+    # publishedDate = models.DateTimeField(blank=True, null=True)
+    # project = models.ForeignKey('Project')
+    # backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
+
+
 ###VIEW /addPost
 @login_required()
 def addPost(request):
+
+	##catch if user logged in but not developer, and send them a special message
+	if not Developer.objects.all().exists(user=getCurrentUser()):
+		return return render(request, "devBlag/addPost_notDev.html")
+
+
+	developer = Developer.objects.get(user=getCurrentUser())
 	print request.user
 	if request.method == "POST":
 		#form = PostForm(request.POST)
 		form = PostForm(request.POST)
 		if form.is_valid():
-			print "boop"
+			print "Form is Valid"
+			post = form.save(commit=False)
+			#developer = Developer.objects.get(user=getCurrentUser())
+			post.author_id = developer.id
+			post.project_id = Project.objects.all()[0].id #placehold
+			post.save()
+			print "finished"
 			#return HttpResponseRedirect("/addPost")
 
 	else:
@@ -218,13 +298,21 @@ def addPost(request):
 		print i
 
 	allResources = Resource.objects.all().order_by("resID")
+	for res in allResources:
+		print res
+		for d in res.__dict__:
+			print d
+
+		print ""
 	#myResources = Resources.objects.get(user)
 
 	c = {
 	"form": form,
-	#"myResources": myResources,
-	"allResources": allResources
+	#"myResources": myResources
 	}
+
+	c.update(getResources(developer))
+	print c
 	#return render(request, "devBlag/addPost.html", {"form": form})
 	return render(request, "devBlag/addPost.html", c)
 
@@ -269,7 +357,8 @@ def profile(request):
 		redirect("/")
 	
 	#userss = GaeDatastoreUser.objects.all()#str(gaeUser.user_id()))
-	user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
+	#user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
+	user = getCurrentUser()
 	devGroup = Group.objects.get(name="developers")
 
 	print devGroup.id
@@ -308,3 +397,42 @@ def updateProfile(request):
 
 
 	return JsonResponse(returnContext)
+
+
+def getResources(developer):
+	##returns: dict of the three types of resource,
+	#each in turn split in to "mine" and "public"
+	#"mine" is belooing to the logged in developer
+	#'public' is not in mine, but with property "public" set to True
+	print "getResources Test"
+	g = Resource_image.objects.get(resID = 1)
+	print g
+	print "end test"
+
+	resources_dict = {
+	"Resource_image":
+		{ 
+			"mine"		:	[],
+			"public" 	:	[]
+		},
+	"Resource_code":
+		{ 
+			"mine"		:	[],
+			"public" 	:	[]
+		},
+	"Resource_download":
+		{ 
+			"mine"		:	[],
+			"public" 	:	[]
+		}
+	}
+
+	#public includes owner's as cannot .excuse(owner=developer) here.
+	#"Cross-join WHERE constraints aren't supported: [(u'devBlag_resource', 'public'), (u'devBlag_resource', u'owner_id')]"
+	resources_dict["Resource_image"]["mine"] = Resource_image.objects.filter(owner=developer)
+	resources_dict["Resource_image"]["mine"] = Resource_image.objects.filter(public=True)
+	resources_dict["Resource_code"]["mine"] = Resource_code.objects.filter(owner=developer)
+	resources_dict["Resource_code"]["mine"] = Resource_code.objects.filter(public=True)
+	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(owner=developer)
+	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(public=True)
+	return resources_dict

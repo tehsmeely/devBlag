@@ -83,7 +83,7 @@
 
 {% block container %}
 	<br><br>
-	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.filePath %}">{% endif %}
+	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURLPath %}">{% endif %}
 	
 	<div class="userInfo">
 		<p>Name: <span>{{user.first_name}} {{user.last_name}}</span></p>

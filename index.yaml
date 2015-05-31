@@ -30,6 +30,11 @@ indexes:
 
 - kind: devBlag_post
   properties:
+  - name: __key__
+    direction: desc
+
+- kind: devBlag_post
+  properties:
   - name: project_id
   - name: publishedDate
     direction: desc
@@ -47,6 +52,16 @@ indexes:
 - kind: devBlag_resource
   properties:
   - name: class
+  - name: __key__
+    direction: desc
+
+- kind: devBlag_resource_download
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: devBlag_resource_image
+  properties:
   - name: __key__
     direction: desc
 
