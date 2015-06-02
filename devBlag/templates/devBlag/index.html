@@ -69,7 +69,9 @@
 	<script>
 		$(function(){
 
-			$(".projTT").tooltip({
+			//Tooltips for projects
+			//
+			$(".projLink").tooltip({
 				content: function(){
 					//collect info
 					var title = $(this).attr("title");
@@ -96,6 +98,17 @@
 				}
 			});
 
+			//Tooltips for developers
+			//
+			$(".devLink").tooltip({
+				content: function(){
+					//collect info
+					var name = $(this).attr("name");
+					var output = name;
+					return output;
+				}
+			});
+
 		})
 	</script>
 {% endblock %}
@@ -113,7 +126,7 @@
 				<div class="circleBlock circles{{quadProj|length}}">
 					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
-						class="circleLink" style="background: url('{{ proj.image.getServingURLPath }}') no-repeat;"></div>
+						class="circleLink projLink" style="background: url('{{ proj.image.getServingURLPath }}') no-repeat;"></div>
 					</a>
 				</div>
 			{% endfor %}
@@ -127,8 +140,8 @@
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
-						<div title="{{dev.user.username}}"
-						class="circleLink" style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"></div>
+						<div title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
+						class="circleLink devLink" style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"></div>
 					</a>
 				</div>
 			{% endfor %}
