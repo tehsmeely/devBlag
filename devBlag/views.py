@@ -10,11 +10,8 @@ from .models import Post, Resource_image, Resource_code, Resource_download, Reso
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
-<<<<<<< HEAD
 import os, re, json, urlparse
-=======
-import os, re, json
->>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
+
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 RES_REGEX = re.compile("(<<id:\w>>)+")
@@ -30,14 +27,33 @@ RES_REGEX = re.compile("(<<id:\w>>)+")
 
 def getCurrentUser():
 	#returns the current gauth user, using gae users api to get the user id
-	return GaeDatastoreUser.objects.get(username = str(users.get_current_user().user_id()))
+	currentUser = users.get_current_user()
+	if currentUser is None:
+		return None
+	else:
+		return GaeDatastoreUser.objects.get(username=str(currentUser.user_id()))
 
-<<<<<<< HEAD
+
+def getDeveloper():
+	##returns the current Developer is there is one, None if not
+	currentUser = users.get_current_user()
+	if currentUser is None:
+		return None
+	else:
+		return Developer.objects.get(user__username=str(currentUser.user_id()))
+
+def getIsDeveloper():
+	##return True is logged in user is devleoper, false if not, or no logged in user
+	currentUser = users.get_current_user()
+	if currentUser is None:
+		return None
+	else:
+		return Developer.objects.get(user__username=str(currentUser.user_id())).exists()
+
+
 def getServingURLPath(blobID):
 	return urlparse.urlparse(get_serving_url(blobID)).path
 
-=======
->>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
 
 #### ##    ## ########  ######## ##     ##
  ##  ###   ## ##     ## ##        ##   ##
@@ -101,7 +117,6 @@ def sortToNumGroups(items, groupNum):
 def projectPosts(request, pid): #project id
 	project = Project.objects.get(id=pid)
 
-	
 
 	#sort by newest first "nf" or oldest first "of"
 	sortCrit = request.GET.get("order", DEFAULT_POST_ORDER)
@@ -138,7 +153,14 @@ def projectPosts(request, pid): #project id
 		post.body = handleBody(post.body)
 		#print "\nbody after:\n", post.body
 
-	return render(request, 'devBlag/projectPosts.html', {'posts':posts, 'resources':resources})
+	c = {
+		'posts':posts,
+		'resources':resources,
+		'isDeveloper': getIsDeveloper(),
+		'project' : project
+	}
+
+	return render(request, 'devBlag/projectPosts.html', c)
 
 
 ########  ######## ##     ## ######## ##        #######  ########  ######## ########
@@ -277,8 +299,8 @@ def addResource(request):
 def addPost(request):
 
 	##catch if user logged in but not developer, and send them a special message
-	if not Developer.objects.all().exists(user=getCurrentUser()):
-		return return render(request, "devBlag/addPost_notDev.html")
+	if not getIsDeveloper():
+		return render(request, "devBlag/addPost_notDev.html")
 
 
 	developer = Developer.objects.get(user=getCurrentUser())
@@ -289,11 +311,7 @@ def addPost(request):
 		if form.is_valid():
 			print "Form is Valid"
 			post = form.save(commit=False)
-<<<<<<< HEAD
 			#developer = Developer.objects.get(user=getCurrentUser())
-=======
-			developer = Developer.objects.get(user=getCurrentUser())
->>>>>>> dfccd506a43502cf8e235bdbf896ed7377303e4d
 			post.author_id = developer.id
 			post.project_id = Project.objects.all()[0].id #placehold
 			post.save()

@@ -2,7 +2,37 @@
 
 {% block headerInsert %}
 	<style>
-		
+		.projectInfoBox
+		{
+			border: solid black 1px;
+			border-radius: 4px;
+			padding: 5px;
+			background-color: #ddd;
+		}
+		.projectTitle
+		{
+			font-family: juice;
+			text-align: center;
+		}
+		.projectImage
+		{
+			float: right;
+			border: solid black 1px;
+			border-radius: 5px;
+			height: 80px;
+			width: auto;
+
+		}
+		.projectInfoInner
+		{
+			padding-left: 10px;
+
+		}
+		.addPostButton
+		{
+			border-radius: 5px;
+			
+		}
 	</style>
 
 	<script>
@@ -15,8 +45,33 @@
 {% endblock %}
 
 
+<!--
+	Project:
+	title
+	description
+	image
+	dateStarted
+	inProgress
+	language
+	engine
+-->
+
 {% block container %}
 	<br><br>
+	<div class="projectInfoBox">
+		<img class="projectImage" src="{{project.image.getServingURLPath}}">
+		<h2 class="projectTitle">{{project.title}}</h2>
+		<div class="projectInfoInner">
+			{{project.description}}
+			<br>
+			<p>Date Started: </p>
+			{% if project.engine != "" %}<p>Engine: {{project.engine}}</p>{% endif %}
+			{% if project.language != "" %}<p>Language: {{project.language}}</p>{% endif %}
+			<p>{% if project.inProgress %}This project is in active development{% else %}This project has been completed{% endif %}</p>
+		</div>
+	</div>
+
+	<br>
 	{% for post in posts %}
 		<div class="post" style="background-color:#{{post.backgroundColour}}">
 			<h3>{{post.title}}</h3>
