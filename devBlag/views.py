@@ -36,19 +36,21 @@ def getCurrentUser():
 
 def getDeveloper():
 	##returns the current Developer is there is one, None if not
-	currentUser = users.get_current_user()
+	#currentUser = users.get_current_user()
+	currentUser = getCurrentUser()
 	if currentUser is None:
 		return None
 	else:
-		return Developer.objects.get(user__username=str(currentUser.user_id()))
+		return Developer.objects.get(user=currentUser)
 
 def getIsDeveloper():
 	##return True is logged in user is devleoper, false if not, or no logged in user
-	currentUser = users.get_current_user()
+	#currentUser = users.get_current_user()
+	currentUser = getCurrentUser()
 	if currentUser is None:
 		return None
 	else:
-		return Developer.objects.get(user__username=str(currentUser.user_id())).exists()
+		return Developer.objects.filter(user=currentUser).exists()
 
 
 def getServingURLPath(blobID):

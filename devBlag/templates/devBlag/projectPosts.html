@@ -8,6 +8,9 @@
 			border-radius: 4px;
 			padding: 5px;
 			background-color: #ddd;
+			min-height: 170px; /* height of image + add button + 10 */
+			position: relative;
+			/*overflow: hidden;*/
 		}
 		.projectTitle
 		{
@@ -20,8 +23,31 @@
 			border: solid black 1px;
 			border-radius: 5px;
 			height: 80px;
-			width: auto;
-
+			width: 80px;
+		}
+		.projectAddPostButton /*on top of projectImage */
+		{
+			background-color: #efefff;
+			text-align: center;
+			vertical-align: center;
+			position: absolute;
+			bottom: 5px;
+			right: 5px;
+			line-height: 80px;
+			background: -webkit-linear-gradient(top, #99A7BA, #8E9CAD);
+			background: -moz-linear-gradient(top, #99A7BA, #8E9CAD);
+			background: -o-linear-gradient(top, #99A7BA, #8E9CAD);
+			background: -ms-linear-gradient(top, #99A7BA, #8E9CAD);
+			background: linear-gradient(top, #99A7BA, #8E9CAD);
+			cursor: pointer;
+		}
+		.projectAddPostButton:hover
+		{
+			background: -webkit-linear-gradient(top, #9EACBF, #93A1B2);
+			background: -moz-linear-gradient(top, #9EACBF, #93A1B2);
+			background: -o-linear-gradient(top, #9EACBF, #93A1B2);
+			background: -ms-linear-gradient(top, #9EACBF, #93A1B2);
+			background: linear-gradient(top, #9EACBF, #93A1B2);
 		}
 		.projectInfoInner
 		{
@@ -59,7 +85,9 @@
 {% block container %}
 	<br><br>
 	<div class="projectInfoBox">
+		<div class="projectImage projectAddPostButton">+</div>
 		<img class="projectImage" src="{{project.image.getServingURLPath}}">
+		
 		<h2 class="projectTitle">{{project.title}}</h2>
 		<div class="projectInfoInner">
 			{{project.description}}
