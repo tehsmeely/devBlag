@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.template import RequestContext
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from google.appengine.api import users
 from google.appengine.api.images import get_serving_url
 from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
@@ -298,12 +299,29 @@ def addResource(request):
 
 ###VIEW /addPost
 @login_required()
-def addPost(request):
+def addPost(request, projectID, postID):
 
 	##catch if user logged in but not developer, and send them a special message
 	if not getIsDeveloper():
 		return render(request, "devBlag/addPost_notDev.html")
 
+	try:
+		project = Project.objects.get(id=projectID)
+	except ObjectDoesNotExist:
+		print "ERROR: Invalid project ID"
+		return redirect("/")
+
+	print project
+
+
+	if postID == "new":
+		post = None
+	else:
+		try:
+			post = Post.objects.get(id=postID)
+		except ObjectDoesNotExist:
+			print "ERROR: Invalid post ID, defaulting to blank"
+			post = None
 
 	developer = Developer.objects.get(user=getCurrentUser())
 	print request.user
@@ -315,27 +333,21 @@ def addPost(request):
 			post = form.save(commit=False)
 			#developer = Developer.objects.get(user=getCurrentUser())
 			post.author_id = developer.id
-			post.project_id = Project.objects.all()[0].id #placehold
+			post.project_id = project.id
 			post.save()
 			print "finished"
 			#return HttpResponseRedirect("/addPost")
 
 	else:
 		#form = PostForm()
-		form = PostForm()
+		if post is not None:
+			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour})
+		else:
+			form = PostForm()
 
 	print "form.body:"
 	for i in form['body'].__dict__:
 		print i
-
-	allResources = Resource.objects.all().order_by("resID")
-	for res in allResources:
-		print res
-		for d in res.__dict__:
-			print d
-
-		print ""
-	#myResources = Resources.objects.get(user)
 
 	c = {
 	"form": form,
@@ -435,10 +447,7 @@ def getResources(developer):
 	#each in turn split in to "mine" and "public"
 	#"mine" is belooing to the logged in developer
 	#'public' is not in mine, but with property "public" set to True
-	print "getResources Test"
-	g = Resource_image.objects.get(resID = 1)
-	print g
-	print "end test"
+
 
 	resources_dict = {
 	"Resource_image":
