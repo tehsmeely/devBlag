@@ -122,3 +122,33 @@ code {
 	border-top-right-radius: 7px;
 	border-bottom-left-radius: 7px;
 }
+
+.projectAddPostButton
+{
+	float: right;
+	border: solid black 1px;
+	border-radius: 5px;
+	height: 80px;
+	width: 80px;
+	background-color: #efefff;
+	text-align: center;
+	vertical-align: center;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	line-height: 80px;
+	background: -webkit-linear-gradient(top, #99A7BA, #8E9CAD);
+	background: -moz-linear-gradient(top, #99A7BA, #8E9CAD);
+	background: -o-linear-gradient(top, #99A7BA, #8E9CAD);
+	background: -ms-linear-gradient(top, #99A7BA, #8E9CAD);
+	background: linear-gradient(top, #99A7BA, #8E9CAD);
+	cursor: pointer;
+}
+.projectAddPostButton:hover
+{
+	background: -webkit-linear-gradient(top, #9EACBF, #93A1B2);
+	background: -moz-linear-gradient(top, #9EACBF, #93A1B2);
+	background: -o-linear-gradient(top, #9EACBF, #93A1B2);
+	background: -ms-linear-gradient(top, #9EACBF, #93A1B2);
+	background: linear-gradient(top, #9EACBF, #93A1B2);
+}

@@ -23,6 +23,7 @@
 			text-align: center;
 			border-radius: 10px;
 			background-color: #ccc;
+			position: relative;
 		}
 
 		.resourceList
@@ -56,6 +57,11 @@
 		td.resourceTd
 		{
 			text-align: center;
+		}
+
+		.addResourceMod  /*Add in to projectAddPostButton from base.css*/
+		{
+			top: 5px;
 		}
 	</style>
 
@@ -147,48 +153,55 @@
 	</div>
 	<br>
 	<div class="resourceBox">
-		<h2>Resources</h2>
-		<p>
-			<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine 
-			<input type="radio" name="resourceOwner" value="public">Public
-		</p>
-		<button>Mine</button><button>All</button>
+		<div class="projectAddPostButton addResourceMod">Add</div>
+		<div id="currentResources">
+			<h2>Resources</h2>
+			
+			<p>
+				<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine 
+				<input type="radio" name="resourceOwner" value="public">Public
+			</p>
+			<button>Mine</button><button>All</button>
 
-		<div class="resourceList">
-			<table class="resourceTable">
-				<tr>
-					<th>ID</th>
-					<th>caption</th>
-					<th>type</th>
-				</tr>
-				{% for res in resource_image.mine %}
-				<span id="ResI_Rows">
-				<tr resID="{{res.resID}}" class="resourceTr">
-					<td class="resourceTd">{{res.resID}}</td>
-					<td class="resourceTd">{{res.caption}}</td>
-					<td class="resourceTd">{{res.contentType}}</td>
-				<tr>
-				</span>
-				{% endfor %}
-				{% for res in resource_code.mine %}
-				<span id="ResI_Rows">
-				<tr resID="{{res.resID}}" class="resourceTr">
-					<td class="resourceTd">{{res.resID}}</td>
-					<td class="resourceTd">{{res.caption}}</td>
-					<td class="resourceTd">{{res.contentType}}</td>
-				<tr>
-				</span>
-				{% endfor %}
-				{% for res in resource_code.mine %}
-				<span id="ResI_Rows">
-				<tr resID="{{res.resID}}" class="resourceTr">
-					<td class="resourceTd">{{res.resID}}</td>
-					<td class="resourceTd">{{res.caption}}</td>
-					<td class="resourceTd">{{res.contentType}}</td>
-				<tr>
-				</span>
-				{% endfor %}
-			</table>
+			<div class="resourceList">
+				<table class="resourceTable">
+					<tr>
+						<th>ID</th>
+						<th>caption</th>
+						<th>type</th>
+					</tr>
+					{% for res in resource_image.mine %}
+					<span id="ResI_Rows">
+					<tr resID="{{res.resID}}" class="resourceTr">
+						<td class="resourceTd">{{res.resID}}</td>
+						<td class="resourceTd">{{res.caption}}</td>
+						<td class="resourceTd">{{res.contentType}}</td>
+					<tr>
+					</span>
+					{% endfor %}
+					{% for res in resource_code.mine %}
+					<span id="ResI_Rows">
+					<tr resID="{{res.resID}}" class="resourceTr">
+						<td class="resourceTd">{{res.resID}}</td>
+						<td class="resourceTd">{{res.caption}}</td>
+						<td class="resourceTd">{{res.contentType}}</td>
+					<tr>
+					</span>
+					{% endfor %}
+					{% for res in resource_code.mine %}
+					<span id="ResI_Rows">
+					<tr resID="{{res.resID}}" class="resourceTr">
+						<td class="resourceTd">{{res.resID}}</td>
+						<td class="resourceTd">{{res.caption}}</td>
+						<td class="resourceTd">{{res.contentType}}</td>
+					<tr>
+					</span>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div id="addResource" style="display:none;">
+			{% include ""}
 		</div>
 		<br>
 	</div>

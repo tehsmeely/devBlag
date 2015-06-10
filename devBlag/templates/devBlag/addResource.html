@@ -19,57 +19,135 @@
 
 	<script>
 		$(function(){
-			$("input[name=fileType]").change(updateFieldDisplay);
-			$("input[name=fileType2]").change(updateFieldDisplay2);
 
-			function updateFieldDisplay()
-			{
-				var type = $("input[name=fileType]:checked").val();
-				if (type == "image")
-				{
-					$("#fileInp").show();
-					$("#captInp").show();
-					$("#langInp").hide();
-					$("#codeInp").hide();
-				} else if (type == "code") {
-					$("#fileInp").hide();
-					$("#captInp").show();
-					$("#langInp").show();
-					$("#codeInp").show();
-				} else { //type==download
-					$("#fileInp").show();
-					$("#captInp").show();
-					$("#langInp").hide();
-					$("#codeInp").hide();
+			function addResource(){
+				console.log("Burp");
+			}
+
+			/*
+			dialog_image = $( "#dialog-form-image" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					dialog_image.dialog( "close" );
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
 				}
+			});
 
-			};
-
-			function updateFieldDisplay2()
-			{
-				console.log("2");
-				var type = $("input[name=fileType2]:checked").val();
-				if (type == "image")
-				{
-					$("#imageForm").show();
-					$("#codeForm").hide();
-					$("#downloadForm").hide();
-				} else if (type == "code") {
-					$("#imageForm").hide();
-					$("#codeForm").show();
-					$("#downloadForm").hide();
-				} else { //type==download
-					$("#imageForm").hide();
-					$("#codeForm").hide();
-					$("#downloadForm").show();
+			dialog_code = $( "#dialog-form-code" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					dialog_code.dialog( "close" );
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
 				}
+			});
 
-			};
+			dialog_download = $( "#dialog-form-download" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					dialog_download.dialog( "close" );
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
+				}
+			});
 
+			$( "#addImage" ).button().on( "click", function() {
+				console.log("image form");
+				dialog_image.dialog( "open" );
+			});
+			$( "#addCode" ).button().on( "click", function() {
+				console.log("code form");
+				dialog_code.dialog( "open" );
+			});
+			$( "#addDownload" ).button().on( "click", function() {
+				console.log("download form");
+				dialog_download.dialog( "open" );
+			});
 
+			*/
+			$( "#dialog-form-image" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					$( "#dialog-form-image" ).dialog("close");
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
+				}
+			});
+			$( "#dialog-form-code" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					$( "#dialog-form-code" ).dialog("close");
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
+				}
+			});
+			$( "#dialog-form-download" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				"Add Resource": addResource,
+				Cancel: function() {
+					$( "#dialog-form-download" ).dialog("close");
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
+				}
+			});
+			$( "#addImage" ).click(function() {
+				$( "#dialog-form-image" ).dialog("show");
+			});
+			$( "#addCode" ).click(function() {
+				$( "#dialog-form-code" ).dialog("show");
+			});
+			$( "#addDownload" ).click(function() {
+				$( "#dialog-form-download" ).dialog("show");				
+			});
 
-			updateFieldDisplay();
-			updateFieldDisplay2();
 		});
 	</script>
 {% endblock %}
@@ -78,47 +156,42 @@
 {% block container %}
 	<br><br>
 	<div class="resourceContainer">
-		<!--
-		<form enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<p style="text-align: center;"><u>Resources</u></p>
-			<br>
-			<p>Type:
-				<input type="radio" name="fileType" value="image" checked="checked">Image 
-				<input type="radio" name="fileType" value="code">Code 
-				<input type="radio" name="fileType" value="download">Download 
-			</p>
-			<p id="fileInp">File: <input type="file" name="file"></p>
-			<p id="captInp">Caption: <textarea name="caption"></textarea></p>
-			<p id="langInp">Language: <input type="text" name="language"></p>
-			<p id="codeInp">Code: <textarea name="code"></textarea></p>
-			<p><input type="submit" value="Add Resource"></p>
-		</form> -->
-		<br><br>
-		<p>Type:
-			<input type="radio" name="fileType2" value="image" checked="checked">Image 
-			<input type="radio" name="fileType2" value="code">Code 
-			<input type="radio" name="fileType2" value="download">Download 
-		</p>
 		<!-- Image form -->
-		<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<input type="hidden" name="resType" value="image">
-			<p style="text-align: center;"><u>Image</u></p>
-			{{ imageForm.as_p }}
-			<p><input type="submit" value="Add Resource"></p>
-		</form>
+		<div id="dialog-form-image">
+			<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+				<p style="text-align: center;"><u>Image</u></p>
+				<formset>
+					<input type="hidden" name="resType" value="image">
+					{{ imageForm.as_p }}
+					<p><input type="submit" value="Add Resource"></p>
+				</formset>
+			</form>
+		</div>
 		<!-- Code form -->
-		<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<input type="hidden" name="resType" value="code">
-			<p style="text-align: center;"><u>Image</u></p>
-			{{ codeForm.as_p }}
-			<p><input type="submit" value="Add Resource"></p>
-		</form>
+		<div id="dialog-form-image">
+			<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+				<p style="text-align: center;"><u>Image</u></p>
+				<formset>
+					<input type="hidden" name="resType" value="code">
+					{{ codeForm.as_p }}
+					<p><input type="submit" value="Add Resource"></p>
+				</formset>
+			</form>
+		</div>
 		<!-- Download form -->
-		<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<input type="hidden" name="resType" value="download">
-			<p style="text-align: center;"><u>Image</u></p>
-			{{ downloadForm.as_p }}
-			<p><input type="submit" value="Add Resource"></p>
-		</form>
+		<div id="dialog-form-image">
+			<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+				<p style="text-align: center;"><u>Image</u></p>
+				<formset>
+					<input type="hidden" name="resType" value="download">
+					{{ downloadForm.as_p }}
+					<p><input type="submit" value="Add Resource"></p>
+				</formset>
+			</form>
+		</div>
+
+		<button id="addImage">Add Image</button>
+		<button id="addCode">Add Code</button>
+		<button id="addDownload">Add Download</button>
 	</div>
 {% endblock %}
