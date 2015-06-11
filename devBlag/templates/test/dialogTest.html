@@ -1,0 +1,100 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+	<style>
+		.resourceContainer
+		{
+			width: 100%;
+			background-color: #fdd;
+			border: solid black 2px;
+			-webkit-border-radius: 8px;
+			-moz-border-radius: 8px;
+			border-radius: 8px;
+			text-align: center;
+		}
+	</style>
+
+	<script>
+		$(function(){
+
+			function addResource(){
+				console.log("Burp");
+			}
+
+			var dialog1 = $( "#dialog-form1" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				Cancel: function() {
+					$( "#dialog-form1" ).dialog("close");
+					}
+				},
+				close: function() {
+					//form[ 0 ].reset();
+					//allFields.removeClass( "ui-state-error" );
+				}
+			});
+			var dialog2 = $( "#dialog-form2" ).dialog({
+				autoOpen: false,
+				height: 800,
+				width: 350,
+				modal: true,
+				buttons: {
+				Cancel: function() {
+					$( "#dialog-form-code" ).dialog("close");
+					}
+				},
+				close: function() {
+					$( "#dialog-form-code" ).dialog("close");
+				}
+			});
+
+			$( "#addImage" ).click(function() {
+				dialog1.dialog("open");
+			});
+			$( "#addCode" ).click(function() {
+				dialog2.dialog("open");
+			});
+
+		});
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	<div class="resourceContainer">
+		<!-- Image form -->
+		</div>
+		<!-- form 1 -->
+		<div id="dialog-form1">
+			<form id="form1" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+				<p style="text-align: center;"><u>Image</u></p>
+				<formset>
+					<label for="flerg">Flerg</label>
+      				<input type="text" name="flerg" id="flerg" value="">
+					<input type="submit" value="Add Resource">
+				</formset>
+			</form>
+		</div>
+		<!-- form 2 -->
+		<div id="dialog-form2">
+			<form id="form2" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+				<p style="text-align: center;"><u>Image</u></p>
+				<formset>
+					<label for="name">Name</label>
+      				<input type="text" name="name" id="name" value="">
+					<input type="submit" value="Add Resource">
+				</formset>
+			</form>
+		</div>
+
+		<button id="addImage">Add 1</button>
+		<button id="addCode">Add 2</button>
+	</div>
+{% endblock %}

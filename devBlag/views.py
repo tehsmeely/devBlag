@@ -229,6 +229,7 @@ from django.views.decorators.csrf import csrf_exempt
 ##     ## ########  ########     ##     ## ########  ######   #######   #######  ##     ##  ######  ########
 ###VIEW /addResource
 @login_required
+@csrf_exempt
 def addResource(request):
 	context = {}
 	if request.method == "POST":
@@ -278,7 +279,67 @@ def addResource(request):
 		context["codeForm"] = ResourceCodeForm()
 		context["downloadForm"] = ResourceDownloadForm()
 
-	return render(request, "devBlag/addResource.html", context)
+	return render(request, "devBlag/addResource_standalone.html", context)
+
+
+########  ########  ######   #######  ##     ## ########   ######  ########    ########  #######  ########  ##     ##  ######
+##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##          ##       ##     ## ##     ## ###   ### ##    ##
+##     ## ##       ##       ##     ## ##     ## ##     ## ##       ##          ##       ##     ## ##     ## #### #### ##
+########  ######    ######  ##     ## ##     ## ########  ##       ######      ######   ##     ## ########  ## ### ##  ######
+##   ##   ##             ## ##     ## ##     ## ##   ##   ##       ##          ##       ##     ## ##   ##   ##     ##       ##
+##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##          ##       ##     ## ##    ##  ##     ## ##    ##
+##     ## ########  ######   #######   #######  ##     ##  ######  ########    ##        #######  ##     ## ##     ##  ######
+
+def resourceForms(request):
+	context = {}
+	if request.method == "POST":
+		print "POST"
+		print request.POST
+		print request
+		##initialise form vars to None, to fill with unbound if
+		##page needs to be re-rendered
+		imageForm = None
+		codeForm = None
+		downloadForm = None
+
+		#Bind the correct form based on the type
+		resType = request.POST.get("resType")
+		if resType == "image":
+			print "image"
+			imageForm = ResourceImageForm(request.POST, request.FILES)
+			if imageForm.is_valid():
+				imageRes = imageForm.save()
+				print imageRes
+				return redirect("/") ## to be to ResourceList page
+		if resType == "code":
+			print "code"
+			codeForm = ResourceCodeForm(request.POST)
+			if codeForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+		if resType == "download":
+			print "download"
+			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
+			if downloadForm.is_valid():
+				return redirect("/") ## to be to ResourceList page
+
+		#now find the unused forms to fill unbound to send back to page
+		if imageForm is None:
+			imageForm = ResourceImageForm()
+		if codeForm is None:
+			codeForm = ResourceCodeForm()
+		if downloadForm is None:
+			downloadForm = ResourceDownloadForm()
+		context["imageForm"] = imageForm
+		context["codeForm"] = codeForm
+		context["downloadForm"] = downloadForm
+		
+	else:
+		##Unbound forms
+		context["imageForm"] = ResourceImageForm()
+		context["codeForm"] = ResourceCodeForm()
+		context["downloadForm"] = ResourceDownloadForm()
+
+	return context
 
    ###    ########  ########     ########   #######   ######  ########
   ## ##   ##     ## ##     ##    ##     ## ##     ## ##    ##    ##
@@ -355,6 +416,7 @@ def addPost(request, projectID, postID):
 	}
 
 	c.update(getResources(developer))
+	c.update(resourceForms(request))
 	print c
 	#return render(request, "devBlag/addPost.html", {"form": form})
 	return render(request, "devBlag/addPost.html", c)
@@ -476,3 +538,13 @@ def getResources(developer):
 	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(owner=developer)
 	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(public=True)
 	return resources_dict
+
+
+
+
+
+
+
+
+def dialogTest(request):
+	return render(request, "test/dialogTest.html")

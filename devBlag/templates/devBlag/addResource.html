@@ -1,197 +1,184 @@
-{% extends 'devBlag/base.html' %}
-
 {% load staticfiles %}
 
-{% block headerInsert %}
 
-	<style>
-		.resourceContainer
-		{
-			width: 100%;
-			background-color: #fdd;
-			border: solid black 2px;
-			-webkit-border-radius: 8px;
-			-moz-border-radius: 8px;
-			border-radius: 8px;
-			text-align: center;
-		}
-	</style>
+<style>
+	.resourceContainer
+	{
+		width: 100%;
+		background-color: #fdd;
+		border: solid black 2px;
+		-webkit-border-radius: 8px;
+		-moz-border-radius: 8px;
+		border-radius: 8px;
+		text-align: center;
+	}
+</style>
 
-	<script>
-		$(function(){
+<script>
+	$(function(){
 
-			function addResource(){
-				console.log("Burp");
+		// using jQuery
+		function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
 			}
+			return cookieValue;
+		}
+		var csrftoken = getCookie('csrftoken');
 
-			/*
-			dialog_image = $( "#dialog-form-image" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					dialog_image.dialog( "close" );
-					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
 
-			dialog_code = $( "#dialog-form-code" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					dialog_code.dialog( "close" );
-					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
 
-			dialog_download = $( "#dialog-form-download" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					dialog_download.dialog( "close" );
-					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
 
-			$( "#addImage" ).button().on( "click", function() {
-				console.log("image form");
-				dialog_image.dialog( "open" );
-			});
-			$( "#addCode" ).button().on( "click", function() {
-				console.log("code form");
-				dialog_code.dialog( "open" );
-			});
-			$( "#addDownload" ).button().on( "click", function() {
-				console.log("download form");
-				dialog_download.dialog( "open" );
-			});
+		function addResource(){
+			console.log("Burp");
+		}
 
-			*/
-			$( "#dialog-form-image" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					$( "#dialog-form-image" ).dialog("close");
+		var dialog_image = $( "#dialog-form-image" ).dialog({
+			autoOpen: false,
+			height: "auto",
+			width: "auto",
+			modal: true,
+			buttons: {
+			"Add Resource": function(){
+				var caption = $("#{{imageForm.caption.id_for_label}}").val();
+				var imageFile = $("#{{imageForm.imageFile.id_for_label}}").val();
+				var thumbnail = $("#{{imageForm.thumbnail.id_for_label}}").val();
+				$.ajaxSetup({
+					beforeSend: function(xhr, settings) {
+						if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+							xhr.setRequestHeader("X-CSRFToken", csrftoken);
+						}
 					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
-			$( "#dialog-form-code" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					$( "#dialog-form-code" ).dialog("close");
-					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
-			$( "#dialog-form-download" ).dialog({
-				autoOpen: false,
-				height: 800,
-				width: 350,
-				modal: true,
-				buttons: {
-				"Add Resource": addResource,
-				Cancel: function() {
-					$( "#dialog-form-download" ).dialog("close");
-					}
-				},
-				close: function() {
-					//form[ 0 ].reset();
-					//allFields.removeClass( "ui-state-error" );
-				}
-			});
-			$( "#addImage" ).click(function() {
-				$( "#dialog-form-image" ).dialog("show");
-			});
-			$( "#addCode" ).click(function() {
-				$( "#dialog-form-code" ).dialog("show");
-			});
-			$( "#addDownload" ).click(function() {
-				$( "#dialog-form-download" ).dialog("show");				
-			});
+				});
+				$.ajax({
+			        url : "/addResource/", // the endpoint
+			        type : "POST", // http method
+			        data : { "caption": caption, "imageFile": imageFile, "thumbnail": thumbnail }, // data sent with the post request
 
+			        // handle a successful response
+			        success : function(json) {
+			            console.log(json); // log the returned json to the console
+			            console.log("success"); // another sanity check
+			        },
+
+			        // handle a non-successful response
+			        error : function(xhr,errmsg,err) {
+			            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+			                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+			            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+			        }
+    });
+
+			},
+			Cancel: function() {
+				$( "#dialog-form-image" ).dialog("close");
+				}
+			},
+			close: function() {
+				//form[ 0 ].reset();
+				//allFields.removeClass( "ui-state-error" );
+			}
 		});
-	</script>
-{% endblock %}
+		var dialog_code = $( "#dialog-form-code" ).dialog({
+			autoOpen: false,
+			height: 800,
+			width: 350,
+			modal: true,
+			buttons: {
+			"Add Resource": addResource,
+			Cancel: function() {
+				$( "#dialog-form-code" ).dialog("close");
+				}
+			},
+			close: function() {
+				//form[ 0 ].reset();
+				//allFields.removeClass( "ui-state-error" );
+			}
+		});
+		var dialog_download = $( "#dialog-form-download" ).dialog({
+			autoOpen: false,
+			height: 800,
+			width: 350,
+			modal: true,
+			buttons: {
+			"Add Resource": addResource,
+			Cancel: function() {
+				$( "#dialog-form-download" ).dialog("close");
+				}
+			},
+			close: function() {
+				//form[ 0 ].reset();
+				//allFields.removeClass( "ui-state-error" );
+			}
+		});
+		$( "#addImage" ).click(function() {
+			dialog_image.dialog("open");
+		});
+		$( "#addCode" ).click(function() {
+			dialog_code.dialog("open");
+		});
+		$( "#addDownload" ).click(function() {
+			dialog_download.dialog("open");				
+		});
 
+	});
+</script>
 
-{% block container %}
-	<br><br>
-	<div class="resourceContainer">
-		<!-- Image form -->
-		<div id="dialog-form-image">
-			<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-				<p style="text-align: center;"><u>Image</u></p>
-				<formset>
-					<input type="hidden" name="resType" value="image">
-					{{ imageForm.as_p }}
-					<p><input type="submit" value="Add Resource"></p>
-				</formset>
-			</form>
-		</div>
-		<!-- Code form -->
-		<div id="dialog-form-image">
-			<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-				<p style="text-align: center;"><u>Image</u></p>
-				<formset>
-					<input type="hidden" name="resType" value="code">
-					{{ codeForm.as_p }}
-					<p><input type="submit" value="Add Resource"></p>
-				</formset>
-			</form>
-		</div>
-		<!-- Download form -->
-		<div id="dialog-form-image">
-			<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-				<p style="text-align: center;"><u>Image</u></p>
-				<formset>
-					<input type="hidden" name="resType" value="download">
-					{{ downloadForm.as_p }}
-					<p><input type="submit" value="Add Resource"></p>
-				</formset>
-			</form>
-		</div>
-
-		<button id="addImage">Add Image</button>
-		<button id="addCode">Add Code</button>
-		<button id="addDownload">Add Download</button>
+<br><br>
+<div class="resourceContainer">
+	<!-- Image form -->
+	<div id="dialog-form-image">
+		<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<p style="text-align: center;"><u>Image</u></p>
+			<formset>
+				<input type="hidden" name="resType" value="image">
+				<p><u><label for="{{ imageForm.caption.id_for_label }}">Caption</label></u></p>
+	    		<p>{{ imageForm.caption.errors }}</p>
+	    		<p>{{ imageForm.caption }}</p>
+	    		<p><u><label for="{{ imageForm.imageFile.id_for_label }}">Image File</label></u></p>
+		    	<p>{{ imageForm.imageFile.errors }}</p>
+		    	<p>{{ imageForm.imageFile }}</p>
+		    	<p><u><label for="{{ imageForm.thumbnail.id_for_label }}">Thumbnail</label></u></p>
+		    	<p>{{ imageForm.thumbnail.errors }}</p>
+		    	<p>{{ imageForm.thumbnail }}</p>
+			</formset>
+		</form>
 	</div>
-{% endblock %}
+	<!-- Code form -->
+	<div id="dialog-form-code">
+		<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<p style="text-align: center;"><u>Image</u></p>
+			<formset>
+				<input type="hidden" name="resType" value="code">
+				{{ codeForm.as_p }}
+			</formset>
+		</form>
+	</div>
+	<!-- Download form -->
+	<div id="dialog-form-download">
+		<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
+			<p style="text-align: center;"><u>Image</u></p>
+			<formset>
+				<input type="hidden" name="resType" value="download">
+				{{ downloadForm.as_p }}
+			</formset>
+		</form>
+	</div>
+
+	<button id="addImage">Add Image</button>
+	<button id="addCode">Add Code</button>
+	<button id="addDownload">Add Download</button>
+</div>
