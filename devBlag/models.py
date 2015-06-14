@@ -80,7 +80,7 @@ class Resource_map(models.Model):
 # 	def __str__(self):
 # 		return str(self.resID) + ": " + str(self.caption)
 
-
+#resID,caption,imageFile,thumbnail,owner,associatedProject,public
 class Resource_image(models.Model):
 	resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
@@ -99,6 +99,7 @@ class Resource_image(models.Model):
 	def getServingURL(self):
 		return images.get_serving_url(self.imageFile)
 
+#resID,caption,code,language,owner,associatedProject,public
 class Resource_code(models.Model):
 	resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
@@ -110,7 +111,7 @@ class Resource_code(models.Model):
 	def __str__(self):
 		return str(self.resID) + ": " + str(self.caption)
 
-
+#resID,caption,resFile,owner,associatedProject,public
 class Resource_download(models.Model):
 	resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)

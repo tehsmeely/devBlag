@@ -244,20 +244,33 @@ def addResource(request):
 		#Bind the correct form based on the type
 		resType = request.POST.get("resType")
 		if resType == "image":
+			#resID,caption,imageFile,thumbnail,owner,associatedProject,public
 			print "image"
 			imageForm = ResourceImageForm(request.POST, request.FILES)
 			if imageForm.is_valid():
-				imageRes = imageForm.save()
+				print "form:", imageForm.cleaned_data
+				imageRes = Resource_image()
+				imageRes.resID = 56
+				imageRes.caption = imageForm.cleaned_data['caption']
+				imageRes.imageFile = imageForm.cleaned_data['imageFile']
+				imageRes.thumbnail = imageForm.cleaned_data['thumbnail']
+				imageRes.owner = getDeveloper()
+				imageRes.save()
+
 				print imageRes
 				print "valid"
 				return redirect("/") ## to be to ResourceList page
+
 		if resType == "code":
+			#resID,caption,code,language,owner,associatedProject,public
 			print "code"
 			codeForm = ResourceCodeForm(request.POST)
 			if codeForm.is_valid():
 				print "valid"
 				return redirect("/") ## to be to ResourceList page
+
 		if resType == "download":
+			#resID,caption,resFile,owner,associatedProject,public
 			print "download"
 			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
 			if downloadForm.is_valid():

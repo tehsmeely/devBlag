@@ -5,6 +5,10 @@ TODO
 
 Add Logging
 
+ResID is redundant
+
+make views ClassBased - primarily for ResourcE addition mixin
+
 
 Post Entry
 Project Creation
