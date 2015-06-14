@@ -233,9 +233,8 @@ from django.views.decorators.csrf import csrf_exempt
 def addResource(request):
 	context = {}
 	if request.method == "POST":
-		print "POST"
-		print request.POST
-		print request
+		print "POST:", request.POST
+		print "FILES:", request.FILES
 		##initialise form vars to None, to fill with unbound if
 		##page needs to be re-rendered
 		imageForm = None
@@ -250,16 +249,19 @@ def addResource(request):
 			if imageForm.is_valid():
 				imageRes = imageForm.save()
 				print imageRes
+				print "valid"
 				return redirect("/") ## to be to ResourceList page
 		if resType == "code":
 			print "code"
 			codeForm = ResourceCodeForm(request.POST)
 			if codeForm.is_valid():
+				print "valid"
 				return redirect("/") ## to be to ResourceList page
 		if resType == "download":
 			print "download"
 			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
 			if downloadForm.is_valid():
+				print "valid"
 				return redirect("/") ## to be to ResourceList page
 
 		#now find the unused forms to fill unbound to send back to page
@@ -279,6 +281,7 @@ def addResource(request):
 		context["codeForm"] = ResourceCodeForm()
 		context["downloadForm"] = ResourceDownloadForm()
 
+	print "Returning render as normal"
 	return render(request, "devBlag/addResource_standalone.html", context)
 
 

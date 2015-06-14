@@ -42,9 +42,22 @@
 
 
 
-		function addResource(){
-			console.log("Burp");
-		}
+		$("imageForm").submit(function(){
+			console.log("Submitting image");
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+					if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+						xhr.setRequestHeader("X-CSRFToken", csrftoken);
+					}
+				}
+			});
+			var options = { 
+				clearForm: true        // clear all form fields after successful submit 
+			}; 
+			$(this).ajaxSubmit(options);
+			return false; 
+		});
+	
 
 		var dialog_image = $( "#dialog-form-image" ).dialog({
 			autoOpen: false,
@@ -53,16 +66,11 @@
 			modal: true,
 			buttons: {
 			"Add Resource": function(){
-				var caption = $("#{{imageForm.caption.id_for_label}}").val();
-				var imageFile = $("#{{imageForm.imageFile.id_for_label}}").val();
-				var thumbnail = $("#{{imageForm.thumbnail.id_for_label}}").val();
-				$.ajaxSetup({
-					beforeSend: function(xhr, settings) {
-						if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-							xhr.setRequestHeader("X-CSRFToken", csrftoken);
-						}
-					}
-				});
+				console.log("Add Resource Button clicked");
+				$('#imageForm').submit();
+				
+
+/*
 				$.ajax({
 			        url : "/addResource/", // the endpoint
 			        type : "POST", // http method
@@ -80,7 +88,8 @@
 			                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 			            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
 			        }
-    });
+    			});
+*/
 
 			},
 			Cancel: function() {
