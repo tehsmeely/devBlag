@@ -42,7 +42,7 @@
 
 
 
-		$("imageForm").submit(function(){
+		$("imageForm, codeForm, downloadForm").submit(function(){
 			console.log("Submitting image");
 			$.ajaxSetup({
 				beforeSend: function(xhr, settings) {
@@ -68,69 +68,40 @@
 			"Add Resource": function(){
 				console.log("Add Resource Button clicked");
 				$('#imageForm').submit();
-				
-
-/*
-				$.ajax({
-			        url : "/addResource/", // the endpoint
-			        type : "POST", // http method
-			        data : { "caption": caption, "imageFile": imageFile, "thumbnail": thumbnail }, // data sent with the post request
-
-			        // handle a successful response
-			        success : function(json) {
-			            console.log(json); // log the returned json to the console
-			            console.log("success"); // another sanity check
-			        },
-
-			        // handle a non-successful response
-			        error : function(xhr,errmsg,err) {
-			            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-			                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-			            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-			        }
-    			});
-*/
-
 			},
 			Cancel: function() {
 				$( "#dialog-form-image" ).dialog("close");
 				}
-			},
-			close: function() {
-				//form[ 0 ].reset();
-				//allFields.removeClass( "ui-state-error" );
 			}
 		});
 		var dialog_code = $( "#dialog-form-code" ).dialog({
 			autoOpen: false,
-			height: 800,
-			width: 350,
+			height: "auto",
+			width: "auto",
 			modal: true,
 			buttons: {
-			"Add Resource": addResource,
+			"Add Resource": function(){
+				console.log("Add Resource Button clicked");
+				$('#codeForm').submit();
+			},
 			Cancel: function() {
 				$( "#dialog-form-code" ).dialog("close");
 				}
-			},
-			close: function() {
-				//form[ 0 ].reset();
-				//allFields.removeClass( "ui-state-error" );
 			}
 		});
 		var dialog_download = $( "#dialog-form-download" ).dialog({
 			autoOpen: false,
-			height: 800,
-			width: 350,
+			height: "auto",
+			width: "auto",
 			modal: true,
 			buttons: {
-			"Add Resource": addResource,
+			"Add Resource": function(){
+				console.log("Add Resource Button clicked");
+				$('#downloadForm').submit();
+			},
 			Cancel: function() {
 				$( "#dialog-form-download" ).dialog("close");
 				}
-			},
-			close: function() {
-				//form[ 0 ].reset();
-				//allFields.removeClass( "ui-state-error" );
 			}
 		});
 		$( "#addImage" ).click(function() {
