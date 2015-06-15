@@ -11,7 +11,7 @@ from .models import Post, Resource_image, Resource_code, Resource_download, Reso
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
-import os, re, json, urlparse
+import os, re, json, urlparse, random
 
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
@@ -231,16 +231,9 @@ from django.views.decorators.csrf import csrf_exempt
 @login_required
 @csrf_exempt
 def addResource(request):
-	context = {}
 	if request.method == "POST":
 		print "POST:", request.POST
 		print "FILES:", request.FILES
-		##initialise form vars to None, to fill with unbound if
-		##page needs to be re-rendered
-		imageForm = None
-		codeForm = None
-		downloadForm = None
-
 		#Bind the correct form based on the type
 		resType = request.POST.get("resType")
 		if resType == "image":
@@ -250,53 +243,46 @@ def addResource(request):
 			if imageForm.is_valid():
 				print "form:", imageForm.cleaned_data
 				imageRes = Resource_image()
-				imageRes.resID = 56
+				imageRes.resID = random.randrange(20, 2000)
 				imageRes.caption = imageForm.cleaned_data['caption']
 				imageRes.imageFile = imageForm.cleaned_data['imageFile']
 				imageRes.thumbnail = imageForm.cleaned_data['thumbnail']
 				imageRes.owner = getDeveloper()
 				imageRes.save()
-
-				print imageRes
-				print "valid"
-				return redirect("/") ## to be to ResourceList page
+				print "Image Resource Created"
+				return JsonResponse({"resourceCreated": True})
+			else:
+				c = {"resourceCreated": False,
+				"errors" : imageForm.errors}
+				return JsonResponse(c)
 
 		if resType == "code":
 			#resID,caption,code,language,owner,associatedProject,public
 			print "code"
 			codeForm = ResourceCodeForm(request.POST)
 			if codeForm.is_valid():
-				print "valid"
-				return redirect("/") ## to be to ResourceList page
+				print "Code Resource Created"
+				return JsonResponse({"resourceCreated": True})
+			else:
+				c = {"resourceCreated": False,
+				"errors" : imageForm.errors}
+				return JsonResponse(c)
 
 		if resType == "download":
 			#resID,caption,resFile,owner,associatedProject,public
 			print "download"
 			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
 			if downloadForm.is_valid():
-				print "valid"
-				return redirect("/") ## to be to ResourceList page
+				print "Download Resource Created"
+				return JsonResponse({"resourceCreated": True})
+			else:
+				c = {"resourceCreated": False,
+				"errors" : imageForm.errors}
+				return JsonResponse(c)
 
-		#now find the unused forms to fill unbound to send back to page
-		if imageForm is None:
-			imageForm = ResourceImageForm()
-		if codeForm is None:
-			codeForm = ResourceCodeForm()
-		if downloadForm is None:
-			downloadForm = ResourceDownloadForm()
-		context["imageForm"] = imageForm
-		context["codeForm"] = codeForm
-		context["downloadForm"] = downloadForm
-		
 	else:
-		##Unbound forms
-		context["imageForm"] = ResourceImageForm()
-		context["codeForm"] = ResourceCodeForm()
-		context["downloadForm"] = ResourceDownloadForm()
-
-	print "Returning render as normal"
-	return render(request, "devBlag/addResource_standalone.html", context)
-
+		print "addResource should be POST only"
+		return redirect("/")
 
 ########  ########  ######   #######  ##     ## ########   ######  ########    ########  #######  ########  ##     ##  ######
 ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##          ##       ##     ## ##     ## ###   ### ##    ##
@@ -308,54 +294,14 @@ def addResource(request):
 
 def resourceForms(request):
 	context = {}
-	if request.method == "POST":
-		print "POST"
-		print request.POST
-		print request
-		##initialise form vars to None, to fill with unbound if
-		##page needs to be re-rendered
-		imageForm = None
-		codeForm = None
-		downloadForm = None
-
-		#Bind the correct form based on the type
-		resType = request.POST.get("resType")
-		if resType == "image":
-			print "image"
-			imageForm = ResourceImageForm(request.POST, request.FILES)
-			if imageForm.is_valid():
-				imageRes = imageForm.save()
-				print imageRes
-				return redirect("/") ## to be to ResourceList page
-		if resType == "code":
-			print "code"
-			codeForm = ResourceCodeForm(request.POST)
-			if codeForm.is_valid():
-				return redirect("/") ## to be to ResourceList page
-		if resType == "download":
-			print "download"
-			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
-			if downloadForm.is_valid():
-				return redirect("/") ## to be to ResourceList page
-
-		#now find the unused forms to fill unbound to send back to page
-		if imageForm is None:
-			imageForm = ResourceImageForm()
-		if codeForm is None:
-			codeForm = ResourceCodeForm()
-		if downloadForm is None:
-			downloadForm = ResourceDownloadForm()
-		context["imageForm"] = imageForm
-		context["codeForm"] = codeForm
-		context["downloadForm"] = downloadForm
-		
-	else:
-		##Unbound forms
-		context["imageForm"] = ResourceImageForm()
-		context["codeForm"] = ResourceCodeForm()
-		context["downloadForm"] = ResourceDownloadForm()
+	context["imageForm"] = ResourceImageForm()
+	context["codeForm"] = ResourceCodeForm()
+	context["downloadForm"] = ResourceDownloadForm()
 
 	return context
+
+
+
 
    ###    ########  ########     ########   #######   ######  ########
   ## ##   ##     ## ##     ##    ##     ## ##     ## ##    ##    ##
@@ -555,10 +501,22 @@ def getResources(developer):
 	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(public=True)
 	return resources_dict
 
+ ######   ######## ########    ########  ########  ######   #######  ##     ## ########   ######  ########  ######
+##    ##  ##          ##       ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##       ##    ##
+##        ##          ##       ##     ## ##       ##       ##     ## ##     ## ##     ## ##       ##       ##
+##   #### ######      ##       ########  ######    ######  ##     ## ##     ## ########  ##       ######    ######
+##    ##  ##          ##       ##   ##   ##             ## ##     ## ##     ## ##   ##   ##       ##             ##
+##    ##  ##          ##       ##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##       ##    ##
+ ######   ########    ##       ##     ## ########  ######   #######   #######  ##     ##  ######  ########  ######
 
-
-
-
+###VIEW /getResource/
+def getResource2(request):
+##Gets JSON data for specific resources
+	resourceType = request.GET.get("resourceType")
+	public = request.GET.get("public")
+	
+	if resourceType is None or resourceType not in ["image", "code", "download"]:
+		pass
 
 
 

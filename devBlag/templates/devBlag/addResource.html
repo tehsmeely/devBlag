@@ -42,7 +42,7 @@
 
 
 
-		$("imageForm, codeForm, downloadForm").submit(function(){
+		$("#imageForm").submit(function(event){
 			console.log("Submitting image");
 			$.ajaxSetup({
 				beforeSend: function(xhr, settings) {
@@ -52,7 +52,14 @@
 				}
 			});
 			var options = { 
-				clearForm: true        // clear all form fields after successful submit 
+				dataType: "json",
+				clearForm: true,        // clear all form fields after successful submit 
+				//beforeSubmit - might be what is needed for CSRF.
+				success: function(responseJSON, statusText, xhr, jQwFE){
+					console.log("submit success!" + responseJSON)
+					console.log(responseJSON.resourceCreated)
+				}
+
 			}; 
 			$(this).ajaxSubmit(options);
 			return false; 
