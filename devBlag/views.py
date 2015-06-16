@@ -15,7 +15,8 @@ import os, re, json, urlparse, random
 
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
-RES_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
+TAG_REGEX = re.compile("(<<[idc]:[0-9]+>>)")
+TAG_INNER_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
 
 
 
@@ -58,6 +59,7 @@ def getServingURLPath(blobID):
 	return urlparse.urlparse(get_serving_url(blobID)).path
 
 
+
 #### ##    ## ########  ######## ##     ##
  ##  ###   ## ##     ## ##        ##   ##
  ##  ####  ## ##     ## ##         ## ##
@@ -79,10 +81,13 @@ def index(request):
 	quadDev = sortToNumGroups(developers, 4)
 
 	rc_dl = Resource_download.objects.all()[0]
-	print rc_dl
+	print "rc_dk:", rc_dl
 	for item in rc_dl.__dict__:
-		print item
+		print "dict item: ", item
 	print rc_dl.resFile
+	for item in rc_dl.resFile.__dict__:
+		print "resfile dict item", item, ": ", getattr(rc_dl.resFile, item)
+	print "rc_dl.resFile.url: ", rc_dl.resFile.url
 
 	print "AUTH USER MODEL", AUTH_USER_MODEL
 	return render(request, "devBlag/index.html", {"projects": quadProj, "developers": quadDev, "STATIC_PATH":STATIC_PATH})
@@ -199,29 +204,44 @@ def handleBody(body):
 	#print "\nhandleBody before2:\n", body
 
 	#<<[i/d/c]:[id]>>
-
+	#TAG_REGEX
+	#TAG_INNER_REGEX 
 	
-	r = RES_REGEX.findall(body)
+	r = TAG_REGEX.findall(body) 
 	for tag in r:
 		print "TAGE: ", tag
-		resID = int(tag[5:-2])
-		resource = Resource.objects.get(id=resID)                     
-		replaceString = get_replaceString(resource)
+		searchGroups = TAG_INNER_REGEX.search(tag)
+		resType = searchGroups("type")
+		resID = searchGroups("RId")
+		if resType == "i":
+			resource = Resource_image.objects.get(id=resID)
+		elif resType == "c":
+			resource = Resource_code.objects.get(id=resID)
+		else:# resType == "d"       
+			resource = Resource_download.objects.get(id=resID)
+
+		replaceString = get_replaceString(resource, resType)
+
 		print "\nhandleBody Replace before:\n", body
 		body = body.replace(tag, replaceString)
 		print "\nhandleBody Replace after:\n", body
 	print "\nhandleBody after:\n", body
 	return body
 
-def get_replaceString(resource):
+def get_replaceString(resource, resType):
 
-	if resource.contentType == "image":
-		return "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
+	if resType == "i":
+		#return "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
 
-	elif resource.contentType == "code":
+		return "<img src='" + urlparse.urlparse(resource.imageFile.url).path + "'>"
+
+	elif resType == "c":
 		language = resource.language
 		#return "<pre><code class='{}'>".format(language) + resource.content + "</code></pre>"
 		return "<pre><code class='" + resource.language + "'>" + resource.code + "</code></pre>"
+
+	elif resType == "d":
+		"<a href='" + urlparse.urlparse(resource.resFile.url).path "'>Download</a>"
 
 	else:
 		print "CONTENT TYPE NOT FOUND"
