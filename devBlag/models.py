@@ -82,7 +82,7 @@ class Resource_map(models.Model):
 
 #resID,caption,imageFile,thumbnail,owner,associatedProject,public
 class Resource_image(models.Model):
-	resID = models.IntegerField(unique=True)
+	#resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
 	imageFile = models.ImageField(blank=False)
 	thumbnail = models.ImageField(null=True, blank=True)
@@ -90,7 +90,7 @@ class Resource_image(models.Model):
 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
-		return str(self.resID) + ": " + str(self.caption)
+		return str(self.owner) + ": " + str(self.caption)
 
 	
 
@@ -101,7 +101,7 @@ class Resource_image(models.Model):
 
 #resID,caption,code,language,owner,associatedProject,public
 class Resource_code(models.Model):
-	resID = models.IntegerField(unique=True)
+	#resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
 	code = models.TextField(blank=True)
 	language = models.CharField(max_length=50, blank=True)
@@ -109,16 +109,16 @@ class Resource_code(models.Model):
 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
-		return str(self.resID) + ": " + str(self.caption)
+		return str(self.owner) + ": " + str(self.caption)
 
 #resID,caption,resFile,owner,associatedProject,public
 class Resource_download(models.Model):
-	resID = models.IntegerField(unique=True)
+	#resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
 	resFile = models.FileField(blank=False)
 	owner = models.ForeignKey('developer')
 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
-		return str(self.resID) + ": " + str(self.caption)
+		return str(self.owner) + ": " + str(self.caption)
 

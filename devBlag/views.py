@@ -15,7 +15,7 @@ import os, re, json, urlparse, random
 
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
-RES_REGEX = re.compile("(<<id:\w>>)+")
+RES_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
 
 
 
@@ -182,6 +182,14 @@ def developerProfile(request, did):  #developer id
 		post.body = handleBody(post.body)
 	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
 
+##     ##    ###    ##    ## ########  ##       ########    ########   #######  ########  ##    ##
+##     ##   ## ##   ###   ## ##     ## ##       ##          ##     ## ##     ## ##     ##  ##  ##
+##     ##  ##   ##  ####  ## ##     ## ##       ##          ##     ## ##     ## ##     ##   ####
+######### ##     ## ## ## ## ##     ## ##       ######      ########  ##     ## ##     ##    ##
+##     ## ######### ##  #### ##     ## ##       ##          ##     ## ##     ## ##     ##    ##
+##     ## ##     ## ##   ### ##     ## ##       ##          ##     ## ##     ## ##     ##    ##
+##     ## ##     ## ##    ## ########  ######## ########    ########   #######  ########     ##
+
 def handleBody(body):
 ## Takes the body and handles it to be ready to inject
 	# linebreaks
@@ -190,13 +198,14 @@ def handleBody(body):
 	#body = body.replace("\n", "<br />")
 	#print "\nhandleBody before2:\n", body
 
+	#<<[i/d/c]:[id]>>
 
 	
 	r = RES_REGEX.findall(body)
 	for tag in r:
 		print "TAGE: ", tag
-		resNum = int(tag[5:-2])
-		resource = Resource.objects.get(resID=resNum)                     
+		resID = int(tag[5:-2])
+		resource = Resource.objects.get(id=resID)                     
 		replaceString = get_replaceString(resource)
 		print "\nhandleBody Replace before:\n", body
 		body = body.replace(tag, replaceString)
@@ -243,7 +252,7 @@ def addResource(request):
 			if imageForm.is_valid():
 				print "form:", imageForm.cleaned_data
 				imageRes = Resource_image()
-				imageRes.resID = random.randrange(20, 2000)
+				#imageRes.resID = random.randrange(20, 2000)
 				imageRes.caption = imageForm.cleaned_data['caption']
 				imageRes.imageFile = imageForm.cleaned_data['imageFile']
 				imageRes.thumbnail = imageForm.cleaned_data['thumbnail']
