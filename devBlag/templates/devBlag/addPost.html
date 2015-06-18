@@ -84,7 +84,7 @@
 		    return /*"#" + */componentToHex(parseInt(rgb[0])) + componentToHex(parseInt(rgb[1])) + componentToHex(parseInt(rgb[2]));
 		}
 
-		//The updaste button sets the background of the form to the entered colour
+		//The update button sets the background of the form to the entered colour
 		$("#updateCol").click(function(event){
 			var colour = $(".color").val();
 			console.log(colour);
@@ -106,11 +106,18 @@
 			return false
 		}
 
-
-		$(".resourceTr").on("click", function() {
-			typeInTextarea($("#{{form.body.id_for_label}}"), "<<id:"+$(this).attr("resID")+">>")
-			return false
-		})
+		function updateInsertClick(){
+			$(".resourceTr").on("click", function() {
+				var resID = $(this).attr("resID");
+				var resType = $(this).attr("resType");
+				var resChar;
+				if (resType == "image"){resChar = "i";}
+				else if (resType == "code") {resChar = "c";}
+				else { resChar = "d"; }
+				typeInTextarea($("#{{form.body.id_for_label}}"), "<<"+resChar+":"+resID+">>");
+				return false
+			})
+		}
 
 
 
@@ -120,6 +127,41 @@
 		{
 		}
 
+		function updateResGrid(resType){
+			$.get(
+				"/getResources/",
+				{"resourceType": resType, "public": "false"},
+				function(data, textStatus, jqXHR){
+					console.log("Success! textStatus: " + textStatus);
+					console.log(data)
+					var resTable = $("#resTableBody");
+					resTable.empty()
+					for (iResource in data.RESOURCES){
+						var resource = data.RESOURCES[iResource];
+						var appendLine = '<tr class="resourceTr" resType="' + data.RESOURCE_TYPE +'" resID="' + resource.id + '"><td><a href="' +
+										 resource.imageFile_url.replace("localhost", "192.168.0.6") + '">' + resource.caption + '</a></td></tr>';
+						console.log(appendLine);
+						resTable.append(appendLine);
+					}
+					updateInsertClick();
+				},
+				"json"
+			);
+		}
+		$("#imageButton").click(function(){
+			updateResGrid("image");
+		})
+		$("#codeButton").click(function(){
+			updateResGrid("code");
+		})
+		$("#downloadButton").click(function(){
+			updateResGrid("download");
+		})
+
+
+		
+		updateResGrid("image");
+		updateInsertClick();
 	})
 	</script>
 
@@ -161,42 +203,12 @@
 				<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine 
 				<input type="radio" name="resourceOwner" value="public">Public
 			</p>
-			<button>Mine</button><button>All</button>
+			<p><button id="imageButton">image</button><button id="imageButton">code</button><button id="imageButton">download</button></p>
 
 			<div class="resourceList">
 				<table class="resourceTable">
-					<tr>
-						<th>ID</th>
-						<th>caption</th>
-						<th>type</th>
-					</tr>
-					{% for res in resource_image.mine %}
-					<span id="ResI_Rows">
-					<tr resID="{{res.resID}}" class="resourceTr">
-						<td class="resourceTd">{{res.resID}}</td>
-						<td class="resourceTd">{{res.caption}}</td>
-						<td class="resourceTd">{{res.contentType}}</td>
-					<tr>
-					</span>
-					{% endfor %}
-					{% for res in resource_code.mine %}
-					<span id="ResI_Rows">
-					<tr resID="{{res.resID}}" class="resourceTr">
-						<td class="resourceTd">{{res.resID}}</td>
-						<td class="resourceTd">{{res.caption}}</td>
-						<td class="resourceTd">{{res.contentType}}</td>
-					<tr>
-					</span>
-					{% endfor %}
-					{% for res in resource_code.mine %}
-					<span id="ResI_Rows">
-					<tr resID="{{res.resID}}" class="resourceTr">
-						<td class="resourceTd">{{res.resID}}</td>
-						<td class="resourceTd">{{res.caption}}</td>
-						<td class="resourceTd">{{res.contentType}}</td>
-					<tr>
-					</span>
-					{% endfor %}
+					<tbody id="resTableBody">
+					</tbody>
 				</table>
 			</div>
 		</div>

@@ -5,12 +5,14 @@ from django.template import RequestContext
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+#from django.core.serializers import serialize
 from google.appengine.api import users
 from google.appengine.api.images import get_serving_url
 from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
+from . import helpers
 import os, re, json, urlparse, random
 
 
@@ -241,7 +243,7 @@ def get_replaceString(resource, resType):
 		return "<pre><code class='" + resource.language + "'>" + resource.code + "</code></pre>"
 
 	elif resType == "d":
-		"<a href='" + urlparse.urlparse(resource.resFile.url).path "'>Download</a>"
+		return "<a href='" + urlparse.urlparse(resource.resFile.url).path + "'>Download</a>"
 
 	else:
 		print "CONTENT TYPE NOT FOUND"
@@ -538,15 +540,71 @@ def getResources(developer):
 ##    ##  ##          ##       ##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##       ##    ##
  ######   ########    ##       ##     ## ########  ######   #######   #######  ##     ##  ######  ########  ######
 
-###VIEW /getResource/
-def getResource2(request):
+###VIEW /getResources/
+def getResources2(request):
 ##Gets JSON data for specific resources
 	resourceType = request.GET.get("resourceType")
-	public = request.GET.get("public")
+	public = request.GET.get("public", "false")
+
+	RES_SERVING_FIELDS_IMAGE = ["caption", "imageFile.url", "id"]
+	RES_SERVING_FIELDS_CODE = []
+	RES_SERVING_FIELDS_DOWNLOAD = []
 	
 	if resourceType is None or resourceType not in ["image", "code", "download"]:
-		pass
+		print "INVALID"
+		return JsonResponse({'SUCCESS': False})
 
+	response = {"SUCCESS":True}
+
+	if resourceType == "image":
+		# if public == "true":
+		# 	resources = Resource_image.objects.filter(public=True)
+		# else:
+		# 	resources = Resource_image.objects.filter(developer__user=getCurrentUser())
+		resources = Resource_image.objects.all()
+
+		response["RESOURCE_TYPE"] = "image"
+
+		resServingFields = RES_SERVING_FIELDS_IMAGE
+ 
+	elif resourceType == "code":
+		# if public == "true":
+		# 	resources = Resource_code.objects.filter(public=True)
+		# else:
+		# 	resources = Resource_code.objects.filter(developer=getDeveloper())
+		resources = Resource_code.objects.all()
+
+		response["RESOURCE_TYPE"] = "code"
+
+		resServingFields = RES_SERVING_FIELDS_CODE
+
+	else:# resourceType == "download":
+		# if public == "true":
+		# 	resources = Resource_download.objects.filter(public=True)
+		# else:
+		# 	resources = Resource_download.objects.filter(developer__user=getCurrentUser())
+		resources = Resource_download.objects.all()
+
+		response["RESOURCE_TYPE"] = "download"
+
+		resServingFields = RES_SERVING_FIELDS_DOWNLOAD
+
+	servingResources = []
+	print "looping resource filterin"
+	print resources
+	for res in resources:
+		print "resource: ", res
+		resFields = {}
+		for field in resServingFields:
+			resFields[field.replace(".", "_")] = helpers.getattrd(res, field, "")
+		servingResources.append(resFields)
+
+	response["RESOURCES"] = servingResources
+
+
+	print response["RESOURCES"]
+
+	return JsonResponse(response)
 
 
 def dialogTest(request):

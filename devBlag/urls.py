@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^profile/$', views.profile),
     url(r'^updateProfile/$', views.updateProfile),
     url(r'^addResource/$', views.addResource),
+    url(r'^getResources/$', views.getResources2),
     ##  Test URLs:
     url(r'^test/jqUIdialogs/$', views.dialogTest),
 ]
