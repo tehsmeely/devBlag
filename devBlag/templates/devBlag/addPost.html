@@ -28,9 +28,17 @@
 
 		.resourceList
 		{
-			width: 80%;
+			/*width: 80%;*/
 			background-color: #fff;
 			min-height: 200px;
+			border-left: solid black 1px;
+			border-right: solid black 1px;
+			border-bottom: solid black 1px;
+		}
+
+		.resourceListOuter
+		{
+			width: 80%;
 			margin-left: auto;
 			margin-right: auto;
 		}
@@ -54,15 +62,75 @@
 			background-color: #eee;
 		}
 
-		td.resourceTd
+		td.resourceTdCaption
 		{
 			text-align: center;
+			width:70%;
 		}
-
+		td.resourceTdOwner
+		{
+			text-align: center;
+			width:70%;
+		}
+		
 		.addResourceMod  /*Add in to projectAddPostButton from base.css*/
 		{
 			top: 5px;
 		}
+
+/*
+		.resTab
+		{
+			/*float:left;/
+			width: 30%;
+			-webkit-border-top-left-radius: 5px;
+			-webkit-border-top-right-radius: 5px;
+			-moz-border-radius-topleft: 5px;
+			-moz-border-radius-topright: 5px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			background-color: #fff;
+			border-left: solid black 1px;
+			border-right: solid black 1px;
+			border-top: solid black 1px;
+
+		}
+*/
+
+		.resTab
+		{
+			-webkit-border-top-left-radius: 5px;
+			-webkit-border-top-right-radius: 5px;
+			-moz-border-radius-topleft: 5px;
+			-moz-border-radius-topright: 5px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			border-top: solid black 1px;
+			border-left: solid black 1px;
+			border-right: solid black 1px;
+			/* this is 1/3 of the parent width, minus 2px for the border */
+			width: 33%; 
+			text-align: center;
+			float: left;
+			cursor: pointer;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.t1 {background-color: #fff}
+		.t1:hover {background-color: #eee}
+
+		.t2 {background-color: #ddd}
+		.t2:hover {background-color: #ccc}
+
+		.t3 {background-color: #bbb}
+		.t3:hover {background-color: #aaa}
+
+		.tabContainer{
+			overflow: auto;
+		}
+
+
 	</style>
 
 	<script>
@@ -117,7 +185,26 @@
 				typeInTextarea($("#{{form.body.id_for_label}}"), "<<"+resChar+":"+resID+">>");
 				return false
 			})
-		}
+		};
+
+		function updateResTooltips(){
+			console.log("updateResTooltips");
+			$(".resourceTr").tooltip({
+				content: function(){
+					var resType = $(this).attr("resType")
+					if (resType == "image")
+					{
+						var imgStr =  "<img src='" + $(this).attr("url") + "'>";
+						console.log(imgStr);
+						return imgStr;
+					} else if (resType == "code"){
+						return $(this).attr("code");
+					} else {
+						return "Download Link"
+					}
+				}
+			});
+		};
 
 
 
@@ -136,26 +223,54 @@
 					console.log(data)
 					var resTable = $("#resTableBody");
 					resTable.empty()
-					for (iResource in data.RESOURCES){
-						var resource = data.RESOURCES[iResource];
-						var appendLine = '<tr class="resourceTr" resType="' + data.RESOURCE_TYPE +'" resID="' + resource.id + '"><td><a href="' +
-										 resource.imageFile_url.replace("localhost", "192.168.0.6") + '">' + resource.caption + '</a></td></tr>';
-						console.log(appendLine);
-						resTable.append(appendLine);
+					var getTr
+					if (data.RESOURCE_TYPE == "image") {
+						getTr = getImageTr;
+					} else if (data.RESOURCE_TYPE == "code") {
+						getTr = getCodeTr;
+					} else {
+						getTr = getDownloadTr;
+					}
+					if (data.RESOURCES.length>0) {
+						for (iResource in data.RESOURCES){
+							var resource = data.RESOURCES[iResource];
+							var appendLine = getTr(resource)
+							console.log(appendLine);
+							resTable.append(appendLine);
+						}
+					} else {
+						resTable.append("<tr><td style='text-align: center;'>No Resources Found for this type</td></tr>")
 					}
 					updateInsertClick();
+					updateResTooltips();
 				},
 				"json"
 			);
 		}
+		function getImageTr(resource){
+			return '<tr class="resourceTr" title="" resType="image" resID="' + resource.id + '" url="' +
+										 resource.imageFile_url.replace("localhost", "192.168.0.6") + '"><td class="resourceTdCaption">'
+										 + resource.caption + '</td><td class="resourceTdOwner">' + resource.owner + '</td></tr>';
+		}
+		function getCodeTr(resource){
+			return '<tr class="resourceTr" title="" resType="code" resID="' + resource.id + '" code="'
+			+ resource.code + '"><td class="resourceTdCaption">' + resource.caption + '</td><td class="resourceTdOwner">' + resource.owner +'</td></tr>';
+		}
+		function getDownloadTr(resource){
+			return '<tr class="resourceTr" title="" resType="download" resID="' + resource.id + '"><td class="resourceTdCaption">'
+										+ resource.caption+ '</td><td class="resourceTdOwner">' + resource.owner + '</td></tr>';
+		}
 		$("#imageButton").click(function(){
 			updateResGrid("image");
+			$(".resourceList").css("background-color", "#fff");
 		})
 		$("#codeButton").click(function(){
 			updateResGrid("code");
+			$(".resourceList").css("background-color", "#ddd");
 		})
 		$("#downloadButton").click(function(){
 			updateResGrid("download");
+			$(".resourceList").css("background-color", "#bbb");
 		})
 
 
@@ -195,7 +310,6 @@
 	</div>
 	<br>
 	<div class="resourceBox">
-		<div class="projectAddPostButton addResourceMod">Add</div>
 		<div id="currentResources">
 			<h2>Resources</h2>
 			
@@ -203,13 +317,20 @@
 				<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine 
 				<input type="radio" name="resourceOwner" value="public">Public
 			</p>
-			<p><button id="imageButton">image</button><button id="imageButton">code</button><button id="imageButton">download</button></p>
-
-			<div class="resourceList">
-				<table class="resourceTable">
-					<tbody id="resTableBody">
-					</tbody>
-				</table>
+			<!--<p><button id="imageButton">image</button><button id="codeButton">code</button><button id="downloadButton">download</button></p>-->
+			
+			<div class="resourceListOuter">
+				<div class="tabContainer">
+					<div class="resTab t1" id="imageButton">Image</div>
+					<div class="resTab t2" id="codeButton">Code</div>
+					<div class="resTab t3" id="downloadButton">Download</div>
+				</div>
+				<div class="resourceList">
+					<table class="resourceTable">
+						<tbody id="resTableBody">
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<div id="addResource" style="">

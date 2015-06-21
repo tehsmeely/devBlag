@@ -55,6 +55,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: devBlag_resource_code
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: devBlag_resource_download
   properties:
   - name: __key__

@@ -546,9 +546,10 @@ def getResources2(request):
 	resourceType = request.GET.get("resourceType")
 	public = request.GET.get("public", "false")
 
-	RES_SERVING_FIELDS_IMAGE = ["caption", "imageFile.url", "id"]
-	RES_SERVING_FIELDS_CODE = []
+	RES_SERVING_FIELDS_IMAGE = ["imageFile.url"]
+	RES_SERVING_FIELDS_CODE = ["code"]
 	RES_SERVING_FIELDS_DOWNLOAD = []
+	RES_SERVING_FIELDS_ALL = ["caption", "id"]
 	
 	if resourceType is None or resourceType not in ["image", "code", "download"]:
 		print "INVALID"
@@ -556,6 +557,7 @@ def getResources2(request):
 
 	response = {"SUCCESS":True}
 
+	## for each type, get the resources, and set the specific attributes
 	if resourceType == "image":
 		# if public == "true":
 		# 	resources = Resource_image.objects.filter(public=True)
@@ -589,20 +591,32 @@ def getResources2(request):
 
 		resServingFields = RES_SERVING_FIELDS_DOWNLOAD
 
+	## now we have resources, now we collect attributes
 	servingResources = []
-	print "looping resource filterin"
-	print resources
 	for res in resources:
-		print "resource: ", res
 		resFields = {}
+		## get the default ones
+		for field in RES_SERVING_FIELDS_ALL:
+			resFields[field.replace(".", "_")] = helpers.getattrd(res, field, "")
+
+		## get the specific ones
 		for field in resServingFields:
 			resFields[field.replace(".", "_")] = helpers.getattrd(res, field, "")
+
+		## get username, with 2 fallbacks for blank names
+		if res.owner.displayName != "":
+			resFields["owner"] = res.owner.displayName
+			print "name", res.owner.displayName
+		elif res.owner.user.first_name != "" and res.owner.user.last_name != "":
+			resFields["owner"] = res.owner.user.first_name + " " + res.owner.user.last_name
+			print "name", res.owner.user.first_name + " " + res.owner.user.last_name
+		else:
+			resFields["owner"] = res.owner.user.username
+			print "name", res.owner.user.username
+
 		servingResources.append(resFields)
 
 	response["RESOURCES"] = servingResources
-
-
-	print response["RESOURCES"]
 
 	return JsonResponse(response)
 
