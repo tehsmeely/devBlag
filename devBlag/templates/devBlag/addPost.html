@@ -292,7 +292,7 @@
 
 	<br><br>
 	<div class="addForm">
-		<form action="/addPost/" method="post">{% csrf_token %}
+		<form action="/addPost/{{projectID}}/{{postID}}/" method="post">{% csrf_token %}
 			<p>
 	    		<label for="{{ form.title.id_for_label }}">Title:</label>
 	    		{{ form.title }}

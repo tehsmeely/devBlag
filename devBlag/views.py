@@ -213,8 +213,8 @@ def handleBody(body):
 	for tag in r:
 		print "TAGE: ", tag
 		searchGroups = TAG_INNER_REGEX.search(tag)
-		resType = searchGroups("type")
-		resID = searchGroups("RId")
+		resType = searchGroups.group("type")
+		resID = searchGroups.group("RId")
 		if resType == "i":
 			resource = Resource_image.objects.get(id=resID)
 		elif resType == "c":
@@ -405,6 +405,8 @@ def addPost(request, projectID, postID):
 
 	c = {
 	"form": form,
+	"projectID": projectID,
+	"postID": postID
 	#"myResources": myResources
 	}
 
