@@ -34,6 +34,7 @@ class Project(models.Model):
 	inProgress = models.BooleanField(default=True)
 	language = models.CharField(max_length=200, blank=True)
 	engine = models.CharField(max_length=200, blank=True)
+	default_backgroundColour = models.CharField(max_length=6, default="ffffff", help_text="The original default colour for new posts")#colour in hex "FFFFFF" with no #
 
 	def __str__(self):
 		return self.title
