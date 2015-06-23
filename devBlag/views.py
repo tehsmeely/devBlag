@@ -397,11 +397,18 @@ def addPost(request, projectID, postID):
 		if post is not None:
 			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour})
 		else:
-			form = PostForm()
+			print "NEW FORM"
+			form = PostForm(initial={"backgroundColour":project.default_backgroundColour})
 
-	print "form.body:"
-	for i in form['body'].__dict__:
-		print i
+	# print "form:"
+	# for i in form.__dict__:
+	# 	print i
+	# print "form.body:"
+	# for i in form['body'].__dict__:
+	# 	print i
+	# print "form.fields:"
+	# for i in form['body'].__dict__:
+	# 	print i
 
 	c = {
 	"form": form,
@@ -561,32 +568,34 @@ def getResources2(request):
 
 	## for each type, get the resources, and set the specific attributes
 	if resourceType == "image":
-		# if public == "true":
-		# 	resources = Resource_image.objects.filter(public=True)
-		# else:
-		# 	resources = Resource_image.objects.filter(developer__user=getCurrentUser())
-		resources = Resource_image.objects.all()
+		if public == "true":
+			resources = Resource_image.objects.filter(public=True)
+		else:
+			resources = Resource_image.objects.filter(owner=getDeveloper())
+		#resources = Resource_image.objects.all()
+		#resources = Resource_image.objects.filter(owner=getDeveloper())
 
 		response["RESOURCE_TYPE"] = "image"
 
 		resServingFields = RES_SERVING_FIELDS_IMAGE
  
 	elif resourceType == "code":
-		# if public == "true":
-		# 	resources = Resource_code.objects.filter(public=True)
-		# else:
-		# 	resources = Resource_code.objects.filter(developer=getDeveloper())
-		resources = Resource_code.objects.all()
+		if public == "true":
+			resources = Resource_code.objects.filter(public=True)
+		else:
+			resources = Resource_code.objects.filter(owner=getDeveloper())
+		#resources = Resource_code.objects.all()
+		resources = Resource_code.objects.filter(owner=getDeveloper())
 
 		response["RESOURCE_TYPE"] = "code"
 
 		resServingFields = RES_SERVING_FIELDS_CODE
 
 	else:# resourceType == "download":
-		# if public == "true":
-		# 	resources = Resource_download.objects.filter(public=True)
-		# else:
-		# 	resources = Resource_download.objects.filter(developer__user=getCurrentUser())
+		if public == "true":
+			resources = Resource_download.objects.filter(public=True)
+		else:
+			resources = Resource_download.objects.filter(owner=getDeveloper())
 		resources = Resource_download.objects.all()
 
 		response["RESOURCE_TYPE"] = "download"

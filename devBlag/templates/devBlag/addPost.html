@@ -73,10 +73,6 @@
 			width:70%;
 		}
 		
-		.addResourceMod  /*Add in to projectAddPostButton from base.css*/
-		{
-			top: 5px;
-		}
 
 /*
 		.resTab
@@ -137,6 +133,7 @@
 	$(function(){
 
 		//Preset colour input to colour value
+		/*
 		var preCol = $(".addForm").css("background-color");
 		console.log(rgbToHex(preCol));
 		$(".color").val(rgbToHex(preCol));
@@ -149,18 +146,20 @@
 		}
 		function rgbToHex(rgbStr) { //takes "rgb(r, g, b)" gets values as str with regext, then casts to int with call to componentToHex
 			var rgb = rgbStr.replace(/[^\d,]/g, '').split(',');
-		    return /*"#" + */componentToHex(parseInt(rgb[0])) + componentToHex(parseInt(rgb[1])) + componentToHex(parseInt(rgb[2]));
+		    return componentToHex(parseInt(rgb[0])) + componentToHex(parseInt(rgb[1])) + componentToHex(parseInt(rgb[2]));
 		}
+		*/
 
 		//The update button sets the background of the form to the entered colour
-		$("#updateCol").click(function(event){
+		$("#updateCol").click(updateColour);
+		
+		function updateColour(){
 			var colour = $(".color").val();
 			console.log(colour);
 			//event.preventDefault();
 			$(".addForm").css("background-color", "#" + colour);
 			return false;
-		});
-
+		}
 
 		function typeInTextarea(el, newText) {
 			var start = el.prop("selectionStart")
@@ -279,7 +278,7 @@
 		})
 
 
-		
+		updateColour();
 		updateResGrid("image");
 		updateInsertClick();
 	})
