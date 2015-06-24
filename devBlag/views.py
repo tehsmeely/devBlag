@@ -17,12 +17,20 @@ import os, re, json, urlparse, random
 
 
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
+
+
 TAG_REGEX = re.compile("(<<[idc]:[0-9]+>>)")
 TAG_INNER_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
 
-#These stem from 
-LINK_REGEX = re.compile("""(\[[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*\])?\((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\)""")
-LINK_INNER_REGEX = re.compile("""((\[(?P<text>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?)\((?P<url>(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)\)""")
+##these have been replaced by a one-shot regex below
+#LINK_REGEX = re.compile("""(\[[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*\])?\((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\)""")
+#LINK_INNER_REGEX = re.compile("""((\[(?P<text>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?)\((?P<url>(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)\)""")
+
+#links are in text as [<name>](<url>). The name and square brackets are optional, if removed the raw link is used for text
+LINK_REGEX = re.compile("""(?P<all>(?:\[(?P<text>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?\((?P<url>(?:https?:\/\/)?(?:[\da-z\.-]+)\.(?:[a-z\.]{2,6})(?:[\/\w \.-]*)*\/?)\))""")
+#all:  full original link string []() - for replacement in the body string
+#name: the contents of the square brackets. None if not present
+#url: the contents of the parentheses, a vlaid url for the href of a link
 
 # View functions are labels as below:
 
