@@ -6,6 +6,9 @@ TODO
 Add Logging
 
 ~ResID is redundant~ -removed
+
+
+Migrate views to class-based
 -Still not sure if i want to do this
 
 
