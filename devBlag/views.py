@@ -184,7 +184,7 @@ def projectPosts(request, pid): #project id
 ###VIEW /developer/<did>
 def developerProfile(request, did):  #developer id
 	developer = Developer.objects.get(user__id=did)
-	latestPosts = Post.objects.all().order_by("-publishedDate")[:10]
+	latestPosts = Post.objects.filter(author=developer).order_by("-publishedDate")[:10]
 	for post in latestPosts:
 		post.body = handleBody(post.body)
 	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})

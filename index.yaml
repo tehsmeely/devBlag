@@ -35,6 +35,12 @@ indexes:
 
 - kind: devBlag_post
   properties:
+  - name: author_id
+  - name: publishedDate
+    direction: desc
+
+- kind: devBlag_post
+  properties:
   - name: project_id
   - name: publishedDate
     direction: desc
