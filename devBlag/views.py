@@ -19,15 +19,23 @@ import os, re, json, urlparse, random
 STATIC_PATH = os.path.join(BASE_DIR, "devBlag", "static")
 
 
-TAG_REGEX = re.compile("(<<[idc]:[0-9]+>>)")
-TAG_INNER_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
+# TAG_REGEX = re.compile("(<<[idc]:[0-9]+>>)")
+# TAG_INNER_REGEX = re.compile("<<(?P<type>[idc]):(?P<RId>[0-9]+)>>")
+
+TAG_REGEX = re.compile("(?P<all><<(?P<type>[idc]):(?P<RId>[0-9]+)>>)")
+#all:  full original tag string <<<type>:<id>>> - for replacement in the body string
+#name: the contents of the square brackets. None if not present
+#url: the contents of the parentheses, a vlaid url for the href of a link
+
+
+
 
 ##these have been replaced by a one-shot regex below
 #LINK_REGEX = re.compile("""(\[[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*\])?\((https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\)""")
 #LINK_INNER_REGEX = re.compile("""((\[(?P<text>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?)\((?P<url>(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?)\)""")
 
 #links are in text as [<name>](<url>). The name and square brackets are optional, if removed the raw link is used for text
-LINK_REGEX = re.compile("""(?P<all>(?:\[(?P<text>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?\((?P<url>(?:https?:\/\/)?(?:[\da-z\.-]+)\.(?:[a-z\.]{2,6})(?:[\/\w \.-]*)*\/?)\))""")
+LINK_REGEX = re.compile("""(?P<all>(?:\[(?P<name>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\);\/|<>"']*)\])?\((?P<url>(?:https?:\/\/)?(?:[\da-z\.-]+)\.(?:[a-z\.]{2,6})(?:[\/\w \.-]*)*\/?)\))""")
 #all:  full original link string []() - for replacement in the body string
 #name: the contents of the square brackets. None if not present
 #url: the contents of the parentheses, a vlaid url for the href of a link
@@ -217,14 +225,14 @@ def handleBody(body):
 
 	#<<[i/d/c]:[id]>>
 	#TAG_REGEX
-	#TAG_INNER_REGEX 
 	
-	r = TAG_REGEX.findall(body) 
+	# Resources
+	r = TAG_REGEX.finditer(body) 
 	for tag in r:
 		print "TAGE: ", tag
-		searchGroups = TAG_INNER_REGEX.search(tag)
-		resType = searchGroups.group("type")
-		resID = searchGroups.group("RId")
+		#searchGroups = TAG_INNER_REGEX.search(tag)
+		resType = tag.group("type")
+		resID = tag.group("RId")
 		if resType == "i":
 			resource = Resource_image.objects.get(id=resID)
 		elif resType == "c":
@@ -235,8 +243,25 @@ def handleBody(body):
 		replaceString = get_replaceString(resource, resType)
 
 		print "\nhandleBody Replace before:\n", body
-		body = body.replace(tag, replaceString)
+		body = body.replace(tag.group("all"), replaceString)
 		print "\nhandleBody Replace after:\n", body
+
+	# Links
+	#all:  full original tag string <<<type>:<id>>> - for replacement in the body string
+	#name: the contents of the square brackets. None if not present
+	#url: the contents of the parentheses, a vlaid url for the href of a link
+	r = LINK_REGEX.finditer(body)
+	for link in r:
+		url = link.group("url")
+		if urlparse.urlparse(url).scheme == "":  # no scheme on url. <a> will incorrectly make it relative url
+			url = "http://" + url # just slap an http:// scheme on it
+		name = link.group("name")
+		print "link.\nname: {}\nurl: {}".format(name, url)
+		if name is None:
+			name = url
+		replaceString = "<a href={}>{}</a>".format(url, name)
+		body = body.replace(link.group("all"), replaceString)
+
 	print "\nhandleBody after:\n", body
 	return body
 
