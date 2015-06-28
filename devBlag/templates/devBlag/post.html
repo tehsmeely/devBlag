@@ -1,0 +1,36 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+	<style>
+
+	</style>
+
+
+	<script>
+	
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	
+	
+	<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
+			style="background-color:#{{post.backgroundColour}}">
+		<h3>{{post.title}}</h3>
+		{{post.body|safe|linebreaksbr}}
+		<br>
+		<p>Created Date: {{post.createdDate}}</p>
+		{% if post.publishedDate == none %}
+			<p><button>Publish</button></p>
+		{% else %}
+			<p>Published Date: {{post.publishedDate}}</p>
+		{% endif %}
+	</div>
+	<br>
+
+
+{% endblock %}

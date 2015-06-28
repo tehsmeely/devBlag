@@ -425,7 +425,7 @@ def addPost(request, projectID, postID):
 			post.project_id = project.id
 			post.save()
 			print "finished"
-			#return HttpResponseRedirect("/addPost")
+			return redirect("/addPost/")
 
 	else:
 		#form = PostForm()
@@ -482,6 +482,16 @@ def logout(request):
     return redirect(users.create_logout_url(dest_url=request.GET.get('next', '/')))
 
 
+##     ## #### ######## ##      ##    ########   #######   ######  ########
+##     ##  ##  ##       ##  ##  ##    ##     ## ##     ## ##    ##    ##
+##     ##  ##  ##       ##  ##  ##    ##     ## ##     ## ##          ##
+##     ##  ##  ######   ##  ##  ##    ########  ##     ##  ######     ##
+ ##   ##   ##  ##       ##  ##  ##    ##        ##     ##       ##    ##
+  ## ##    ##  ##       ##  ##  ##    ##        ##     ## ##    ##    ##
+   ###    #### ########  ###  ###     ##         #######   ######     ##
+def viewPost(request, postID):
+	post = Post.objects.get(id=postID)
+	return render(request, "devBlag/post.html", {"post": post})
 
 
 ########  ########   #######  ######## #### ##       ########
