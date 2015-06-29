@@ -9,7 +9,15 @@
 
 
 	<script>
-	
+		$(function(){
+
+			$("#publishButton").click(function(){
+				$.get(
+					"/publishPost/",
+					{"postID": $(this).attr("postID")}
+				)
+			});
+		});
 	</script>
 {% endblock %}
 
@@ -25,7 +33,7 @@
 		<br>
 		<p>Created Date: {{post.createdDate}}</p>
 		{% if post.publishedDate == none %}
-			<p><button>Publish</button></p>
+			<p><button id="publishButton" postID="{{post.id}}">Publish</button></p>
 		{% else %}
 			<p>Published Date: {{post.publishedDate}}</p>
 		{% endif %}

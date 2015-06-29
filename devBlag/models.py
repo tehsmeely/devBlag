@@ -52,7 +52,7 @@ class Post(models.Model):
     backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
 
     def publish(self):
-            self.published_date = timezone.now()
+            self.publishedDate = timezone.now()
             self.save()
 
     def __str__(self):

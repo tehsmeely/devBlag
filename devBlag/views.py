@@ -295,7 +295,7 @@ from django.views.decorators.csrf import csrf_exempt
 ##     ## ########  ########     ##     ## ########  ######   #######   #######  ##     ##  ######  ########
 ###VIEW /addResource
 @login_required
-@csrf_exempt
+#@csrf_exempt
 def addResource(request):
 	if request.method == "POST":
 		print "POST:", request.POST
@@ -493,6 +493,27 @@ def viewPost(request, postID):
 	post = Post.objects.get(id=postID)
 	return render(request, "devBlag/post.html", {"post": post})
 
+
+
+########  ##     ## ########  ##       ####  ######  ##     ##    ########   #######   ######  ########
+##     ## ##     ## ##     ## ##        ##  ##    ## ##     ##    ##     ## ##     ## ##    ##    ##
+##     ## ##     ## ##     ## ##        ##  ##       ##     ##    ##     ## ##     ## ##          ##
+########  ##     ## ########  ##        ##   ######  #########    ########  ##     ##  ######     ##
+##        ##     ## ##     ## ##        ##        ## ##     ##    ##        ##     ##       ##    ##
+##        ##     ## ##     ## ##        ##  ##    ## ##     ##    ##        ##     ## ##    ##    ##
+##         #######  ########  ######## ####  ######  ##     ##    ##         #######   ######     ##
+
+def publishPost(request):
+	success = False
+	if request.method == "GET":
+		postID = request.GET.get("postID", None)
+		if postID is not None:
+			post = Post.objects.get(id=postID)
+			post.publish()
+			success = True
+	
+	
+	return JsonResponse({"SUCCESS":success})
 
 ########  ########   #######  ######## #### ##       ########
 ##     ## ##     ## ##     ## ##        ##  ##       ##
