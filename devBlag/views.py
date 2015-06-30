@@ -66,7 +66,7 @@ def getDeveloper():
 		return Developer.objects.get(user=currentUser)
 
 def getIsDeveloper():
-	##return True is logged in user is devleoper, false if not, or no logged in user
+	##return True is logged in user is developer, false if not, or no logged in user
 	#currentUser = users.get_current_user()
 	currentUser = getCurrentUser()
 	if currentUser is None:
@@ -162,7 +162,7 @@ def projectPosts(request, pid): #project id
 
 	print order_byStr
 
-	posts = Post.objects.filter(project=project).order_by(order_byStr)
+	posts = Post.objects.filter(project=project).exclude(publishedDate=None).order_by(order_byStr)
 
 
 
@@ -452,7 +452,7 @@ def addPost(request, projectID, postID):
 	#"myResources": myResources
 	}
 
-	c.update(getResources(developer))
+	#c.update(getResources(developer))
 	c.update(resourceForms(request))
 	print c
 	#return render(request, "devBlag/addPost.html", {"form": form})
@@ -533,7 +533,7 @@ def profile(request):
 	#user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
 	user = getCurrentUser()
 	devGroup = Group.objects.get(name="developers")
-
+	c = {}
 	print devGroup.id
 
 	for d in user.__dict__:
@@ -547,8 +547,22 @@ def profile(request):
 		isDeveloper = False
 		developer = None
 
+	#if developer, get unpublished posts to send to template, None is not
+	unpublishedPosts = None
+	if isDeveloper:
+		unpublishedPosts = Post.objects.filter(author=developer).filter(publishedDate=None)
+		c.update(getResources(developer, False))
+
+	c.update({
+	"user":user,
+	"isDeveloper":isDeveloper,
+	"developer": developer,
+	"unpublishedPosts": unpublishedPosts
+	})
+	
+
 	print "developer", developer
-	return render(request, "devBlag/profile.html", {"user":user, "isDeveloper":isDeveloper, "developer": developer}, )
+	return render(request, "devBlag/profile.html", c)
 
 
 ###VIEW /updateProfile/
@@ -572,7 +586,7 @@ def updateProfile(request):
 	return JsonResponse(returnContext)
 
 
-def getResources(developer):
+def getResources(developer, public):
 	##returns: dict of the three types of resource,
 	#each in turn split in to "mine" and "public"
 	#"mine" is belooing to the logged in developer
@@ -600,11 +614,14 @@ def getResources(developer):
 	#public includes owner's as cannot .excuse(owner=developer) here.
 	#"Cross-join WHERE constraints aren't supported: [(u'devBlag_resource', 'public'), (u'devBlag_resource', u'owner_id')]"
 	resources_dict["Resource_image"]["mine"] = Resource_image.objects.filter(owner=developer)
-	resources_dict["Resource_image"]["mine"] = Resource_image.objects.filter(public=True)
+	if public:
+		resources_dict["Resource_image"]["public"] = Resource_image.objects.filter(public=True)
 	resources_dict["Resource_code"]["mine"] = Resource_code.objects.filter(owner=developer)
-	resources_dict["Resource_code"]["mine"] = Resource_code.objects.filter(public=True)
+	if public:
+		resources_dict["Resource_code"]["public"] = Resource_code.objects.filter(public=True)
 	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(owner=developer)
-	resources_dict["Resource_download"]["mine"] = Resource_download.objects.filter(public=True)
+	if public:
+		resources_dict["Resource_download"]["public"] = Resource_download.objects.filter(public=True)
 	return resources_dict
 
  ######   ######## ########    ########  ########  ######   #######  ##     ## ########   ######  ########  ######

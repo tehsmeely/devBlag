@@ -15,6 +15,7 @@ Migrate views to class-based
 Post management.
 Creation vs Publishing to enable editing before release to the world at large
 -Post specific page? AddPost can redirect here on success then
+	-On it!
 
 Resource management.
 Developers can see, manage, [and delete]? their resources

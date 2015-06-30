@@ -92,6 +92,7 @@
 	</div>
 
 	{% if isDeveloper %}
+
 		<p>You are a registered developer on this site</p>
 		<br>
 		<p>Developer Display Name: <span actualVal="{{developer.displayName}}">
@@ -99,7 +100,29 @@
 			{% else %} {{developer.displayName}}
 			{% endif %}</span> <i class="fa fa-pencil editButton" state="0"></i></p>
 		<br><br>
-		{% comment %} {% include "devBlag/addResource.html" %} {% endcomment %}
+		{% if unpublishedPosts|length > 0 %}
+			<h3>Your currently unpublished posts</h3>
+			{% for post in unpublishedPosts %}
+				<a href="/post/{{post.id}}/"></p>Title: {{post.title}}. Created: {{post.createdDate}}</p></a>
+			{% endfor %}
+		{% endif %}
+
+		<h3>All your Resources</h3>
+		<h4>Images</h4>
+		{% for resource in Resource_image.mine %}
+			<p>{{resource.caption}} {{resource.imageFile.url}}</p>
+		{% endfor %}
+		<h4>Code</h4>
+		{% for resource in Resource_code.mine %}
+			<p>{{resource.caption}}</p>
+		{% endfor %}
+		<h4>Downloads</h4>
+		{% for resource in Resource_download.mine %}
+			<p>{{resource.caption}} {{resource.resFile.url}}</p>
+		{% endfor %}
+		<br>
+		{% include "devBlag/addResource.html" %}
+
 	{% else %}
 		<p><a href="/devApply/">Apply to post as a developer on this site</a><p>
 	{% endif %}
