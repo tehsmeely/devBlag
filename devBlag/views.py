@@ -100,14 +100,7 @@ def index(request):
 	developers = Developer.objects.all()
 	quadDev = sortToNumGroups(developers, 4)
 
-	rc_dl = Resource_download.objects.all()[0]
-	print "rc_dk:", rc_dl
-	for item in rc_dl.__dict__:
-		print "dict item: ", item
-	print rc_dl.resFile
-	for item in rc_dl.resFile.__dict__:
-		print "resfile dict item", item, ": ", getattr(rc_dl.resFile, item)
-	print "rc_dl.resFile.url: ", rc_dl.resFile.url
+
 
 	print "AUTH USER MODEL", AUTH_USER_MODEL
 	return render(request, "devBlag/index.html", {"projects": quadProj, "developers": quadDev, "STATIC_PATH":STATIC_PATH})
