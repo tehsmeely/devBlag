@@ -96,9 +96,9 @@ class Resource_image(models.Model):
 	
 
 	def getServingURLPath(self):
-		return urlparse.urlparse(images.get_serving_url(self.imageFile)).path
+		return urlparse.urlparse(self.imageFile.url).path
 	def getServingURL(self):
-		return images.get_serving_url(self.imageFile)
+		return self.imageFile.url
 
 #resID,caption,code,language,owner,associatedProject,public
 class Resource_code(models.Model):
@@ -112,6 +112,8 @@ class Resource_code(models.Model):
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)
 
+
+
 #resID,caption,resFile,owner,associatedProject,public
 class Resource_download(models.Model):
 	#resID = models.IntegerField(unique=True)
@@ -123,3 +125,7 @@ class Resource_download(models.Model):
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)
 
+	def getServingURLPath(self):
+		return urlparse.urlparse(self.resFile.url).path
+	def getServingURL(self):
+		return self.resFile.url

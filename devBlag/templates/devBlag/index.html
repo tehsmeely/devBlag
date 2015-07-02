@@ -13,7 +13,7 @@
 
 		.circleLink
 		{
-			margin: 0px;
+			margin: 0 0 0 0px;
 			width: 160px;
 			height: 160px;
 			border-radius: 80px;
@@ -60,6 +60,20 @@
 		{
 			margin-left: 318px;
 			margin-right: 318px;
+		}
+
+		#testChrom
+		{
+			margin: 0 0 0 0px;
+			width: 160px;
+			height: 160px;
+			border-radius: 80px;
+			-webkit-border-radius: 80px;
+			-moz-border-radius: 80px;
+			/*background: url("treeSq2.png") no-repeat;*/
+			border: solid black 1px;
+			cursor: pointer;
+			opacity: 0.7;
 		}
 
 		
@@ -126,7 +140,7 @@
 				<div class="circleBlock circles{{quadProj|length}}">
 					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
-						class="circleLink projLink" style="background: url('{{ proj.image.imageFile.url }}') no-repeat;"></div>
+						class="circleLink projLink" style="background: url('{{ proj.image.getServingURLPath }}') no-repeat;"></div>
 					</a>
 				</div>
 			{% endfor %}
@@ -140,8 +154,8 @@
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
-						<div title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
-						class="circleLink devLink" style="background: url('{{ dev.thumbnail.imageFile.url }}') no-repeat;"></div>
+						<div id="testChrom" class="circleLink devLink" title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
+						 style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"> </div>
 					</a>
 				</div>
 			{% endfor %}
