@@ -61,21 +61,6 @@
 			margin-left: 318px;
 			margin-right: 318px;
 		}
-
-		#testChrom
-		{
-			margin: 0 0 0 0px;
-			width: 160px;
-			height: 160px;
-			border-radius: 80px;
-			-webkit-border-radius: 80px;
-			-moz-border-radius: 80px;
-			/*background: url("treeSq2.png") no-repeat;*/
-			border: solid black 1px;
-			cursor: pointer;
-			opacity: 0.7;
-		}
-
 		
 	</style>
 
@@ -154,8 +139,8 @@
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
-						<div id="testChrom" class="circleLink devLink" title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
-						 style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"> </div>
+						<div title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
+						class="circleLink devLink" style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"> </div>
 					</a>
 				</div>
 			{% endfor %}

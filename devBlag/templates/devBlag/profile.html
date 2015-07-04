@@ -24,6 +24,52 @@
 		{
 			opacity: 1;
 		}
+
+		.devSection
+		{
+			text-align: center;
+		}
+
+		.postHeader
+		{
+			width: 80%;
+			margin-left: auto;
+			margin-right: auto;
+			overflow: hidden;
+		}
+
+		.postHeaderInner
+		{
+			-webkit-border-radius: 7px;
+			-moz-border-radius: 7px;
+			border-radius: 7px;
+			cursor: pointer;
+		}
+
+		.postHeaderInner:hover
+		{
+			opacity: 0.8;
+		}
+
+		p.postTitle
+		{
+			font-weight: bold;
+		}
+
+		p.postDate
+		{
+			color: #13
+			1;
+		}
+
+
+		.horizLine
+		{
+			width: 100%;
+			height: 5px;
+			background-color: #eee;
+		}
+
 	</style>
 
 
@@ -76,6 +122,10 @@
 				}
 			})
 
+			$(".postHeader").click(function(){
+				window.location = "/post/" + $(this).attr("postID");
+			})
+
 		})
 	</script>
 {% endblock %}
@@ -94,35 +144,46 @@
 	{% if isDeveloper %}
 
 		<p>You are a registered developer on this site</p>
+		<p>See your <a href="/developer/{{developer.user.id}}/">developer page</a></p>
 		<br>
 		<p>Developer Display Name: <span actualVal="{{developer.displayName}}">
 			{% if developer.displayName == "" %}(blank - displays as full name)
 			{% else %} {{developer.displayName}}
 			{% endif %}</span> <i class="fa fa-pencil editButton" state="0"></i></p>
 		<br><br>
-		{% if unpublishedPosts|length > 0 %}
-			<h3>Your currently unpublished posts</h3>
-			{% for post in unpublishedPosts %}
-				<a href="/post/{{post.id}}/"></p>Title: {{post.title}}. Created: {{post.createdDate}}</p></a>
+
+		<div class="horizLine"></div>
+
+		<div class="devSection">
+			{% if unpublishedPosts|length > 0 %}
+				<h3>Your currently unpublished posts</h3>
+				{% for post in unpublishedPosts %}
+					<div class="postHeader" style="" postID={{post.id}}>
+						<div class="postHeaderInner" style="background-color: {{post.backgroundColour}}">
+							<p class="postTitle">{{post.title}}</p>
+							<p class="postDate">{{post.createdDate}}</p>
+						</div>
+						<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40"></a>
+					</div>
+				{% endfor %}
+			{% endif %}
+
+			<h3>All your Resources</h3>
+			<h4>Images</h4>
+			{% for resource in Resource_image.mine %}
+				<p>{{resource.caption}} {{resource.imageFile.url}}</p>
 			{% endfor %}
-		{% endif %}
-
-		<h3>All your Resources</h3>
-		<h4>Images</h4>
-		{% for resource in Resource_image.mine %}
-			<p>{{resource.caption}} {{resource.imageFile.url}}</p>
-		{% endfor %}
-		<h4>Code</h4>
-		{% for resource in Resource_code.mine %}
-			<p>{{resource.caption}}</p>
-		{% endfor %}
-		<h4>Downloads</h4>
-		{% for resource in Resource_download.mine %}
-			<p>{{resource.caption}} {{resource.resFile.url}}</p>
-		{% endfor %}
-		<br>
-		{% include "devBlag/addResource.html" %}
-
+			<h4>Code</h4>
+			{% for resource in Resource_code.mine %}
+				<p>{{resource.caption}}</p>
+			{% endfor %}
+			<h4>Downloads</h4>
+			{% for resource in Resource_download.mine %}
+				<p>{{resource.caption}} {{resource.resFile.url}}</p>
+			{% endfor %}
+			<br>
+			{% include "devBlag/addResource.html" %}
+		</div>
 	{% else %}
 		<p><a href="/devApply/">Apply to post as a developer on this site</a><p>
 	{% endif %}

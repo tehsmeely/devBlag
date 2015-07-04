@@ -153,3 +153,10 @@ code {
 	background: -ms-linear-gradient(top, #9EACBF, #93A1B2);
 	background: linear-gradient(top, #9EACBF, #93A1B2);
 }
+
+
+.floatProjectImg
+{
+	float:right;
+	border-radius: 8px;
+}

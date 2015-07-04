@@ -4,11 +4,7 @@
 
 {% block headerInsert %}
 	<style>
-		.floatProjectImg
-		{
-			float:right;
-			border-radius: 8px;
-		}
+		
 		.noPost{
 			text-align: center;
 		}
@@ -35,7 +31,7 @@
 		{% for post in latestPosts %}
 			<div class="post" style="background-color:#{{post.backgroundColour}}">
 				<!--<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>-->
-				<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{% static post.project.image.filePath %}" width="40" height="40"></a>
+				<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40"></a>
 				<h3>{{post.title}}</h3>
 				{{post.body|safe|linebreaksbr}}
 				<br>

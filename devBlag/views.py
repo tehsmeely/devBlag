@@ -200,6 +200,12 @@ def developerProfile(request, did):  #developer id
 		post.body = handleBody(post.body)
 	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
 
+
+
+
+
+
+
 ##     ##    ###    ##    ## ########  ##       ########    ########   #######  ########  ##    ##
 ##     ##   ## ##   ###   ## ##     ## ##       ##          ##     ## ##     ## ##     ##  ##  ##
 ##     ##  ##   ##  ####  ## ##     ## ##       ##          ##     ## ##     ## ##     ##   ####
@@ -207,6 +213,12 @@ def developerProfile(request, did):  #developer id
 ##     ## ######### ##  #### ##     ## ##       ##          ##     ## ##     ## ##     ##    ##
 ##     ## ##     ## ##   ### ##     ## ##       ##          ##     ## ##     ## ##     ##    ##
 ##     ## ##     ## ##    ## ########  ######## ########    ########   #######  ########     ##
+
+def handlePosts(posts):
+	##Easy function to call handleBody on all post bodies
+	for post in posts:
+		post.body = handleBody(post.body)
+	return posts
 
 def handleBody(body):
 ## Takes the body and handles it to be ready to inject
@@ -412,13 +424,19 @@ def addPost(request, projectID, postID):
 		form = PostForm(request.POST)
 		if form.is_valid():
 			print "Form is Valid"
-			post = form.save(commit=False)
-			#developer = Developer.objects.get(user=getCurrentUser())
-			post.author_id = developer.id
-			post.project_id = project.id
+			if post is None:
+				post = form.save(commit=False)
+				post.author_id = developer.id
+				post.project_id = project.id
+			else:
+				#Updating a post. title, body, backgroundColour
+				post.title = form.cleaned_data["title"]
+				post.body = form.cleaned_data["body"]
+				post.backgroundColour = form.cleaned_data["backgroundColour"]
+
 			post.save()
-			print "finished"
-			return redirect("/addPost/")
+			print "Add post ", post.id
+			return redirect("/post/{}/".format(post.id))
 
 	else:
 		#form = PostForm()
@@ -484,6 +502,7 @@ def logout(request):
    ###    #### ########  ###  ###     ##         #######   ######     ##
 def viewPost(request, postID):
 	post = Post.objects.get(id=postID)
+	post.body = handleBody(post.body)
 	return render(request, "devBlag/post.html", {"post": post})
 
 
@@ -521,30 +540,25 @@ def profile(request):
 	gaeUser = users.get_current_user()
 	if gaeUser is None: # if there isnt a current user somehow, redirect to index
 		redirect("/")
-	
-	#userss = GaeDatastoreUser.objects.all()#str(gaeUser.user_id()))
-	#user = GaeDatastoreUser.objects.get(username = str(gaeUser.user_id()))
-	user = getCurrentUser()
-	devGroup = Group.objects.get(name="developers")
+
 	c = {}
-	print devGroup.id
+	
+	#if developer, get unpublished posts to send to template, None if not
+	unpublishedPosts = None
 
-	for d in user.__dict__:
-		print d
-	print "user: ", user.first_name, user.last_name, "grps: ", user.groups_ids
+	user = getCurrentUser()
 
-	if devGroup.id in user.groups_ids:
-		isDeveloper = True
+	isDeveloper = getIsDeveloper()
+
+	if isDeveloper:
 		developer = Developer.objects.get(user=user)
+		unpublishedPosts = handlePosts(Post.objects.filter(author=developer).filter(publishedDate=None))
+		c.update(getResources(developer, False))
 	else:
-		isDeveloper = False
 		developer = None
 
-	#if developer, get unpublished posts to send to template, None is not
-	unpublishedPosts = None
-	if isDeveloper:
-		unpublishedPosts = Post.objects.filter(author=developer).filter(publishedDate=None)
-		c.update(getResources(developer, False))
+	
+		
 
 	c.update({
 	"user":user,

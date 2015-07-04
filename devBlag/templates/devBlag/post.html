@@ -4,7 +4,18 @@
 
 {% block headerInsert %}
 	<style>
-
+		.editButton
+		{
+			float: right;
+			opacity: 0.5;
+			margin-right: 6px;
+			margin-top: 6px;
+			cursor: pointer;
+		}
+		.editButton:hover
+		{
+			opacity: 1;
+		}
 	</style>
 
 
@@ -17,6 +28,13 @@
 					{"postID": $(this).attr("postID")}
 				)
 			});
+
+			$(".editButton").click(function(){
+				window.location = "/addPost/{{post.project.id}}/{{post.id}}";
+			});
+
+
+
 		});
 	</script>
 {% endblock %}
@@ -28,6 +46,7 @@
 	
 	<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
 			style="background-color:#{{post.backgroundColour}}">
+		<i class="fa fa-pencil fa-lg editButton"></i>
 		<h3>{{post.title}}</h3>
 		{{post.body|safe|linebreaksbr}}
 		<br>
