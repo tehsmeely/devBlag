@@ -114,6 +114,7 @@ STATIC_URL = '/static/'
 
 
 if DEBUG:
+    print "DEBUG. Appplying unsafe CSP"
     CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 # sensible default CPS settings, feel free to modify them
@@ -124,6 +125,16 @@ CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google
 CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com")
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
+
+if DEBUG:
+    print "DEBUG. Appplying unsafe CSP"
+    CSP_STYLE_SRC += ("'unsafe-inline'",)
+    CSP_SCRIPT_SRC += ("'unsafe-inline'",)
+
+
+
+print "csp style src: ", CSP_STYLE_SRC
+print "csp script src: ", CSP_SCRIPT_SRC
 
 
 from djangae.contrib.gauth.settings import *
