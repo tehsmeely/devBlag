@@ -3,7 +3,7 @@
 
 
 
-Add Logging
+Add Logging *-This is special cos GAE* 
 
 ~~ResID is redundant~~ *-removed*
 
