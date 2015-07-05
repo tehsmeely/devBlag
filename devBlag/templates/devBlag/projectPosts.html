@@ -38,6 +38,35 @@
 			border-radius: 5px;
 			
 		}
+
+		.postInfoBar
+		{
+			width: 100%;
+			background-color: #999;
+			overflow: hidden;
+			-webkit-border-bottom-right-radius: 7px;
+			-webkit-border-bottom-left-radius: 7px;
+			-moz-border-radius-bottomright: 7px;
+			-moz-border-radius-bottomleft: 7px;
+			border-bottom-right-radius: 7px;
+			border-bottom-left-radius: 7px;
+			font-size: 0.7em;
+		}
+		.postInfoTags
+		{
+			max-width: 59%;
+		}
+		.postInfoDates
+		{
+			max-width: 39%;
+			float: right;
+		}
+		.postInfoDates p
+		{
+			text-align: right;
+			margin: 0;
+			padding-right: 5px;
+		}
 	</style>
 
 	<script>
@@ -85,7 +114,15 @@
 			<h3>{{post.title}}</h3>
 			{{post.body|safe|linebreaksbr}}
 			<br>
-			Test Link to post:<a href="/post/{{post.id}}/">Here</a>
+			<div class="postInfoBar">
+				<div class="postInfoDates">
+					<!--<p>Created: {{post.createdDate}}</p>-->
+					<p>Published: {{post.publishedDate}}</p>
+				</div>
+				<div class="postInfoTags">
+					{{post.getTags}}
+				</div>				
+			</div>
 		</div>
 		<br>
 	{% endfor %}

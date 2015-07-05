@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from . import settings
 from google.appengine.api import images
+from djangae.fields import SetField
 import scaffold.settings
 
 
@@ -50,10 +51,15 @@ class Post(models.Model):
     publishedDate = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey('Project')
     backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
+    postTags = SetField(models.CharField(max_length=10))
 
     def publish(self):
             self.publishedDate = timezone.now()
             self.save()
+
+    def getTags(self):
+    	##returns a pretty list of the tags in the post
+    	return " ".join(self.postTags)
 
     def __str__(self):
         return self.title

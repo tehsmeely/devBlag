@@ -305,13 +305,17 @@
 	    	<p><u><label for="{{ form.body.id_for_label }}">Body</label></u></p>
 	    	<p>{{ form.body.errors }}</p>
 	    	<p>{{ form.body }}</p>
-	    	<br>{{ form.body.id }}
 	    	<p>
 	    		<label for="{{ form.backgroundColour.id_for_label }}">Background:</label>
 	    		{{ form.backgroundColour }}
 	    		<button id="updateCol">Update</button>
 	    	</p>
 	    	<p>{{ form.backgroundColour.errors }}</p>
+	    	<p>
+	    		<label for="{{ form.postTags.id_for_label }}">Tags (space separate):</label>
+	    		{{ form.postTags }}
+	    		{{ form.postTags.errors }}
+	    	</p>
 
 	    	<input type="submit" value="Submit" onchange="updateColour()"/>
 	   	</form>

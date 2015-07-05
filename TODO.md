@@ -15,7 +15,7 @@ Migrate views to class-based
 Post management.
 Creation vs Publishing to enable editing before release to the world at large
 *-Post specific page? AddPost can redirect here on success then*
-	*-On it!*
+	*-Done, pretty much!*
 
 Resource management.
 Developers can see, manage, [and delete]? their resources
@@ -30,6 +30,7 @@ Post Comments
 Ideas:
 
 Post tags
+    *-added in a basic format, might be improved upon*
 ~~User chosen post background colours - need a non-intrusive way of picking~~
 	~~perhaps a dropdown list of a limited set of presets~~
 	*-Added, a very sexy JS colourpicker*

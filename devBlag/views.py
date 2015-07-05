@@ -413,6 +413,7 @@ def addPost(request, projectID, postID):
 	else:
 		try:
 			post = Post.objects.get(id=postID)
+			print "Editing a post"
 		except ObjectDoesNotExist:
 			print "ERROR: Invalid post ID, defaulting to blank"
 			post = None
@@ -429,10 +430,11 @@ def addPost(request, projectID, postID):
 				post.author_id = developer.id
 				post.project_id = project.id
 			else:
-				#Updating a post. title, body, backgroundColour
+				#Updating a post. title, body, backgroundColour, postTags
 				post.title = form.cleaned_data["title"]
 				post.body = form.cleaned_data["body"]
 				post.backgroundColour = form.cleaned_data["backgroundColour"]
+				post.postTags = forms.cleaned_data["postTags"]
 
 			post.save()
 			print "Add post ", post.id
@@ -441,7 +443,7 @@ def addPost(request, projectID, postID):
 	else:
 		#form = PostForm()
 		if post is not None:
-			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour})
+			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour, "postTags": post.postTags})
 		else:
 			print "NEW FORM"
 			form = PostForm(initial={"backgroundColour":project.default_backgroundColour})
@@ -503,6 +505,7 @@ def logout(request):
 def viewPost(request, postID):
 	post = Post.objects.get(id=postID)
 	post.body = handleBody(post.body)
+	print post.postTags
 	return render(request, "devBlag/post.html", {"post": post})
 
 

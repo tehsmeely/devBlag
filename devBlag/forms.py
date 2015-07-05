@@ -16,7 +16,8 @@ class PostForm(forms.ModelForm):
 
 	class Meta:
 		model = Post
-		fields = ('title', 'body', "backgroundColour")
+		fields = ('title', 'body', "backgroundColour", "postTags")
+
 
 
 ###For the below, involving file/image uploads
