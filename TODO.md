@@ -22,8 +22,8 @@ Developers can see, manage, [and delete]? their resources
 
 Post Entry
 Project Creation
-User Creation
-User -> Developer upgrading
+User Creation *-automatic, i dont need to worry about that!*
+User -> Developer upgrading *-a link on the profile page*
 Post Comments
 
 
@@ -32,7 +32,7 @@ Ideas:
 Post tags
 ~~User chosen post background colours - need a non-intrusive way of picking~~
 	~~perhaps a dropdown list of a limited set of presets~~
-	*-Added*
+	*-Added, a very sexy JS colourpicker*
 
 ~~CSRF~~ *-sorted*
 

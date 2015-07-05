@@ -3,6 +3,9 @@
 {% load staticfiles %}
 
 {% block headerInsert %}
+	
+	<title>DevBlag - Profile</title>
+
 	<style>
 		.userInfo
 		{
@@ -36,17 +39,14 @@
 			margin-left: auto;
 			margin-right: auto;
 			overflow: hidden;
-		}
-
-		.postHeaderInner
-		{
+			position: relative;
 			-webkit-border-radius: 7px;
 			-moz-border-radius: 7px;
 			border-radius: 7px;
 			cursor: pointer;
 		}
 
-		.postHeaderInner:hover
+		.postHeader:hover
 		{
 			opacity: 0.8;
 		}
@@ -158,12 +158,10 @@
 			{% if unpublishedPosts|length > 0 %}
 				<h3>Your currently unpublished posts</h3>
 				{% for post in unpublishedPosts %}
-					<div class="postHeader" style="" postID={{post.id}}>
-						<div class="postHeaderInner" style="background-color: {{post.backgroundColour}}">
-							<p class="postTitle">{{post.title}}</p>
-							<p class="postDate">{{post.createdDate}}</p>
-						</div>
-						<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40"></a>
+					<div class="postHeader"postID={{post.id}} style="background-color: {{post.backgroundColour}}">
+						<p class="postTitle">{{post.title}}</p>
+						<p class="postDate">{{post.createdDate}}</p>
+						<!--<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40" style="top: 0;"></a>-->
 					</div>
 				{% endfor %}
 			{% endif %}
