@@ -571,21 +571,43 @@ def profile(request):
 	print "developer", developer
 	return render(request, "devBlag/profile.html", c)
 
+##     ## ########  ########     ###    ######## ########    ########  ########   #######  ######## #### ##       ########
+##     ## ##     ## ##     ##   ## ##      ##    ##          ##     ## ##     ## ##     ## ##        ##  ##       ##
+##     ## ##     ## ##     ##  ##   ##     ##    ##          ##     ## ##     ## ##     ## ##        ##  ##       ##
+##     ## ########  ##     ## ##     ##    ##    ######      ########  ########  ##     ## ######    ##  ##       ######
+##     ## ##        ##     ## #########    ##    ##          ##        ##   ##   ##     ## ##        ##  ##       ##
+##     ## ##        ##     ## ##     ##    ##    ##          ##        ##    ##  ##     ## ##        ##  ##       ##
+ #######  ##        ########  ##     ##    ##    ########    ##        ##     ##  #######  ##       #### ######## ########
 
 ###VIEW /updateProfile/
+VALID_UPDATEPROFILE_METHODS = ["updateFirstName", "updateLastName", "updateDisplayName"]
 @login_required()
 def updateProfile(request):
 	returnContext = {}
 	returnContext["nameUpdated"] = False
 	if request.method == "GET":
 		#context = RequestContext(request)
-		newName = request.GET.get("newName", None)
+		newVal = request.GET.get("newVal", None)
+		method = request.GET.get("method", None)
 
-		if newName is not None:
-			print "NEW NAME!"
-			returnContext["nameUpdated"] = True
-			#return HttpResponse(json.dumps(returnContext))
-			return JsonResponse(returnContext)
+		if newVal is not None and method is not None:
+
+			print "Updating profile: {} = {}!".format(method, newVal)
+			if method in VALID_UPDATEPROFILE_METHODS:
+				user = getCurrentUser()
+				if method == "updateFirstName":
+					user.first_name = newVal
+					user.save()
+				elif method == "updateLastName":
+					user.last_name = newVal
+					user.save()
+				else: #method == "updateDisplayName"
+					developer = getDeveloper()
+					developer.displayName = newVal
+					developer.save()
+
+				returnContext["nameUpdated"] = True
+				return JsonResponse(returnContext)
 
 	##,function(){function t(t){var i,s,n=t.ownerDocument.defaultView?t.ownerDoc
 

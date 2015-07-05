@@ -124,6 +124,19 @@ code {
 	border-bottom-left-radius: 7px;
 }
 
+.editButton
+{
+	float: right;
+	opacity: 0.5;
+	margin-right: 6px;
+	margin-top: 6px;
+	cursor: pointer;
+}
+.editButton:hover
+{
+	opacity: 1;
+}
+
 .projectAddPostButton
 {
 	float: right;

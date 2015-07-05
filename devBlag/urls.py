@@ -12,9 +12,11 @@ urlpatterns = [
     url(r'^publishPost/$', views.publishPost),
     url(r'^addPost/(?P<projectID>[0-9]+)/(?P<postID>[0-z]+)/$', views.addPost),
     url(r'^profile/$', views.profile),
-    url(r'^updateProfile/$', views.updateProfile),
+    #url(r'^updateProfile/$', views.updateProfile),
     url(r'^addResource/$', views.addResource),
     url(r'^getResources/$', views.getResources2),
+    ## AJAX editing routes
+    url(r'^ajaxRouting/updateProfile/$', views.updateProfile),
     ##  Test URLs:
     url(r'^test/jqUIdialogs/$', views.dialogTest),
 ]

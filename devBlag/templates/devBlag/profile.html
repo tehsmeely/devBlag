@@ -76,55 +76,59 @@
 	<script>
 		$(function(){
 
-			$AJAX_URL_EDIT = "/updateProfile/";
+			
 
-			$(".editbutton").click(function(){
-				var state = $(this).attr("state");
-				var parent = $(this).parent();
-				var span = $("span", parent);
+			// $(".editbutton").click(function(){
+			// 	var state = $(this).attr("state");
+			// 	var parent = $(this).parent();
+			// 	var span = $("span", parent);
 
-				if (state == "0") //Edit state
-				{
+
+			// 	if (state == "0") //Edit state
+			// 	{
 					
-					var original = span.attr("actualVal");
-					$(this).switchClass("fa-pencil", "fa-check");
-					span.empty();
-					span.append("<input type='text' value='" + original + "'>");
-					$(this).attr("state", "1");
+			// 		var original = span.attr("actualVal");
+			// 		$(this).switchClass("fa-pencil", "fa-check");
+			// 		span.empty();
+			// 		span.append("<input type='text' value='" + original + "'>");
+			// 		$(this).attr("state", "1");
 
-				} else { //confirm state
+			// 	} else { //confirm state
 
-					//get value, store that in "actualVal".
-					//convert to blank message if blank when
-					//displaying in span
+			// 		//get value, store that in "actualVal".
+			// 		//convert to blank message if blank when
+			// 		//displaying in span
 
-					var newVal = $("input", span).val();
-					var editButton = $(this);
-					console.log(newVal);
-
-					
-
-					//AJAX
-					$.get($AJAX_URL_EDIT, {"newName": newVal}, function(data){
-						if (newVal == ""){
-							var spanVal = "(blank - displays as full name)";
-						} else {
-							var spanVal = newVal;
-						} 
-						span.html(spanVal);
-						span.attr("actualVal", newVal);
-						editButton.switchClass("fa-check", "fa-pencil");
-						editButton.attr("state", "0");
-					});
+			// 		var newVal = $("input", span).val();
+			// 		var editButton = $(this);
+			// 		var method = span.attr("method")
+			// 		console.log(newVal);
 
 					
 
-				}
-			})
+			// 		//AJAX
+			// 		$.get($AJAX_URL_EDIT, {"method" : method,"newVal": newVal}, function(data){
+			// 			if (newVal == ""){
+			// 				//var spanVal = "(blank - displays as full name)";
+			// 				var spanVal = span.attr("blankVal");
+			// 			} else {
+			// 				var spanVal = newVal;
+			// 			} 
+			// 			span.html(spanVal);
+			// 			span.attr("actualVal", newVal);
+			// 			editButton.switchClass("fa-check", "fa-pencil");
+			// 			editButton.attr("state", "0");
+			// 		});
+
+					
+
+			// 	}
+			// })
 
 			$(".postHeader").click(function(){
 				window.location = "/post/" + $(this).attr("postID");
 			})
+
 
 		})
 	</script>
@@ -136,7 +140,14 @@
 	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURLPath %}">{% endif %}
 	
 	<div class="userInfo">
-		<p>Name: <span>{{user.first_name}} {{user.last_name}}</span></p>
+		<p>First Name: <span id="firstName" actualVal="{{user.first_name}}" blankVal="(blank)" method="updateFirstName" route="updateProfile">
+		{% if user.first_name == "" %}(blank){% else %}{{user.first_name}}{% endif %}</span>
+		<i class="fa fa-pencil editButton" id="editFirstName" state="0"></i></p>
+
+		<p>Last Name: <span id="lastName" actualVal="{{user.last_name}}"  blankVal="(blank)" method="updateLastName" route="updateProfile">
+		{% if user.last_name == "" %}(blank){% else %}{{user.last_name}}{% endif %}</span>
+		<i class="fa fa-pencil editButton" id="editLastName" state="0"></i></p></p>
+
 		<p>Email Address: <span>{{user.email}}</span></p>
 		<p>Date Joined: {{user.date_joined}}</i></p>
 	</div>
@@ -146,7 +157,7 @@
 		<p>You are a registered developer on this site</p>
 		<p>See your <a href="/developer/{{developer.user.id}}/">developer page</a></p>
 		<br>
-		<p>Developer Display Name: <span actualVal="{{developer.displayName}}">
+		<p>Developer Display Name: <span actualVal="{{developer.displayName}}" blankVal="(blank - displays as full name)"  method="updateDisplayName" route="updateProfile">
 			{% if developer.displayName == "" %}(blank - displays as full name)
 			{% else %} {{developer.displayName}}
 			{% endif %}</span> <i class="fa fa-pencil editButton" state="0"></i></p>
