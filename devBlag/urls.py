@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^getResources/$', views.getResources2),
     ## AJAX editing routes
     url(r'^ajaxRouting/updateProfile/$', views.updateProfile),
+    url(r'^ajaxRouting/getPosts/$', views.getPosts),
     ##  Test URLs:
     url(r'^test/jqUIdialogs/$', views.dialogTest),
 ]

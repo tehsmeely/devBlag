@@ -106,6 +106,7 @@
 	</style>
 
 	<script>
+		$AJAX_POST_GET_URL = "/ajaxRouting/getPosts/";
 		$(function(){
 			$('pre code').each(function(i, block) {
 				hljs.highlightBlock(block);
@@ -113,6 +114,17 @@
 
 			$("#sortDirectionButton").click(function(){
 				$(this).toggleClass("fa-caret-down fa-caret-up");
+			})
+
+
+			$("#testGET").click(function(){
+				$.get(
+					$AJAX_POST_GET_URL,
+					{"projectID": {{project.id}}},
+					function(data){
+						console.log(data);
+					}
+				)
 			})
 		})
 	</script>
@@ -155,7 +167,9 @@
 			</select>
 			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton"></i></p>
 		</div>
-		<div class="fBarLeft"></div>
+		<div class="fBarLeft">
+			<button id="testGET">test Get</button>
+		</div>
 	</div>
 {% endblock %}
 {% block container %}

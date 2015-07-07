@@ -5,7 +5,7 @@ from django.template import RequestContext
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-#from django.core.serializers import serialize
+from django.core.serializers import serialize
 from google.appengine.api import users
 from google.appengine.api.images import get_serving_url
 from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
@@ -182,6 +182,40 @@ def projectPosts(request, pid): #project id
 	}
 
 	return render(request, 'devBlag/projectPosts.html', c)
+
+ ######   ######## ########    ########   #######   ######  ########  ######
+##    ##  ##          ##       ##     ## ##     ## ##    ##    ##    ##    ##
+##        ##          ##       ##     ## ##     ## ##          ##    ##
+##   #### ######      ##       ########  ##     ##  ######     ##     ######
+##    ##  ##          ##       ##        ##     ##       ##    ##          ##
+##    ##  ##          ##       ##        ##     ## ##    ##    ##    ##    ##
+ ######   ########    ##       ##         #######   ######     ##     ######
+
+def getPosts(request):
+	projectID = request.GET.get("projectID")
+	project = Project.objects.get(id=projectID)
+	#sort by newest first "nf" or oldest first "of"
+	sortCrit = request.GET.get("order", DEFAULT_POST_ORDER)
+	if sortCrit not in ["nf", "of"]: #handle erroneous query values
+		sortCrit = DEFAULT_POST_ORDER
+
+	orderByCrit = request.GET.get("orderBy", DEFAULT_POST_ORDER_BY)
+	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
+		orderByCrit = DEFAULT_POST_ORDER_BY
+
+	if sortCrit == "of":
+		order_byStr = orderByCrit
+	else:
+		order_byStr = "-" + orderByCrit
+
+	print order_byStr
+
+	posts = Post.objects.filter(project=project).exclude(publishedDate=None).order_by(order_byStr)
+
+	
+
+	return HttpResponse(request, serialize("xml", posts))
+
 
 
 ########  ######## ##     ## ######## ##        #######  ########  ######## ########
