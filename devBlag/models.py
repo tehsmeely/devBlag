@@ -5,6 +5,7 @@ from . import settings
 from google.appengine.api import images
 from djangae.fields import SetField
 import scaffold.settings
+import json
 
 
 class Developer(models.Model):
@@ -15,6 +16,14 @@ class Developer(models.Model):
 
 	def __str__(self):
 		return str(self.user.first_name) + " " + str(self.user.last_name)
+
+	def as_JSON(self):
+		c = {
+		"user": self.user.username,
+		"thumbnail": self.thumbnail.imageFile.url,
+		"displayName": self.displayName
+		}
+		return c
 	
 
 #mapping for many-to-many recording of developers to projects
@@ -40,6 +49,19 @@ class Project(models.Model):
 	def __str__(self):
 		return self.title
 
+	def as_JSON(self):
+		c = {
+		"title" : self.title,
+		"description" : self.description,
+		"image" : self.image.imageFile.url,
+		"dateStarted" : self.dateStarted.strftime("%B %w, %Y, %I:%M %p"),
+		"inProgress" : self.inProgress,
+		"language" : self.language,
+		"engine" : self.engine,
+		"default_backgroundColour" : self.default_backgroundColour
+		}
+		return c
+
 
 
 class Post(models.Model):
@@ -61,6 +83,18 @@ class Post(models.Model):
     	##returns a pretty list of the tags in the post
     	return " ".join(self.postTags)
 
+    def as_JSON(self):
+    	c = {
+    	"author": self.author.as_JSON(),
+    	"title": self.title,
+    	"body" : self.body,
+	    "createdDate" : self.createdDate.strftime("%B %w, %Y, %I:%M %p"),
+	    "publishedDate" : self.publishedDate.strftime("%B %w, %Y, %I:%M %p"),
+	    "project" : self.project.as_JSON(),
+	    "backgroundColour" : self.backgroundColour,
+	    "postTags" : self.getTags()
+    	}
+    	return c
     def __str__(self):
         return self.title
 
