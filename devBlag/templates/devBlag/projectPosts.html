@@ -126,6 +126,31 @@
 					}
 				)
 			})
+
+
+			function generatePostDiv(post, cornerClass)
+			{
+
+				var divStr = "" + 
+				'<div class="post "' + cornerClass +
+				'style="background-color:#' + '">' +
+					'<h3>' + post.title + '</h3>' + 
+					post.body +
+					'<br>' +
+					'<div class="postInfoBar">' +
+						'<div class="postInfoDates">' +
+							'<p>Published: ' + post.publishedDate + '</p>' +
+						'</div>' +
+						'<div class="postInfoTags">' +
+							post.tags +
+						'</div>'				 +
+					'</div>' +
+				'</div>' +
+				'<br>' 
+
+
+
+			}
 		})
 	</script>
 {% endblock %}
@@ -168,7 +193,7 @@
 			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton"></i></p>
 		</div>
 		<div class="fBarLeft">
-			<button id="testGET">test Get</button>
+			<input id="tagFilterInput" type="text"></input><button id="testGET">test Get</button>
 		</div>
 	</div>
 {% endblock %}

@@ -212,9 +212,13 @@ def getPosts(request):
 
 	posts = Post.objects.filter(project=project).exclude(publishedDate=None).order_by(order_byStr)
 
+	for item in posts[0].as_JSON().items():
+		print item
 	
 
-	return HttpResponse(request, serialize("xml", posts))
+	return JsonResponse({"posts": [post.as_JSON() for post in posts]})
+	#return JsonResponse(posts[0].as_JSON())
+
 
 
 
@@ -540,6 +544,7 @@ def viewPost(request, postID):
 	post = Post.objects.get(id=postID)
 	post.body = handleBody(post.body)
 	print post.postTags
+	print post.as_JSON()
 	return render(request, "devBlag/post.html", {"post": post})
 
 
