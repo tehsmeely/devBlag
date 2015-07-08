@@ -216,7 +216,7 @@ def getPosts(request):
 		print item
 	
 
-	return JsonResponse({"posts": [post.as_JSON() for post in posts]})
+	return JsonResponse({"POSTS": [post.as_JSON() for post in posts]})
 	#return JsonResponse(posts[0].as_JSON())
 
 

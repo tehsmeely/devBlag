@@ -121,8 +121,18 @@
 				$.get(
 					$AJAX_POST_GET_URL,
 					{"projectID": {{project.id}}},
-					function(data){
+					function(data, textStatus, jqXHR ){
 						console.log(data);
+						var postCont = $("#postContainer");
+						postCont.empty();
+						if (data.POSTS.length>0) {
+							for (iPost in data.POSTS){
+								if (iPost%2 === 0) { var cornerClass = "round7_tr_bl"; }
+								else { var cornerClass = "round7_tl_br"; }
+								var post = data.POSTS[iPost];
+								postCont.append(generatePostDiv(post, cornerClass));
+							}
+						}
 					}
 				)
 			})
@@ -132,9 +142,9 @@
 			{
 
 				var divStr = "" + 
-				'<div class="post "' + cornerClass +
-				'style="background-color:#' + '">' +
-					'<h3>' + post.title + '</h3>' + 
+				'<div class="post ' + cornerClass +
+				'" style="background-color:#' +post.backgroundColour + '">' +
+					'<h3>' + post.title + ' AJAX </h3>' + 
 					post.body +
 					'<br>' +
 					'<div class="postInfoBar">' +
@@ -143,12 +153,11 @@
 						'</div>' +
 						'<div class="postInfoTags">' +
 							post.tags +
-						'</div>'				 +
+						'</div>' +
 					'</div>' +
 				'</div>' +
-				'<br>' 
-
-
+				'<br>';
+				return divStr;
 
 			}
 		})
@@ -199,6 +208,7 @@
 {% endblock %}
 {% block container %}
 	<br>
+	<span id="postContainer">
 	{% for post in posts %}
 		<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
 			style="background-color:#{{post.backgroundColour}}">
@@ -217,5 +227,6 @@
 		</div>
 		<br>
 	{% endfor %}
+	</span">
 
 {% endblock %}
