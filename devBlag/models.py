@@ -89,7 +89,7 @@ class Post(models.Model):
     	"title": self.title,
     	"body" : self.body,
 	    "createdDate" : self.createdDate.strftime("%B %w, %Y, %I:%M %p"),
-	    "publishedDate" : self.publishedDate.strftime("%B %w, %Y, %I:%M %p"),
+	    "publishedDate" : "" if self.publishedDate is None else self.publishedDate.strftime("%B %w, %Y, %I:%M %p"),
 	    "project" : self.project.as_JSON(),
 	    "backgroundColour" : self.backgroundColour,
 	    "postTags" : self.getTags()

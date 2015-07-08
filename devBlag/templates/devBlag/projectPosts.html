@@ -113,14 +113,24 @@
 			});
 
 			$("#sortDirectionButton").click(function(){
-				$(this).toggleClass("fa-caret-down fa-caret-up");
+				if ($(this).attr("star") == "down")
+				{
+					$(this).switchClass("fa-caret-down fa-caret-up");
+					$(this).attr("state", "up")
+				} else {
+					$(this).toggleClass("fa-caret-up fa-caret-down");
+					$(this).attr("state", "down")
+				}
 			})
 
 
 			$("#testGET").click(function(){
+				var getCriteria = getFilterCriteria();
+				getCriteria.projectID = "{{project.id}}";
+				console.log(getCriteria);
 				$.get(
 					$AJAX_POST_GET_URL,
-					{"projectID": {{project.id}}},
+					getCriteria,
 					function(data, textStatus, jqXHR ){
 						console.log(data);
 						var postCont = $("#postContainer");
@@ -137,22 +147,32 @@
 				)
 			})
 
+			function getFilterCriteria()
+			{
+				var orderCriterion = $("#orderCriterion").val();
+				var tagFilterInput = $("#tagFilterInput").val();
+				var orderDirection = $("#sortDirectionButton").attr("state");
+				return {"orderCriterion": orderCriterion,
+				"tagFilterInput": tagFilterInput,
+				"orderDirection": orderDirection};
+			}
 
 			function generatePostDiv(post, cornerClass)
 			{
-
+				//linebreak regex from:
+				//http://stackoverflow.com/questions/784539/how-do-i-replace-all-line-breaks-in-a-string-with-br-tags
 				var divStr = "" + 
 				'<div class="post ' + cornerClass +
 				'" style="background-color:#' +post.backgroundColour + '">' +
 					'<h3>' + post.title + ' AJAX </h3>' + 
-					post.body +
+					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') + 
 					'<br>' +
 					'<div class="postInfoBar">' +
 						'<div class="postInfoDates">' +
 							'<p>Published: ' + post.publishedDate + '</p>' +
 						'</div>' +
 						'<div class="postInfoTags">' +
-							post.tags +
+							post.postTags +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -195,11 +215,11 @@
 	<div class="filterBar">
 		<div class="fBarRight">
 			<p>Order By:
-			<select name"OrderCriterion">
+			<select id="orderCriterion" name"orderCriterion">
 				<option value="createdDate">Created Date</option>
 				<option value="publishedDate">Published Date</option>
 			</select>
-			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton"></i></p>
+			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton" state="down"></i></p>
 		</div>
 		<div class="fBarLeft">
 			<input id="tagFilterInput" type="text"></input><button id="testGET">test Get</button>
@@ -227,6 +247,7 @@
 		</div>
 		<br>
 	{% endfor %}
-	</span">
+	</span>
+
 
 {% endblock %}

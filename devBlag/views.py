@@ -199,21 +199,27 @@ def getPosts(request):
 	if sortCrit not in ["nf", "of"]: #handle erroneous query values
 		sortCrit = DEFAULT_POST_ORDER
 
-	orderByCrit = request.GET.get("orderBy", DEFAULT_POST_ORDER_BY)
+	orderByCrit = request.GET.get("orderDirection", "down")
 	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
 		orderByCrit = DEFAULT_POST_ORDER_BY
 
-	if sortCrit == "of":
+	if sortCrit == "down":
 		order_byStr = orderByCrit
 	else:
 		order_byStr = "-" + orderByCrit
 
 	print order_byStr
 
-	posts = Post.objects.filter(project=project).exclude(publishedDate=None).order_by(order_byStr)
+	tagFilters = request.GET.get("tagFilterInput", "").split(" ")
 
-	for item in posts[0].as_JSON().items():
-		print item
+
+	posts = Post.objects.filter(project=project).exclude(publishedDate=None)
+
+	if len(tagFilters) > 0 and tagFilters != [""]:
+		posts = posts.filter(postTags__in=tagFilters)
+
+	posts = handlePosts(posts.order_by(order_byStr))
+
 	
 
 	return JsonResponse({"POSTS": [post.as_JSON() for post in posts]})
