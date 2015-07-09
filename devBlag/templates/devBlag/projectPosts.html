@@ -121,10 +121,15 @@
 					$(this).toggleClass("fa-caret-up fa-caret-down");
 					$(this).attr("state", "down")
 				}
+				getPostJSON();
 			})
 
+			$("#filterButton").click(getPostJSON);
+			$("#orderCriterion").change(getPostJSON);
 
-			$("#testGET").click(function(){
+
+			function getPostJSON()
+			{
 				var getCriteria = getFilterCriteria();
 				getCriteria.projectID = "{{project.id}}";
 				console.log(getCriteria);
@@ -145,7 +150,7 @@
 						}
 					}
 				)
-			})
+			}
 
 			function getFilterCriteria()
 			{
@@ -216,13 +221,13 @@
 		<div class="fBarRight">
 			<p>Order By:
 			<select id="orderCriterion" name"orderCriterion">
-				<option value="createdDate">Created Date</option>
 				<option value="publishedDate">Published Date</option>
+				<option value="createdDate">Created Date</option>
 			</select>
 			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton" state="down"></i></p>
 		</div>
 		<div class="fBarLeft">
-			<input id="tagFilterInput" type="text"></input><button id="testGET">test Get</button>
+			Filter by tags: <input id="tagFilterInput" type="text"></input><button id="filterButton">filter</button>
 		</div>
 	</div>
 {% endblock %}

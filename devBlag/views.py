@@ -203,7 +203,7 @@ def getPosts(request):
 	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
 		orderByCrit = DEFAULT_POST_ORDER_BY
 
-	if sortCrit == "down":
+	if sortCrit == "up":
 		order_byStr = orderByCrit
 	else:
 		order_byStr = "-" + orderByCrit
