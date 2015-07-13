@@ -20,7 +20,7 @@ Creation vs Publishing to enable editing before release to the world at large
 Resource management.
 Developers can see, manage, [and delete]? their resources
 
-Post Entry
+Post Entry *-pretty much sorted*
 Project Creation
 User Creation *-automatic, i dont need to worry about that!*
 User -> Developer upgrading *-a link on the profile page*
@@ -45,3 +45,4 @@ Enhance current "handle body" which is basically markup
 On LIVE:
 
     Move all style and script to external files for CSP raisins
+    See about getting a version of JQueryUI with just the used widgets 
