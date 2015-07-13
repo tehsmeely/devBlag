@@ -575,6 +575,27 @@ def publishPost(request):
 	
 	return JsonResponse({"SUCCESS":success})
 
+
+########  ######## ##       ######## ######## ########    ########   #######   ######  ########
+##     ## ##       ##       ##          ##    ##          ##     ## ##     ## ##    ##    ##
+##     ## ##       ##       ##          ##    ##          ##     ## ##     ## ##          ##
+##     ## ######   ##       ######      ##    ######      ########  ##     ##  ######     ##
+##     ## ##       ##       ##          ##    ##          ##        ##     ##       ##    ##
+##     ## ##       ##       ##          ##    ##          ##        ##     ## ##    ##    ##
+########  ######## ######## ########    ##    ########    ##         #######   ######     ##
+
+def deletePost(request):
+	success = False
+	if request.method == "GET":
+		postID = request.GET.get("postID", None)
+		if postID is not None:
+			post = Post.objects.get(id=postID)
+			post.delete()
+			success = True
+	
+	
+	return JsonResponse({"SUCCESS":success})
+
 ########  ########   #######  ######## #### ##       ########
 ##     ## ##     ## ##     ## ##        ##  ##       ##
 ##     ## ##     ## ##     ## ##        ##  ##       ##

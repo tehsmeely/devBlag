@@ -7,7 +7,11 @@
 	<title>DevBlag - Post: {{post.title}}</title>
 
 	<style>
-		
+		.button{
+			height: 3em;
+			width: 9em;
+			font-size: 0.9em;
+		}
 	</style>
 
 
@@ -24,11 +28,28 @@
 				)
 			});
 
+			$("#deleteButton").click(function(){
+				$.get(
+					"/deletePost/",
+					{"postID": $(this).attr("postID")},
+					function(){
+						window.location = "/profile/";
+					}
+				)
+			});
+
+
 			$(".editButton").click(function(){
 				window.location = "/addPost/{{post.project.id}}/{{post.id}}";
 			});
 
+			$("#publishButton").button({
+				icons:{ primary: "ui-icon-check" }
+			})
 
+			$("#deleteButton").button({
+				icons:{ primary: "ui-icon-trash" }
+			})
 
 		});
 	</script>
@@ -47,7 +68,10 @@
 		<br>
 		<p>Created Date: {{post.createdDate}}</p>
 		{% if post.publishedDate == none %}
-			<p><button id="publishButton" postID="{{post.id}}">Publish</button></p>
+			<p>
+				<button class="button" id="publishButton" postID="{{post.id}}">Publish</button>
+				<button class="button" id="deleteButton" postID="{{post.id}}">Delete</button>
+			</p>
 		{% else %}
 			<p>Published Date: {{post.publishedDate}}</p>
 		{% endif %}
