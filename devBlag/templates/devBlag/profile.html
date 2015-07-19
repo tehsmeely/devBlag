@@ -135,6 +135,7 @@
 			margin-bottom: auto;
 		}
 
+
 	</style>
 
 
@@ -207,6 +208,34 @@
 				window.location = "/post/" + $(this).attr("postID");
 			});
 
+			$("#newProjectButton").button({
+				icons:{ primary: "ui-icon-plusthick" }
+			});
+
+
+			$("#dialog").dialog({
+				autoOpen: false,
+				resizable: false,
+				width: "auto"
+			});
+			$(".infoViewBox").on("click", function(e) {
+				e.preventDefault();
+				//$("#dialog").html("<img src='" + $(this).prop("href") + "' width='" + $(this).attr("data-width") + "' height='" + $(this).attr("data-height") + "'>");
+				var src = /*"192.168.0.6" + */$(this).attr("url")
+				console.log(src);
+				$("#dialog").html("<img src='" + src + "' >");
+				$("#dialog").dialog("option", "position", {
+					my: "center",
+					at: "center",
+					of: "#resTable_image"
+				});
+				if ($("#dialog").dialog("isOpen") == false) {
+					$("#dialog").dialog("open");
+				}
+			});
+
+
+
 
 		})
 	</script>
@@ -264,10 +293,10 @@
 			{% else %}
 				<p>You arent the creator of any projects</p>
 			{% endif %}
-				<br>
-				<p><a href="/createProject/">Create Project</a></p>
+				<p><button style="font-size:0.8em;" id="newProjectButton" postID="{{post.id}}">New Project</button></p>
 			{% if unpublishedPosts|length > 0 %}
-				<h3>Your currently unpublished posts</h3>
+				<br>
+				<h3>Your Currently Unpublished Posts</h3>
 				{% for post in unpublishedPosts %}
 					<div class="postHeader"postID={{post.id}} style="background-color: {{post.backgroundColour}}">
 						<p class="postTitle">{{post.title}}</p>
@@ -276,17 +305,18 @@
 					</div>
 				{% endfor %}
 			{% endif %}
-
+			<br>
 			<h3>Your Resources</h3>
+			<div id="dialog" title=""></div>
 			<h4>Images</h4>
 			{% if Resource_image.mine|length > 0 %}
-				<table class="infoTable">
+				<table class="infoTable"  id="resTable_image">
 					{% for resource in Resource_image.mine %}
 						<tr class="infoBox" resourceID="{{resource.id}}">
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox">
+							<td class="infoViewBox" url="{{resource.getServingURLPath}}">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox">

@@ -549,9 +549,7 @@ def logout(request):
    ###    #### ########  ###  ###     ##         #######   ######     ##
 def viewPost(request, postID):
 	#post = Post.objects.get(id=postID)
-	print "gerr"
 	post = get_object_or_404(Post, id=postID)
-	print "Arguh?"
 
 	#A user that is not the author of an unpublished post cannot see it.
 	# check for this and redirect if true

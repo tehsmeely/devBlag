@@ -7,11 +7,7 @@
 	<title>DevBlag - Post: {{post.title}}</title>
 
 	<style>
-		.button{
-			height: 3em;
-			width: 9em;
-			font-size: 0.9em;
-		}
+
 
 		.projectLinkBox
 		{
@@ -107,7 +103,7 @@
 		{% if post.publishedDate == none %}
 			<!-- as per the view serving function, a non-author cannot see the unpublished post -->
 			<p>
-				<button class="button" id="publishButton" postID="{{post.id}}">Publish</button>
+				<button style="font-size:0.8em;" id="publishButton" postID="{{post.id}}">Publish</button>
 			</p>
 		{% else %}
 			<p>Published Date: {{post.publishedDate}}</p>
