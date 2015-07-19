@@ -614,6 +614,7 @@ def profile(request):
 	
 	#if developer, get unpublished posts to send to template, None if not
 	unpublishedPosts = None
+	createdProjects = None
 
 	user = getCurrentUser()
 
@@ -622,6 +623,7 @@ def profile(request):
 	if isDeveloper:
 		developer = Developer.objects.get(user=user)
 		unpublishedPosts = handlePosts(Post.objects.filter(author=developer).filter(publishedDate=None))
+		createdProjects = Project.objects.filter(creator=developer)
 		c.update(getResources(developer, False))
 	else:
 		developer = None
@@ -633,7 +635,8 @@ def profile(request):
 	"user":user,
 	"isDeveloper":isDeveloper,
 	"developer": developer,
-	"unpublishedPosts": unpublishedPosts
+	"unpublishedPosts": unpublishedPosts,
+	"createdProjects": createdProjects
 	})
 	
 

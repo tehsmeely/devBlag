@@ -44,6 +44,7 @@ class Project(models.Model):
 	inProgress = models.BooleanField(default=True)
 	language = models.CharField(max_length=200, blank=True)
 	engine = models.CharField(max_length=200, blank=True)
+	creator = models.ForeignKey("Developer")
 	default_backgroundColour = models.CharField(max_length=6, default="ffffff", help_text="The original default colour for new posts")#colour in hex "FFFFFF" with no #
 
 	def __str__(self):
@@ -58,6 +59,7 @@ class Project(models.Model):
 		"inProgress" : self.inProgress,
 		"language" : self.language,
 		"engine" : self.engine,
+		"creator": self.creator.as_JSON(),
 		"default_backgroundColour" : self.default_backgroundColour
 		}
 		return c

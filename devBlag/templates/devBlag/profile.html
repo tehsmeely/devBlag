@@ -58,8 +58,7 @@
 
 		p.postDate
 		{
-			color: #13
-			1;
+			color: #131;
 		}
 
 
@@ -68,6 +67,72 @@
 			width: 100%;
 			height: 5px;
 			background-color: #eee;
+		}
+		.infoTable
+		{
+			width: 80%;
+			margin-left: auto;
+			margin-right: auto;
+			border-spacing: 0 0.6em;
+			border-collapse: separate;
+		}
+		.infoTable td{
+			padding-top: 0.2em;
+			padding-bottom: 0.2em;
+		}
+		td.infoTextBox
+		{
+			width: 70%;
+			background-color: #eee;
+			margin: 0;
+			height: 100%;
+			-webkit-border-top-left-radius: 5px;
+			-webkit-border-bottom-left-radius: 5px;
+			-moz-border-radius-topleft: 5px;
+			-moz-border-radius-bottomleft: 5px;
+			border-top-left-radius: 5px;
+			border-bottom-left-radius: 5px;
+		}
+		td.infoDeleteBox
+		{	
+			width: 15%;
+			text-align: center;
+			/*display: inline-block;*/
+			/*float:right;*/
+			height: 100%;
+			background-color: #fdd;
+			cursor: pointer;
+			margin: 0;
+			-webkit-border-top-right-radius: 5px;
+			-webkit-border-bottom-right-radius: 5px;
+			-moz-border-radius-topright: 5px;
+			-moz-border-radius-bottomright: 5px;
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px;
+		}
+		td.infoDeleteBox:hover
+		{
+			background-color: #ecc;
+		}
+		td.infoViewBox
+		{	
+			width: 15%;
+			height: 100%;
+			text-align: center;
+			/*display: inline-block;*//
+			margin: 0;
+			/*float:right;*/
+			background-color: #dfd;
+			cursor: pointer;
+		}
+		td.infoViewBox:hover
+		{
+			background-color: #cec;
+		}
+		td.buttonIcon
+		{
+			margin-top: auto;
+			margin-bottom: auto;
 		}
 
 	</style>
@@ -125,9 +190,22 @@
 			// 	}
 			// })
 
+			$(".projectView").click(function(){
+				var projectID = $(this).parent().attr("projectID");
+				window.location = "/project/" + projectID;
+			});
+			$(".projectDelete").click(function(){
+				var conf = confirm("Are you sure you want to delete this project?\nNote: This will delete ALL posts in it")
+				if (conf == true)
+				{
+					var projectID = $(this).parent().attr("projectID");
+					window.location = "/project/" + projectID;
+				}
+			});
+
 			$(".postHeader").click(function(){
 				window.location = "/post/" + $(this).attr("postID");
-			})
+			});
 
 
 		})
@@ -166,6 +244,28 @@
 		<div class="horizLine"></div>
 
 		<div class="devSection">
+			<h3>Your Projects</h3>
+			{% if createdProjects|length > 0 %}
+				<table class="infoTable">
+					{% for project in createdProjects %}
+						<tr class="infoBox" projectID="{{project.id}}">
+							<td class="infoTextBox">
+								{{project.title}}
+							</td>
+							<td class="infoViewBox projectView">
+								<i class="fa fa-eye"></i>
+							</td>
+							<td class="infoDeleteBox projectDelete" >
+								<i class="fa fa-trash"></i>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>You arent the creator of any projects</p>
+			{% endif %}
+				<br>
+				<p><a href="/createProject/">Create Project</a></p>
 			{% if unpublishedPosts|length > 0 %}
 				<h3>Your currently unpublished posts</h3>
 				{% for post in unpublishedPosts %}
@@ -177,19 +277,67 @@
 				{% endfor %}
 			{% endif %}
 
-			<h3>All your Resources</h3>
+			<h3>Your Resources</h3>
 			<h4>Images</h4>
-			{% for resource in Resource_image.mine %}
-				<p>{{resource.caption}} {{resource.imageFile.url}}</p>
-			{% endfor %}
+			{% if Resource_image.mine|length > 0 %}
+				<table class="infoTable">
+					{% for resource in Resource_image.mine %}
+						<tr class="infoBox" resourceID="{{resource.id}}">
+							<td class="infoTextBox">
+								{{resource.caption}}
+							</td>
+							<td class="infoViewBox">
+								<i class="fa fa-eye"></i>
+							</td>
+							<td class="infoDeleteBox">
+								<i class="fa fa-trash"></i>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>You do not have any images</p>
+			{% endif %}
 			<h4>Code</h4>
-			{% for resource in Resource_code.mine %}
-				<p>{{resource.caption}}</p>
-			{% endfor %}
+			{% if Resource_code.mine|length > 0 %}
+				<table class="infoTable">
+					{% for resource in Resource_code.mine %}
+						<tr class="infoBox" resourceID="{{resource.id}}">
+							<td class="infoTextBox">
+								{{resource.caption}}
+							</td>
+							<td class="infoViewBox">
+								<i class="fa fa-eye"></i>
+							</td>
+							<td class="infoDeleteBox">
+								<i class="fa fa-trash"></i>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>You do not have any code snippets</p>
+			{% endif %}
 			<h4>Downloads</h4>
-			{% for resource in Resource_download.mine %}
-				<p>{{resource.caption}} {{resource.resFile.url}}</p>
-			{% endfor %}
+			{% if Resource_download.mine|length > 0 %}
+				<table class="infoTable">
+					{% for resource in Resource_download.mine %}
+						<tr class="infoBox" resourceID="{{resource.id}}">
+							<td class="infoTextBox">
+								{{resource.caption}}
+							</td>
+							<td class="infoViewBox">
+								<i class="fa fa-eye"></i>
+							</td>
+							<td class="infoDeleteBox">
+								<i class="fa fa-trash"></i>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<p>You do not have any downloads</p>
+			{% endif %}
 			<br>
 			{% include "devBlag/addResource.html" %}
 		</div>
