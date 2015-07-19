@@ -6,6 +6,8 @@ session_csrf.monkeypatch()
 from django.contrib import admin
 admin.autodiscover()
 
+handler404 = "devBlag.views.notFound"
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'scaffold.views.home', name='home'),
