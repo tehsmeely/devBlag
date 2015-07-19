@@ -103,6 +103,22 @@
 		{
 			opacity 0.8;
 		}
+
+		.postControlButton
+		{
+			float:right;
+			margin-right: 5px;
+		}
+
+		.postViewButton
+		{
+			opacity: 0.5;
+			cursor: pointer;
+		}
+		.postViewButton:hover
+		{
+			opacity: 1;
+		}
 	</style>
 
 	<script>
@@ -169,6 +185,9 @@
 				var divStr = "" + 
 				'<div class="post ' + cornerClass +
 				'" style="background-color:#' +post.backgroundColour + '">' +
+					"<div class='postControlButton' postID='" + post.id + "'>" + 
+						"<i class='fa fa-eye postViewButton'></i></i>" + 
+					"</div>" +
 					'<h3>' + post.title + ' AJAX </h3>' + 
 					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') + 
 					'<br>' +
@@ -183,8 +202,12 @@
 				'</div>' +
 				'<br>';
 				return divStr;
-
 			}
+
+			$(".postViewButton").click(function(){
+				var postID = $(this).parent().attr("postID");
+				window.location = "/post/" + postID + "/";
+			})
 		})
 	</script>
 {% endblock %}
@@ -237,6 +260,9 @@
 	{% for post in posts %}
 		<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
 			style="background-color:#{{post.backgroundColour}}">
+			<div class="postControlButton" postID="{{post.id}}">
+				<i class="fa fa-eye postViewButton"></i></i>
+			</div>
 			<h3>{{post.title}}</h3>
 			{{post.body|safe|linebreaksbr}}
 			<br>

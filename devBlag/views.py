@@ -1,5 +1,5 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, render_to_response, redirect
+from django.http import HttpResponse, JsonResponse, Http404
+from django.shortcuts import render, render_to_response, redirect, get_object_or_404 
 from django.utils import timezone
 from django.template import RequestContext
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser, Group
@@ -70,7 +70,7 @@ def getIsDeveloper():
 	#currentUser = users.get_current_user()
 	currentUser = getCurrentUser()
 	if currentUser is None:
-		return None
+		return False
 	else:
 		return Developer.objects.filter(user=currentUser).exists()
 
@@ -178,6 +178,7 @@ def projectPosts(request, pid): #project id
 		'posts':posts,
 		'resources':resources,
 		'isDeveloper': getIsDeveloper(),
+		'isCreator': getDeveloper() == project.creator,
 		'project' : project
 	}
 
@@ -478,7 +479,7 @@ def addPost(request, projectID, postID):
 				post.title = form.cleaned_data["title"]
 				post.body = form.cleaned_data["body"]
 				post.backgroundColour = form.cleaned_data["backgroundColour"]
-				post.postTags = forms.cleaned_data["postTags"]
+				post.postTags = form.cleaned_data["postTags"]
 
 			post.save()
 			print "Add post ", post.id
@@ -547,11 +548,25 @@ def logout(request):
   ## ##    ##  ##       ##  ##  ##    ##        ##     ## ##    ##    ##
    ###    #### ########  ###  ###     ##         #######   ######     ##
 def viewPost(request, postID):
-	post = Post.objects.get(id=postID)
+	#post = Post.objects.get(id=postID)
+	print "gerr"
+	post = get_object_or_404(Post, id=postID)
+	print "Arguh?"
+
+	#A user that is not the author of an unpublished post cannot see it.
+	# check for this and redirect if true
+	isAuthor = getDeveloper() == post.author
+	if not isAuthor:
+		return redirect("/")
+
 	post.body = handleBody(post.body)
 	print post.postTags
 	print post.as_JSON()
-	return render(request, "devBlag/post.html", {"post": post})
+	c = {
+		"post": post,
+		"isAuthor": isAuthor
+	}
+	return render(request, "devBlag/post.html", c)
 
 
 
@@ -815,6 +830,10 @@ def getResources2(request):
 
 	return JsonResponse(response)
 
+def notFound(request):
+	return render(request, "devBlag/notFound.html")
+
 
 def dialogTest(request):
 	return render(request, "test/dialogTest.html")
+

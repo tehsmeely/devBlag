@@ -171,5 +171,20 @@ code {
 .floatProjectImg
 {
 	float:right;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
 	border-radius: 8px;
+}
+
+.hoverButton
+{
+	float: right;
+	opacity: 0.5;
+	margin-right: 6px;
+	margin-top: 6px;
+	cursor: pointer;
+}
+.hoverButton:hover
+{
+	opacity: 1;
 }

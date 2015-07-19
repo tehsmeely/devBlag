@@ -12,6 +12,27 @@
 			width: 9em;
 			font-size: 0.9em;
 		}
+
+		.projectLinkBox
+		{
+			cursor: pointer;
+			width: 80%;
+			background-color: #ddd;
+			min-height: 40px;
+			border: solid black 1px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 5px;
+			-webkit-border-radius: 8px;
+			-moz-border-radius: 8px;
+			border-radius: 8px;
+		}
+
+		.projectLinkBox:hover
+		{
+			opacity: 0.8;
+		}
+
 	</style>
 
 
@@ -28,19 +49,28 @@
 				)
 			});
 
-			$("#deleteButton").click(function(){
-				$.get(
-					"/deletePost/",
-					{"postID": $(this).attr("postID")},
-					function(){
-						window.location = "/profile/";
-					}
-				)
+
+
+			$("#editPostButton").click(function(){
+				var projectID = $(this).attr("projectID");
+				var postID = $(this).attr("postID");
+				window.location = "/addPost/" + projectID + "/" + postID + "/";
 			});
 
-
-			$(".editButton").click(function(){
-				window.location = "/addPost/{{post.project.id}}/{{post.id}}";
+			$("#deletePostButton").click(function(){
+				var postID = $(this).attr("postID");
+				var projectID = $(this).attr("projectID");
+				var conf = confirm("Are you sure you wish to delete this post?")
+				if (conf==true)
+				{
+					$.get(
+					"/deletePost/",
+					{"postID": postID},
+					function(){
+						window.location = "/project/" + projectID + "/";
+					}
+					)
+				}
 			});
 
 			$("#publishButton").button({
@@ -49,6 +79,10 @@
 
 			$("#deleteButton").button({
 				icons:{ primary: "ui-icon-trash" }
+			})
+
+			$(".projectLinkBox").click(function(){
+				window.location = "/project/" + $(this).attr("projectID") + "/";
 			})
 
 		});
@@ -62,21 +96,29 @@
 	
 	<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
 			style="background-color:#{{post.backgroundColour}}">
-		<i class="fa fa-pencil fa-lg editButton"></i>
+		{% if isAuthor %}
+			<i id="editPostButton" class="fa fa-pencil fa-lg hoverButton" projectID="{{post.project.id}}" postID="{{post.id}}"></i>
+			<i id="deletePostButton" class="fa fa-times fa-lg hoverButton" projectID="{{post.project.id}}" postID="{{post.id}}"></i>
+		{% endif %}
 		<h3>{{post.title}}</h3>
 		{{post.body|safe|linebreaksbr}}
 		<br>
 		<p>Created Date: {{post.createdDate}}</p>
 		{% if post.publishedDate == none %}
+			<!-- as per the view serving function, a non-author cannot see the unpublished post -->
 			<p>
 				<button class="button" id="publishButton" postID="{{post.id}}">Publish</button>
-				<button class="button" id="deleteButton" postID="{{post.id}}">Delete</button>
 			</p>
 		{% else %}
 			<p>Published Date: {{post.publishedDate}}</p>
 		{% endif %}
 	</div>
 	<br>
+	<div class="projectLinkBox" projectID="{{post.project.id}}">
+		<img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40">
+		<h3>{{post.project.title}}</h3>
+		<p>{{post.project.description}}</p>
+	</div>
 
 
 {% endblock %}
