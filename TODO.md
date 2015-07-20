@@ -7,6 +7,9 @@ Add Logging *-This is special cos GAE*
 
 ~~ResID is redundant~~ *-removed*
 
+Decomm associatedProject on resources
+Decomm resource_mappings
+
 
 Migrate views to class-based
 *-Still not sure if i want to do this*
