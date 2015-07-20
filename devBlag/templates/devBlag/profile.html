@@ -220,10 +220,27 @@
 			});
 			$(".infoViewBox").on("click", function(e) {
 				e.preventDefault();
-				//$("#dialog").html("<img src='" + $(this).prop("href") + "' width='" + $(this).attr("data-width") + "' height='" + $(this).attr("data-height") + "'>");
-				var src = /*"192.168.0.6" + */$(this).attr("url")
-				console.log(src);
-				$("#dialog").html("<img src='" + src + "' >");
+				var type = $(this).attr("type")
+				if (type == "Image")
+				{
+					var content = "<img src='" + $(this).attr("url") + "' >";
+				}
+				else if (type == "Code")
+				{
+					var content = "<p>" + $(this).attr("code") + "</p>";
+				}
+				else if (type == "Download")
+				{
+					var content = "<a href='" + $(this).attr("url") + "'>Download</a>";
+				}
+				else //Fail safely 
+				{
+					var content = "404";
+				}
+				
+				console.log(content);
+				$("#dialog").html(content);
+				$("#dialog").attr("Title", "")
 				$("#dialog").dialog("option", "position", {
 					my: "center",
 					at: "center",
@@ -316,7 +333,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" url="{{resource.getServingURLPath}}">
+							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Image">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox">
@@ -336,7 +353,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox">
+							<td class="infoViewBox" code="{{resource.code}}" type="Code">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox">
@@ -356,8 +373,8 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox">
-								<i class="fa fa-eye"></i>
+							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Download">
+								<i class="fa fa-eye" ></i>
 							</td>
 							<td class="infoDeleteBox">
 								<i class="fa fa-trash"></i>

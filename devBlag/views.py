@@ -363,6 +363,7 @@ def addResource(request):
 				imageRes.caption = imageForm.cleaned_data['caption']
 				imageRes.imageFile = imageForm.cleaned_data['imageFile']
 				imageRes.thumbnail = imageForm.cleaned_data['thumbnail']
+				#imageRes.public = imageForm.cleaned_data['public']
 				imageRes.owner = getDeveloper()
 				imageRes.save()
 				print "Image Resource Created"
@@ -377,6 +378,13 @@ def addResource(request):
 			print "code"
 			codeForm = ResourceCodeForm(request.POST)
 			if codeForm.is_valid():
+				codeRes = Resource_code()
+				codeRes.caption = codeForm.cleaned_data['caption']
+				codeRes.code = codeForm.cleaned_data['code']
+				codeRes.language = codeForm.cleaned_data['language']
+				#codeRes.public = codeForm.cleaned_data['public']
+				codeRes.owner = getDeveloper()
+				codeRes.save()
 				print "Code Resource Created"
 				return JsonResponse({"resourceCreated": True})
 			else:
@@ -389,6 +397,12 @@ def addResource(request):
 			print "download"
 			downloadForm = ResourceDownloadForm(request.POST, request.FILES)
 			if downloadForm.is_valid():
+				downloadRes = Resource_download()
+				downloadRes.caption = downloadForm.cleaned_data['caption']
+				downloadRes.resFile = downloadForm.cleaned_data['resFile']
+				#downloadRes.public = downloadForm.cleaned_data['public']
+				downloadRes.owner = getDeveloper()
+				downloadRes.save()
 				print "Download Resource Created"
 				return JsonResponse({"resourceCreated": True})
 			else:
