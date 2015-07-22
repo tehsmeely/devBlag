@@ -568,7 +568,7 @@ def viewPost(request, postID):
 	#A user that is not the author of an unpublished post cannot see it.
 	# check for this and redirect if true
 	isAuthor = getDeveloper() == post.author
-	if not isAuthor:
+	if not isAuthor and post.publishedDate is None:
 		return redirect("/")
 
 	post.body = handleBody(post.body)
