@@ -15,6 +15,9 @@ Migrate views to class-based
 *-Still not sure if i want to do this*
 
 
+DeveloperRequired view funct wrapper
+
+
 Post management.
 Creation vs Publishing to enable editing before release to the world at large
 *-Post specific page? AddPost can redirect here on success then*
@@ -24,10 +27,10 @@ Resource management.
 Developers can see, manage, [and delete]? their resources
 
 Post Entry *-pretty much sorted*
-Project Creation
+Project Creation **
 User Creation *-automatic, i dont need to worry about that!*
 User -> Developer upgrading *-a link on the profile page*
-Post Comments
+~~Post Comments~~ *-Too much for this*
 
 
 Ideas:
