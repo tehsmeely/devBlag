@@ -11,7 +11,7 @@ from google.appengine.api.images import get_serving_url
 from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm
+from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm, ProjectForm
 from . import helpers
 import os, re, json, urlparse, random
 
@@ -552,6 +552,34 @@ def login(request):
 ###VIEW /logout/
 def logout(request):
     return redirect(users.create_logout_url(dest_url=request.GET.get('next', '/')))
+
+
+ ######  ########  ########    ###    ######## ########    ########  ########   #######        ## ########  ######  ########
+##    ## ##     ## ##         ## ##      ##    ##          ##     ## ##     ## ##     ##       ## ##       ##    ##    ##
+##       ##     ## ##        ##   ##     ##    ##          ##     ## ##     ## ##     ##       ## ##       ##          ##
+##       ########  ######   ##     ##    ##    ######      ########  ########  ##     ##       ## ######   ##          ##
+##       ##   ##   ##       #########    ##    ##          ##        ##   ##   ##     ## ##    ## ##       ##          ##
+##    ## ##    ##  ##       ##     ##    ##    ##          ##        ##    ##  ##     ## ##    ## ##       ##    ##    ##
+ ######  ##     ## ######## ##     ##    ##    ########    ##        ##     ##  #######   ######  ########  ######     ##
+
+
+def createProject(request):
+	if not getIsDeveloper():
+		return redirect("/")
+
+
+	if request.method == 'POST':
+		form = ProjectForm(request.POST, request.FILES)
+
+		if form.is_valid():
+
+			return HttpResponseRedirect('/thanks/')
+
+	# if a GET (or any other method) we'll create a blank form
+	else:
+		form = ProjectForm()
+
+	return render(request, 'devBlag/createProject.html', {'form': form})
 
 
 ##     ## #### ######## ##      ##    ########   #######   ######  ########

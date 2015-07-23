@@ -1,12 +1,56 @@
 from django import forms
+from django.utils import timezone
+from django.core.files.images import get_image_dimensions
 
 from .models import Post, Project
 
-class ProjectForm(forms.ModelForm):
+# class ProjectForm(forms.ModelForm):
 
-	class Meta:
-		model = Project
-		fields = (	'title','description','image','dateStarted','inProgress','language','engine')
+# 	class Meta:
+# 		model = Project
+# 		fields = ('title','description','image','language','engine')
+
+
+# title
+# description
+# image
+# dateStarted - auto today
+# inProgress - auto 1
+# language - not required
+# engine - not required
+# creator - auto logged in dev
+# default_backgroundColour
+
+class ProjectForm(forms.Form):
+	title = forms.CharField()
+	description = forms.CharField(widget=forms.Textarea)
+	dateStarted = forms.DateTimeField(initial=timezone.now)
+	language = forms.CharField(required=False)
+	engine = forms.CharField(required=False)
+	projectImage = forms.ImageField(help_text="This should be 160x160") 
+
+	def is_valid(self):
+	##Override is_valid to check project image dimensions
+	#this originally from http://chriskief.com/2012/12/16/override-django-form-is_valid/
+
+		valid = super(ProjectForm, self).is_valid()
+		if not valid:
+			print "ProjectForm is not valid before image check"
+			return valid
+
+
+
+		imageDims = get_image_dimensions(self.cleaned_data["projectImage"])
+		print valid, imageDims
+		if imageDims != (160,160):
+			self._errors['incorrect_size'] = 'Image is not 160x160'
+			return False
+
+
+
+		return True
+
+
 
 
 class PostForm(forms.ModelForm):
