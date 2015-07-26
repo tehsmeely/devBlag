@@ -12,7 +12,8 @@ from .models import Post, Resource_image, Resource_code, Resource_download, Reso
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm, ProjectForm
-from . import helpers
+from .helpers import getCurrentUser, getDeveloper, getIsDeveloper, getattrd
+from .decorators import developer_required
 import os, re, json, urlparse, random
 
 
@@ -47,36 +48,33 @@ LINK_REGEX = re.compile("""(?P<all>(?:\[(?P<name>[0-9a-zA-Z \+\-\.,!@#\$%\^&*\(\
 #all other functions are helpers and usually roughly just after the views that use them.
 
 
-def getCurrentUser():
-	#returns the current gauth user, using gae users api to get the user id
-	currentUser = users.get_current_user()
-	if currentUser is None:
-		return None
-	else:
-		return GaeDatastoreUser.objects.get(username=str(currentUser.user_id()))
+# def getCurrentUser():
+# 	#returns the current gauth user, using gae users api to get the user id
+# 	currentUser = users.get_current_user()
+# 	if currentUser is None:
+# 		return None
+# 	else:
+# 		return GaeDatastoreUser.objects.get(username=str(currentUser.user_id()))
 
 
-def getDeveloper():
-	##returns the current Developer is there is one, None if not
-	#currentUser = users.get_current_user()
-	currentUser = getCurrentUser()
-	if currentUser is None:
-		return None
-	else:
-		return Developer.objects.get(user=currentUser)
+# def getDeveloper():
+# 	##returns the current Developer is there is one, None if not
+# 	#currentUser = users.get_current_user()
+# 	currentUser = getCurrentUser()
+# 	if currentUser is None:
+# 		return None
+# 	else:
+# 		return Developer.objects.get(user=currentUser)
 
-def getIsDeveloper():
-	##return True is logged in user is developer, false if not, or no logged in user
-	#currentUser = users.get_current_user()
-	currentUser = getCurrentUser()
-	if currentUser is None:
-		return False
-	else:
-		return Developer.objects.filter(user=currentUser).exists()
+# def getIsDeveloper():
+# 	##return True is logged in user is developer, false if not, or no logged in user
+# 	#currentUser = users.get_current_user()
+# 	currentUser = getCurrentUser()
+# 	if currentUser is None:
+# 		return False
+# 	else:
+# 		return Developer.objects.filter(user=currentUser).exists()
 
-
-def getServingURLPath(blobID):
-	return urlparse.urlparse(get_serving_url(blobID)).path
 
 
 
@@ -90,6 +88,10 @@ def getServingURLPath(blobID):
 
 ###VIEW /
 def index(request):
+	print "request.user: ", request.user
+	print "request.user is Anon: ", request.user.is_anonymous()
+	print "users.get_current_user()", users.get_current_user()
+	#Developer.objects.get(user=request.user)
 	projects = Project.objects.all().order_by("title")
 	##group projects in groups of 4 for the table
 	quadProj = sortToNumGroups(projects, 4)
@@ -562,24 +564,60 @@ def logout(request):
 ##    ## ##    ##  ##       ##     ##    ##    ##          ##        ##    ##  ##     ## ##    ## ##       ##    ##    ##
  ######  ##     ## ######## ##     ##    ##    ########    ##        ##     ##  #######   ######  ########  ######     ##
 
-
+#@login_required
+@developer_required#(login_url="/login/")
 def createProject(request):
-	if not getIsDeveloper():
-		return redirect("/")
-
 
 	if request.method == 'POST':
+		#title, description, dateStarted, language, engine, projectImage 
 		form = ProjectForm(request.POST, request.FILES)
 
 		if form.is_valid():
+			developer = getDeveloper()
+			#Create Image resource with upload
+			#caption,imageFile,thumbnail,owner,associatedProject,public
+			imageRes = Resource_image()
+			imageRes.caption = form.cleaned_data['title'] + " Project Image"
+ 			imageRes.imageFile = form.cleaned_data['projectImage']
+			imageRes.thumbnail = None
+			imageRes.public = True
+			imageRes.owner = developer
+			imageRes.save()
+			print "Image Resource Created"
 
-			return HttpResponseRedirect('/thanks/')
+			#title, description, image, dateStarted, inProgress, language, engine, creator, default_backgroundColour
+			project = Project()
+			project.title = form.cleaned_data['title']
+			project.description = form.cleaned_data['description']
+			project.image = imageRes
+			project.dateStarted = form.cleaned_data['dateStarted']
+			project.inProgress = True
+			project.language = form.cleaned_data['language']
+			project.engine = form.cleaned_data['engine']
+			project.creator = developer
+			project.default_backgroundColour = form.cleaned_data['default_backgroundColour']
+			project.save()
+
+			return redirect("/project/{}/".format(project.id))
 
 	# if a GET (or any other method) we'll create a blank form
 	else:
 		form = ProjectForm()
 
 	return render(request, 'devBlag/createProject.html', {'form': form})
+
+def deleteProject(request):
+	projectID = request.GET.get("projectID", None)
+	if projectID is None:
+		return JsonResponse({"SUCCESS": False})
+
+	project = Project.objects.get(id=projectID)
+	print "Project to delete: ", project.title
+	project.delete()
+	print "Project Deleted!"
+	return JsonResponse({"SUCCESS": True})
+
+
 
 
 ##     ## #### ######## ##      ##    ########   #######   ######  ########

@@ -8,6 +8,8 @@ admin.autodiscover()
 
 handler404 = "devBlag.views.notFound"
 
+#teeest
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'scaffold.views.home', name='home'),
@@ -19,5 +21,8 @@ urlpatterns = patterns('',
 
     url(r'^csp/', include('cspreports.urls')),
 
+    url(r'^auth/', include('djangae.contrib.gauth.urls')),
+
     url(r'^', include('devBlag.urls'))
 )
+

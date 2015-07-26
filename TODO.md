@@ -15,7 +15,7 @@ Migrate views to class-based
 *-Still not sure if i want to do this*
 
 
-DeveloperRequired view funct wrapper
+developer_required view funct wrapper
 
 
 Post management.
@@ -29,7 +29,9 @@ Developers can see, manage, [and delete]? their resources
 Post Entry *-pretty much sorted*
 Project Creation **
 User Creation *-automatic, i dont need to worry about that!*
+
 User -> Developer upgrading *-a link on the profile page*
+
 ~~Post Comments~~ *-Too much for this*
 
 

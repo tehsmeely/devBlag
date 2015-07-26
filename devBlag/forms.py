@@ -24,6 +24,7 @@ from .models import Post, Project
 class ProjectForm(forms.Form):
 	title = forms.CharField()
 	description = forms.CharField(widget=forms.Textarea)
+	default_backgroundColour = forms.CharField(widget=forms.TextInput(attrs={'class': "color"}))
 	dateStarted = forms.DateTimeField(initial=timezone.now)
 	language = forms.CharField(required=False)
 	engine = forms.CharField(required=False)

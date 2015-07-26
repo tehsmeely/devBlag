@@ -1,0 +1,68 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+	<script type="text/javascript" src="{% static 'devBlag/js/jscolor/jscolor.js' %}"></script>
+
+	<title>DevBlag - Create Project</title>
+
+	<style>
+		.projectForm
+		{
+			text-align: center;
+		}
+	</style>
+
+
+	<script>
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	
+	<div class="projectForm">
+		<form action="/createProject/" enctype="multipart/form-data" method="post">{% csrf_token %}
+				<p><u><label for="{{ form.title.id_for_label }}">Title</label></u></p>
+				<p>{{ form.title.errors }}</p>
+				<p>{{ form.title }}</p>
+				<br>
+				<p><u><label for="{{ form.description.id_for_label }}">Project Description</label></u></p>
+				<p>{{ form.description.errors }}</p>
+				<p>{{ form.description }}</p>
+				<br><!-- dateStarted, language, engine, project_image -->
+				<p><u><label for="{{ form.default_backgroundColour.id_for_label }}">Default Post Background Colour:</label></u></p>
+				<p>{{form.default_backgroundColour}}</p>
+				<p>{{form.default_backgroundColour.errors}}</p>
+				<br>
+				<p>
+					<label for="{{ form.dateStarted.id_for_label }}">Date Started:</label>
+					{{form.dateStarted}}
+					{{form.dateStarted.errors}}
+				</p>
+				<p>
+					<label for="{{ form.language.id_for_label }}">Programming Language:</label>
+					{{form.language}}
+					{{form.language.errors}}
+				</p>
+				<p>
+					<label for="{{ form.engine.id_for_label }}">Game Engine:</label>
+					{{form.engine}}
+					{{form.engine.errors}}
+				</p>
+				<p>
+					<label for="{{ form.projectImage.id_for_label }}">Project Image:</label>
+					{{form.projectImage}}
+					{{form.projectImage.errors}}
+				</p>
+				<p>Image must be 160x160</p>
+
+			<input type="submit" value="Create Project"/>
+		</form>
+	</div>
+
+
+{% endblock %}

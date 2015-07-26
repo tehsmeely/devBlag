@@ -26,7 +26,7 @@ SECRET_KEY = get_app_config().secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
+LOGIN_URL="/login/"
 
 TEMPLATE_DEBUG = True
 

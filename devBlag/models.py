@@ -17,6 +17,12 @@ class Developer(models.Model):
 	def __str__(self):
 		return str(self.user.first_name) + " " + str(self.user.last_name)
 
+	def getName(self):
+		if self.displayName != "":
+			return str(self.displayName)
+		else:
+			return self.__str__()
+
 	def as_JSON(self):
 		c = {
 		"user": self.user.username,
@@ -34,8 +40,7 @@ class DevProj_mapping(models.Model):
 	def __str__(self):
 		return str(self.developer) + "--" + str(self.project)
 
-
-
+#title, description, image, dateStarted, inProgress, language, engine, creator, default_backgroundColour
 class Project(models.Model):
 	title = models.CharField(max_length=200, unique=True)
 	description = models.TextField()

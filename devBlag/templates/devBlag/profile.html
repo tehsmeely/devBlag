@@ -142,65 +142,22 @@
 	<script>
 		$(function(){
 
-			
-
-			// $(".editbutton").click(function(){
-			// 	var state = $(this).attr("state");
-			// 	var parent = $(this).parent();
-			// 	var span = $("span", parent);
-
-
-			// 	if (state == "0") //Edit state
-			// 	{
-					
-			// 		var original = span.attr("actualVal");
-			// 		$(this).switchClass("fa-pencil", "fa-check");
-			// 		span.empty();
-			// 		span.append("<input type='text' value='" + original + "'>");
-			// 		$(this).attr("state", "1");
-
-			// 	} else { //confirm state
-
-			// 		//get value, store that in "actualVal".
-			// 		//convert to blank message if blank when
-			// 		//displaying in span
-
-			// 		var newVal = $("input", span).val();
-			// 		var editButton = $(this);
-			// 		var method = span.attr("method")
-			// 		console.log(newVal);
-
-					
-
-			// 		//AJAX
-			// 		$.get($AJAX_URL_EDIT, {"method" : method,"newVal": newVal}, function(data){
-			// 			if (newVal == ""){
-			// 				//var spanVal = "(blank - displays as full name)";
-			// 				var spanVal = span.attr("blankVal");
-			// 			} else {
-			// 				var spanVal = newVal;
-			// 			} 
-			// 			span.html(spanVal);
-			// 			span.attr("actualVal", newVal);
-			// 			editButton.switchClass("fa-check", "fa-pencil");
-			// 			editButton.attr("state", "0");
-			// 		});
-
-					
-
-			// 	}
-			// })
 
 			$(".projectView").click(function(){
 				var projectID = $(this).parent().attr("projectID");
 				window.location = "/project/" + projectID;
 			});
 			$(".projectDelete").click(function(){
-				var conf = confirm("Are you sure you want to delete this project?\nNote: This will delete ALL posts in it")
+				var conf = confirm("Are you sure you want to delete this project?\nNote: This will delete ALL posts in it");
 				if (conf == true)
 				{
 					var projectID = $(this).parent().attr("projectID");
-					window.location = "/project/" + projectID;
+					$.get(
+						"/deleteProject/",
+						{"projectID": projectID},
+						function(){
+							location.reload(true);
+						})
 				}
 			});
 
@@ -301,7 +258,7 @@
 							<td class="infoViewBox projectView">
 								<i class="fa fa-eye"></i>
 							</td>
-							<td class="infoDeleteBox projectDelete" >
+							<td class="infoDeleteBox projectDelete">
 								<i class="fa fa-trash"></i>
 							</td>
 						</tr>
