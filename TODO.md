@@ -16,6 +16,7 @@ Migrate views to class-based
 
 
 developer_required view funct wrapper
+*- i believe this is sorted ... it's been a week*
 
 
 Post management.
