@@ -29,4 +29,4 @@ An individual project being worked on by one or more developers, posts are enter
 Resources are added to post bodies and inserted via a custom regex markup.
 Resources are tagged as <<[type]:[resource id]>>, though users may see this, they dont have to add it as this is inserted by clicking a table at the bottom of the post adding page
 
-Links can be added to posts by using the stanrd markdown style: \[text\]\(url\)
+Links can be added to posts by using the standard markdown style: \[text\]\(url\)
