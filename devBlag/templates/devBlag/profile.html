@@ -190,9 +190,9 @@
 				{
 					var content = "<a href='" + $(this).attr("url") + "'>Download</a>";
 				}
-				else //Fail safely 
+				else //Fail when views for other view buttons without types
 				{
-					var content = "404";
+					return;
 				}
 				
 				console.log(content);
@@ -208,7 +208,22 @@
 				}
 			});
 
+			$(".resDeleteBox").click(function(){
+				var resID = $(this).parent().attr("resourceID");
+				var conf = confirm("Are you sure you want to delete this resource?\n(It'll be gone for good!)\n\nPosts with this resource will show blank space in its stead");
+				if (conf == true)
+				{
+					//var projectID = $(this).parent().attr("projectID");
+					$.get(
+						"/deleteResource/",
+						{"resourceID": resID},
+						function(){
+							location.reload(true);
+						}
+					)
+				}
 
+			});
 
 
 		})
@@ -293,7 +308,7 @@
 							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Image">
 								<i class="fa fa-eye"></i>
 							</td>
-							<td class="infoDeleteBox">
+							<td class="infoDeleteBox resDeleteBox">
 								<i class="fa fa-trash"></i>
 							</td>
 						</tr>
@@ -313,7 +328,7 @@
 							<td class="infoViewBox" code="{{resource.code}}" type="Code">
 								<i class="fa fa-eye"></i>
 							</td>
-							<td class="infoDeleteBox">
+							<td class="infoDeleteBox resDeleteBox">
 								<i class="fa fa-trash"></i>
 							</td>
 						</tr>
@@ -333,7 +348,7 @@
 							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Download">
 								<i class="fa fa-eye" ></i>
 							</td>
-							<td class="infoDeleteBox">
+							<td class="infoDeleteBox resDeleteBox">
 								<i class="fa fa-trash"></i>
 							</td>
 						</tr>

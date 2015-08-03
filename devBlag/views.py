@@ -276,7 +276,9 @@ def handleBody(body):
 	#print "\nhandleBody before2:\n", body
 
 	#<<[i/d/c]:[id]>>
-	#TAG_REGEX
+	#Tag Regex complied at top of file
+
+	#If Resource is not found, blank string replaces tag
 	
 	# Resources
 	r = TAG_REGEX.finditer(body) 
@@ -285,14 +287,21 @@ def handleBody(body):
 		#searchGroups = TAG_INNER_REGEX.search(tag)
 		resType = tag.group("type")
 		resID = tag.group("RId")
-		if resType == "i":
-			resource = Resource_image.objects.get(id=resID)
-		elif resType == "c":
-			resource = Resource_code.objects.get(id=resID)
-		else:# resType == "d"       
-			resource = Resource_download.objects.get(id=resID)
+		try:
+			# if resType == "i":
+			# 	resource = Resource_image.objects.get(id=resID)
+			# elif resType == "c":
+			# 	resource = Resource_code.objects.get(id=resID)
+			# else:# resType == "d"       
+			# 	resource = Resource_download.objects.get(id=resID)
+			resource = getResourceManager(resType).objects.get(id=resID)
+		except ObjectDoesNotExist:
+			resource = None
 
-		replaceString = get_replaceString(resource, resType)
+		if resource is not None:
+			replaceString = get_replaceString(resource, resType)
+		else:
+			replaceString = ""
 
 		print "\nhandleBody Replace before:\n", body
 		body = body.replace(tag.group("all"), replaceString)
@@ -415,6 +424,26 @@ def addResource(request):
 	else:
 		print "addResource should be POST only"
 		return redirect("/")
+
+########  ######## ##       ######## ######## ########     ########  ########  ######   #######  ##     ## ########   ######  ########
+##     ## ##       ##       ##          ##    ##           ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##
+##     ## ##       ##       ##          ##    ##           ##     ## ##       ##       ##     ## ##     ## ##     ## ##       ##
+##     ## ######   ##       ######      ##    ######       ########  ######    ######  ##     ## ##     ## ########  ##       ######
+##     ## ##       ##       ##          ##    ##           ##   ##   ##             ## ##     ## ##     ## ##   ##   ##       ##
+##     ## ##       ##       ##          ##    ##           ##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##
+########  ######## ######## ########    ##    ########     ##     ## ########  ######   #######   #######  ##     ##  ######  ########
+
+def deleteResource(request):
+	resourceID = request.GET.get("resourceID", None)
+	resourceType = request.GET.get("resourceType", None)
+	if resourceID is None or resourceType is None or resourceType not in ["i", "c", "d"]:
+		return JsonResponse({"SUCCESS": False},status=500)
+
+	resObj = getResourceManager(resType).objects.get(id=resourceID)
+	print "resource to delete: ", project.title
+	resource.delete()
+	print "Resource Deleted!"
+	return JsonResponse({"SUCCESS": True})
 
 ########  ########  ######   #######  ##     ## ########   ######  ########    ########  #######  ########  ##     ##  ######
 ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##          ##       ##     ## ##     ## ###   ### ##    ##
@@ -606,10 +635,18 @@ def createProject(request):
 
 	return render(request, 'devBlag/createProject.html', {'form': form})
 
+########  ######## ##       ######## ######## ########    ########  ########   #######        ## ########  ######  ########
+##     ## ##       ##       ##          ##    ##          ##     ## ##     ## ##     ##       ## ##       ##    ##    ##
+##     ## ##       ##       ##          ##    ##          ##     ## ##     ## ##     ##       ## ##       ##          ##
+##     ## ######   ##       ######      ##    ######      ########  ########  ##     ##       ## ######   ##          ##
+##     ## ##       ##       ##          ##    ##          ##        ##   ##   ##     ## ##    ## ##       ##          ##
+##     ## ##       ##       ##          ##    ##          ##        ##    ##  ##     ## ##    ## ##       ##    ##    ##
+########  ######## ######## ########    ##    ########    ##        ##     ##  #######   ######  ########  ######     ##
+
 def deleteProject(request):
 	projectID = request.GET.get("projectID", None)
 	if projectID is None:
-		return JsonResponse({"SUCCESS": False})
+		return JsonResponse({"SUCCESS": False}, status=500)
 
 	project = Project.objects.get(id=projectID)
 	print "Project to delete: ", project.title
@@ -679,15 +716,18 @@ def publishPost(request):
 
 def deletePost(request):
 	success = False
+	status = 500
 	if request.method == "GET":
 		postID = request.GET.get("postID", None)
 		if postID is not None:
 			post = Post.objects.get(id=postID)
 			post.delete()
 			success = True
+			status = 200
 	
+
 	
-	return JsonResponse({"SUCCESS":success})
+	return JsonResponse({"SUCCESS":success}, status=status)
 
 ########  ########   #######  ######## #### ##       ########
 ##     ## ##     ## ##     ## ##        ##  ##       ##
@@ -731,6 +771,8 @@ def profile(request):
 	"unpublishedPosts": unpublishedPosts,
 	"createdProjects": createdProjects
 	})
+
+	c.update(resourceForms(request))
 	
 
 	print "developer", developer
@@ -839,7 +881,7 @@ def getResources2(request):
 	
 	if resourceType is None or resourceType not in ["image", "code", "download"]:
 		print "INVALID"
-		return JsonResponse({'SUCCESS': False})
+		return JsonResponse({'SUCCESS': False}, status=500)
 
 	response = {"SUCCESS":True}
 
@@ -911,6 +953,16 @@ def getResources2(request):
 def notFound(request):
 	return render(request, "devBlag/notFound.html")
 
+def getResourceManager(resType):
+	if resType == "i":
+		return Resource_image
+	elif resType == "c":
+		return Resource_code
+	elif resType == "d":
+		return Resource_download
+	else:
+		return None
+#i,c,d
 
 def dialogTest(request):
 	return render(request, "test/dialogTest.html")

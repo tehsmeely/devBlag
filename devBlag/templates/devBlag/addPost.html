@@ -49,11 +49,38 @@
 
 		#{{form.body.id_for_label}}
 		{
-			width: 500px;
+			/*width: 500px;*/
+			width: 100%;
 			resize: vertical;
 		}
 
+		.bodyBlock
+		{
+			margin-left: auto;
+			margin-right: auto;
+			width: 500px;
+		}
+
+		.markupHints
+		{
+			text-align: left;
+			font-size: 0.8em;
+			border: solid black 1px;
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.markupHints:hover
+		{
+			opacity: 0.8;
+		}
 		
+		.markupHintsText
+		{
+			text-align: left;
+			display: none;
+			padding: 0 5px 0 5px;
+		}
 
 		.resourceTable
 		{
@@ -210,6 +237,10 @@
 		};
 
 
+		$(".markupHints").click(function(){
+			$(".markupHintsText").toggle("fast");
+		})
+
 
 		$("input[name=fileType]").change(updateFieldDisplay);
 
@@ -302,9 +333,21 @@
 	    		{{ form.title.errors }}
 	    	</p>
 	    	<br>
-	    	<p><u><label for="{{ form.body.id_for_label }}">Body</label></u></p>
-	    	<p>{{ form.body.errors }}</p>
-	    	<p>{{ form.body }}</p>
+	    	<div class="bodyBlock">
+		    	<p><u><label for="{{ form.body.id_for_label }}">Body</label></u></p>
+		    	<p>{{ form.body.errors }}</p>
+		    	<p>{{ form.body }}</p>
+		    	<div class="markupHints">
+		    		<div class="markupHintsButton"><u><i class="fa fa-plus-square-o"></i>  Markup Hints</u></div>
+		    		<div class="markupHintsText">
+		    			<p>To add a link to your post, paste the url and surround it in brackets (). Alternatively supply a name first by putting that in square brakctes [] before the link</p>
+		    			<p>For Example: [my link](http://www.example.com)</p>
+		    			<br>
+		    			<p>You can insert a resource (Image, Code snippet, or Download link) into your post by clicking the one you want in the table in the box below.</p>
+		    			<p>Clicking this resource will add its tag to your post in the form &lt;&lt;i:198234512&gt;&gt;, and it will be inserted when displayed</p>
+		    		</div>
+		    	</div>
+		    </div>
 	    	<p>
 	    		<label for="{{ form.backgroundColour.id_for_label }}">Background:</label>
 	    		{{ form.backgroundColour }}
