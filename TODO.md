@@ -26,6 +26,7 @@ Creation vs Publishing to enable editing before release to the world at large
 
 Resource management.
 Developers can see, manage, [and delete]? their resources
+*-mostly done. can see and delete resources on profile page*
 
 Post Entry *-pretty much sorted*
 Project Creation **
