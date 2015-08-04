@@ -208,7 +208,7 @@
 	{% block banner %}
 	<div class="banner">
 		{% if user.is_authenticated %}
-			<a class="blankLink" href="/logout/?next={{ request.path }}"><div class="menuButton">Log Out</div></a>
+			<a class="blankLink" href="/logout/?next=/"><div class="menuButton">Log Out</div></a>
 			<a class="blankLink" href="/profile/"><div class="menuButton">Profile</div></a>
 			<div class="userText"><b>{{user.email}}</b></div>
 		{% else %}
