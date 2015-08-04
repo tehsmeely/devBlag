@@ -2,6 +2,7 @@
 from django.shortcuts import redirect
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
 from google.appengine.api import users
 from djangae.contrib.gauth.datastore.models import GaeDatastoreUser
 from .models import Developer
@@ -22,7 +23,10 @@ def getDeveloper():
     if currentUser is None:
         return None
     else:
-        return Developer.objects.get(user=currentUser)
+        try:
+            return Developer.objects.get(user=currentUser)
+        except ObjectDoesNotExist:
+            return None
 
 def getIsDeveloper(currentUser=None):
     ##return True is logged in user is developer, false if not, or no logged in user
