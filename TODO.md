@@ -9,7 +9,7 @@ Add Logging *-This is special cos GAE*
 
 Decomm associatedProject on resources
 Decomm resource_mappings
-
+*-working on both*
 
 Migrate views to class-based
 *-Still not sure if i want to do this*

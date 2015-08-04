@@ -106,13 +106,13 @@ class Post(models.Model):
         return self.title
 
 ## maps mmultiple rousources defined in Resourse_base to Post
-class Resource_map(models.Model):
-	post = models.ForeignKey('Post')
-	resource = models.ForeignKey('Resource_image')
+# class Resource_map(models.Model):
+# 	post = models.ForeignKey('Post')
+# 	resource = models.ForeignKey('Resource_image')
 
 
-	def __str__(self):
-		return str(self.post) + "->" + str(self.resource)
+# 	def __str__(self):
+# 		return str(self.post) + "->" + str(self.resource)
 # this leaves resource and post independant
 
 # class Resource(models.Model):
@@ -135,7 +135,7 @@ class Resource_image(models.Model):
 	imageFile = models.ImageField(blank=False)
 	thumbnail = models.ImageField(null=True, blank=True)
 	owner = models.ForeignKey('developer')
-	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	#associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)
@@ -154,7 +154,7 @@ class Resource_code(models.Model):
 	code = models.TextField(blank=True)
 	language = models.CharField(max_length=50, blank=True)
 	owner = models.ForeignKey('developer')
-	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	#associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)
@@ -167,7 +167,7 @@ class Resource_download(models.Model):
 	caption = models.TextField(blank=True)
 	resFile = models.FileField(blank=False)
 	owner = models.ForeignKey('developer')
-	associatedProject = models.ForeignKey('Project', blank=True, null=True)
+	#associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)

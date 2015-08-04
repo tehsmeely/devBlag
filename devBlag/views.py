@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.serializers import serialize
 from google.appengine.api import users
 from google.appengine.api.images import get_serving_url
-from .models import Post, Resource_image, Resource_code, Resource_download, Resource_map, Project, Developer
+from .models import Post, Resource_image, Resource_code, Resource_download, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
 from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm, ProjectForm
@@ -159,26 +159,10 @@ def projectPosts(request, pid): #project id
 
 	posts = Post.objects.filter(project=project).exclude(publishedDate=None).order_by(order_byStr)
 
-
-
-	resources = []
-	for post in posts:
-		postRes = []
-		## for each post, grab the resources
-		maps = Resource_map.objects.filter(post=post)
-		for rmap in maps:
-			fp = os.path.join(STATIC_PATH, rmap.resource.filePath)
-			#print "full fp", fp
-			if os.path.isfile(fp):
-				resources.append(rmap.resource)
-				postRes.append(rmap.resource)
-		#print "\nbody before:\n", post.body
-		post.body = handleBody(post.body)
-		#print "\nbody after:\n", post.body
+	posts = handlePosts(posts)
 
 	c = {
 		'posts':posts,
-		'resources':resources,
 		'isDeveloper': getIsDeveloper(),
 		'isCreator': getDeveloper() == project.creator,
 		'project' : project
