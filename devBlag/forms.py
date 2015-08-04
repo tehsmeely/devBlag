@@ -1,6 +1,7 @@
 from django import forms
 from django.utils import timezone
 from django.core.files.images import get_image_dimensions
+from django.core.exceptions import ValidationError
 
 from .models import Post, Project
 
@@ -9,6 +10,16 @@ from .models import Post, Project
 # 	class Meta:
 # 		model = Project
 # 		fields = ('title','description','image','language','engine')
+
+
+def validate_dims_160sq(fieldVal):
+	print "validate 160x160 "
+	print fieldVal, type(fieldVal)
+	imageDims = get_image_dimensions(fieldVal)
+	print imageDims
+	if imageDims != (160,160):
+		#self.add_error("projectImage", "Image is not 160x160")
+		raise ValidationError("Image is not 160x160", code="invalid")
 
 
 # title
@@ -28,30 +39,49 @@ class ProjectForm(forms.Form):
 	dateStarted = forms.DateTimeField(initial=timezone.now)
 	language = forms.CharField(required=False)
 	engine = forms.CharField(required=False)
-	projectImage = forms.ImageField(help_text="This should be 160x160") 
+	projectImage = forms.ImageField(help_text="This should be 160x160"), validators=[validate_dims_160sq]) 
 
-	def is_valid(self):
-	##Override is_valid to check project image dimensions
-	#this originally from http://chriskief.com/2012/12/16/override-django-form-is_valid/
+	# def is_valid(self):
+	# ##Override is_valid to check project image dimensions
+	# #this originally from http://chriskief.com/2012/12/16/override-django-form-is_valid/
 
-		valid = super(ProjectForm, self).is_valid()
-		if not valid:
-			print "ProjectForm is not valid before image check"
-			return valid
+	# 	valid = super(ProjectForm, self).is_valid()
+	# 	if not valid:
+	# 		print "ProjectForm is not valid before image check"
+	# 		return valid
 
+	# 	imageDims = get_image_dimensions(self.cleaned_data["projectImage"])
+	# 	print valid, imageDims
+	# 	if imageDims != (160,160):
+	# 		self.add_error("projectImage", "Image is not 160x160")
+	# 		return False
 
+	# 	for i in self.__dict__:
+	# 		print i, getattr(self, i)
+	# 	#return True
 
-		imageDims = get_image_dimensions(self.cleaned_data["projectImage"])
-		print valid, imageDims
-		if imageDims != (160,160):
-			self._errors['incorrect_size'] = 'Image is not 160x160'
-			return False
+	# 	return False
 
+class DeveloperForm(forms.Form):
+	displayName = forms.CharField()
+	projectImage = forms.ImageField(help_text="This should be 160x160", validators=[validate_dims_160sq]) 
 
+	# def is_valid(self):
+	# ##Override is_valid to check developer image dimensions
+	# #this originally from http://chriskief.com/2012/12/16/override-django-form-is_valid/
 
-		return True
+	# 	valid = super(ProjectForm, self).is_valid()
+	# 	if not valid:
+	# 		print "ProjectForm is not valid before image check"
+	# 		return valid
 
-
+	# 	imageDims = get_image_dimensions(self.cleaned_data["projectImage"])
+	# 	print valid, imageDims
+	# 	if imageDims != (160,160):
+	# 		self._errors['incorrect_size'] = 'Image is not 160x160'
+	# 		return False
+			
+	# 	return True
 
 
 class PostForm(forms.ModelForm):
