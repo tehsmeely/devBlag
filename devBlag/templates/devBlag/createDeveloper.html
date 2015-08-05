@@ -1,0 +1,45 @@
+{% extends 'devBlag/base.html' %}
+
+{% load staticfiles %}
+
+{% block headerInsert %}
+
+	<script type="text/javascript" src="{% static 'devBlag/js/jscolor/jscolor.js' %}"></script>
+
+	<title>DevBlag - Become Developer</title>
+
+	<style>
+		.projectForm
+		{
+			text-align: center;
+		}
+	</style>
+
+
+	<script>
+	</script>
+{% endblock %}
+
+
+{% block container %}
+	<br><br>
+	<!--displayName, developerImage -->
+	<div class="projectForm">
+		<form action="/becomeDeveloper/" enctype="multipart/form-data" method="post">{% csrf_token %}
+				<p><u><label for="{{ form.displayName.id_for_label }}">Display Name</label></u></p>
+				<p>{{ form.displayName.errors }}</p>
+				<p>{{ form.displayName }}</p>
+				<p>Leave this blank to use your account name</p>
+				<br>
+				<p><u><label for="{{ form.developerImage.id_for_label }}">Developer Image</label></u></p>
+				<p>{{ form.developerImage.errors }}</p>
+				<p>{{ form.developerImage }}</p>
+				<p>Image must be 160x160</p>
+				<br>
+
+			<input type="submit" value="Make me a developer"/>
+		</form>
+	</div>
+
+
+{% endblock %}

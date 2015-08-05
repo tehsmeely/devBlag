@@ -41,7 +41,7 @@ class ProjectForm(forms.Form):
 
 class DeveloperForm(forms.Form):
 	displayName = forms.CharField()
-	developerImage = forms.ImageField(help_text="This should be 160x160", validators=[validate_dims_160sq])
+	developerImage = forms.ImageField(help_text="This should be 160x160")
 
 	def clean_developerImage(self):
 		imageDims = get_image_dimensions(self.cleaned_data.get("developerImage"))

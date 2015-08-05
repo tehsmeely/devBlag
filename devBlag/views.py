@@ -11,7 +11,7 @@ from google.appengine.api.images import get_serving_url
 from .models import Post, Resource_image, Resource_code, Resource_download, Project, Developer
 from scaffold.settings import BASE_DIR, STATIC_URL, AUTH_USER_MODEL
 from .settings import DEFAULT_POST_ORDER_BY, DEFAULT_POST_ORDER
-from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm, ProjectForm
+from .forms import PostForm, ResourceImageForm, ResourceCodeForm, ResourceDownloadForm, ProjectForm, DeveloperForm
 from .helpers import getCurrentUser, getDeveloper, getIsDeveloper, getattrd
 from .decorators import developer_required
 import os, re, json, urlparse, random
@@ -843,6 +843,71 @@ def getResources(developer, public):
 	if public:
 		resources_dict["Resource_download"]["public"] = Resource_download.objects.filter(public=True)
 	return resources_dict
+
+########  ######## ##     ##       ###    ########  ########  ##       ##    ##
+##     ## ##       ##     ##      ## ##   ##     ## ##     ## ##        ##  ##
+##     ## ##       ##     ##     ##   ##  ##     ## ##     ## ##         ####
+##     ## ######   ##     ##    ##     ## ########  ########  ##          ##
+##     ## ##        ##   ##     ######### ##        ##        ##          ##
+##     ## ##         ## ##      ##     ## ##        ##        ##          ##
+########  ########    ###       ##     ## ##        ##        ########    ##
+def developerApply(request):
+	return redirect("/becomeDeveloper")
+
+ ######  ########  ########    ###    ######## ########    ########  ######## ##     ## ######## ##        #######  ########  ######## ########
+##    ## ##     ## ##         ## ##      ##    ##          ##     ## ##       ##     ## ##       ##       ##     ## ##     ## ##       ##     ##
+##       ##     ## ##        ##   ##     ##    ##          ##     ## ##       ##     ## ##       ##       ##     ## ##     ## ##       ##     ##
+##       ########  ######   ##     ##    ##    ######      ##     ## ######   ##     ## ######   ##       ##     ## ########  ######   ########
+##       ##   ##   ##       #########    ##    ##          ##     ## ##        ##   ##  ##       ##       ##     ## ##        ##       ##   ##
+##    ## ##    ##  ##       ##     ##    ##    ##          ##     ## ##         ## ##   ##       ##       ##     ## ##        ##       ##    ##
+ ######  ##     ## ######## ##     ##    ##    ########    ########  ########    ###    ######## ########  #######  ##        ######## ##     ##
+@login_required
+def createDeveloper(request):
+	if request.method == 'POST':
+		#displayName, developerImage
+		form = DeveloperForm(request.POST, request.FILES)
+
+		user = getCurrentUser()
+		if user is None:
+			print "User get failed ... huh"
+
+
+		if form.is_valid() and user is not None:
+
+			print "User!", user
+			#Create developer 
+			#user, thumbnail, displayName
+			developer = Developer()
+			developer.user = user
+			developer.displayName = form.cleaned_data["displayName"]
+			developer.save()
+
+			#Create Image resource with upload
+			#caption,imageFile,thumbnail,owner,public
+			imageRes = Resource_image()
+			caption = form.cleaned_data['displayName'] 
+			if caption == "":
+				caption = user.first_name
+			imageRes.caption = caption + " Profile Image"
+ 			imageRes.imageFile = form.cleaned_data['developerImage']
+			imageRes.thumbnail = None
+			imageRes.public = True
+			imageRes.owner = developer
+			imageRes.save()
+			print "Image Resource Created"
+
+			#Update with new thumbnail
+			developer.thumbnail = imageRes
+			developer.save()
+			print "Developer Created"
+
+			return redirect("/profile/")
+
+	# if a GET (or any other method) we'll create a blank form
+	else:
+		form = DeveloperForm()
+	return render(request, "devBlag/createDeveloper.html", {"form" : form })
+
 
  ######   ######## ########    ########  ########  ######   #######  ##     ## ########   ######  ########  ######
 ##    ##  ##          ##       ##     ## ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##       ##    ##

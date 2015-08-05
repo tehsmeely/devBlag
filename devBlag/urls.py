@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^addResource/$', views.addResource),
     url(r'^getResources/$', views.getResources2),
     url(r'^deleteResource/$', views.deleteResource),
+    url(r'^devApply/$', views.developerApply),
+    url(r'^becomeDeveloper/$', views.createDeveloper),
     ## AJAX editing routes
     url(r'^ajaxRouting/updateProfile/$', views.updateProfile),
     url(r'^ajaxRouting/getPosts/$', views.getPosts),
