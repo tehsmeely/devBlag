@@ -12,7 +12,7 @@ Decomm resource_mappings
 *-working on both*
 
 Migrate views to class-based
-*-Still not sure if i want to do this*
+*-Still not sure if i want to do this - update: no, though maybe from scratch in future!*
 
 
 developer_required view funct wrapper
@@ -34,7 +34,7 @@ User Creation *-automatic, i dont need to worry about that!*
 
 User -> Developer upgrading *-a link on the profile page*
 
-~~Post Comments~~ *-Too much for this*
+~~Post Comments~~ *-Too much for this ... feature creep?*
 
 
 Ideas:
