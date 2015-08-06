@@ -32,24 +32,27 @@ class ProjectForm(forms.Form):
 	projectImage = forms.ImageField(help_text="This should be 160x160")
 
 	def clean_projectImage(self):
-		imageDims = get_image_dimensions(self.cleaned_data.get("projectImage"))
+		projectImage = self.cleaned_data.get("projectImage")
+		imageDims = get_image_dimensions(projectImage)
 		print imageDims
 		if imageDims != (160,160):
 			print "invalid image dims"
 			raise ValidationError("Image is not 160x160", code="invalid")
+		return projectImage
 
 
 class DeveloperForm(forms.Form):
-	displayName = forms.CharField()
+	displayName = forms.CharField(required=False)
 	developerImage = forms.ImageField(help_text="This should be 160x160")
 
 	def clean_developerImage(self):
-		imageDims = get_image_dimensions(self.cleaned_data.get("developerImage"))
+		developerImage = self.cleaned_data.get("developerImage")
+		imageDims = get_image_dimensions(developerImage)
 		print imageDims
 		if imageDims != (160,160):
 			print "invalid image dims"
 			raise ValidationError("Image is not 160x160", code="invalid")
-
+		return developerImage
 
 
 class PostForm(forms.ModelForm):

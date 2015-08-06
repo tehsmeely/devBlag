@@ -141,7 +141,7 @@
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
-						<div title="{{dev.user.username}}" name="{{dev.user.first_name}} {{dev.user.last_name}}" displayName="{{dev.displayName}}"
+						<div title="{{dev.user.username}}" name="{{dev.getName}}" displayName="{{dev.displayName}}"
 						class="circleLink devLink" style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"> </div>
 					</a>
 				</div>

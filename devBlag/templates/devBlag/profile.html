@@ -210,17 +210,29 @@
 
 			$(".resDeleteBox").click(function(){
 				var resID = $(this).parent().attr("resourceID");
-				var conf = confirm("Are you sure you want to delete this resource?\n(It'll be gone for good!)\n\nPosts with this resource will show blank space in its stead");
+				var resType = $(this).parent().attr("resourceType");
+
+				var conf = confirm("Are you sure you want to delete this resource?\n(It'll be gone for good!)\n\nPosts with this resource will show blank space in its stead" +
+					"\n\n" + resID + " " + resType);
 				if (conf == true)
 				{
 					//var projectID = $(this).parent().attr("projectID");
-					$.get(
-						"/deleteResource/",
-						{"resourceID": resID},
-						function(){
+					$.ajax({
+						url: "/deleteResource/",
+						type: "GET",
+						data: {
+							"resourceID": resID,
+							"resourceType" : resType
+						},
+						success: function(){
 							location.reload(true);
+						},
+						error: function(data){
+							//console.log(data)
+							alert("Cannot delete this as it is " + data.responseJSON.REASON +"\n");
 						}
-					)
+
+					})
 				}
 
 			});
@@ -301,7 +313,7 @@
 			{% if Resource_image.mine|length > 0 %}
 				<table class="infoTable"  id="resTable_image">
 					{% for resource in Resource_image.mine %}
-						<tr class="infoBox" resourceID="{{resource.id}}">
+						<tr class="infoBox" resourceID="{{resource.id}}" resourceType="i">
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
@@ -321,7 +333,7 @@
 			{% if Resource_code.mine|length > 0 %}
 				<table class="infoTable">
 					{% for resource in Resource_code.mine %}
-						<tr class="infoBox" resourceID="{{resource.id}}">
+						<tr class="infoBox" resourceID="{{resource.id}}" resourceType="c">
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
@@ -341,7 +353,7 @@
 			{% if Resource_download.mine|length > 0 %}
 				<table class="infoTable">
 					{% for resource in Resource_download.mine %}
-						<tr class="infoBox" resourceID="{{resource.id}}">
+						<tr class="infoBox" resourceID="{{resource.id}}" resourceType="d">
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>

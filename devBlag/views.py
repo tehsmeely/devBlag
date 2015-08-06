@@ -417,16 +417,46 @@ def addResource(request):
 ##     ## ##       ##       ##          ##    ##           ##    ##  ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##
 ########  ######## ######## ########    ##    ########     ##     ## ########  ######   #######   #######  ##     ##  ######  ########
 
+
 def deleteResource(request):
 	resourceID = request.GET.get("resourceID", None)
 	resourceType = request.GET.get("resourceType", None)
 	if resourceID is None or resourceType is None or resourceType not in ["i", "c", "d"]:
 		return JsonResponse({"SUCCESS": False},status=500)
 
-	resObj = getResourceManager(resType).objects.get(id=resourceID)
-	print "resource to delete: ", project.title
-	resource.delete()
+	resource = getResourceManager(resourceType).objects.get(id=resourceID)
+
+	#check it's not being used by project or developer - cant delete then!
+	cannotDel = False
+	errorMsg = ""
+	if resourceType == "i":
+		if len(resource.project_set.all()) > 0:
+			print "cannot delete - being used as project image"
+			errorMsg = "being used a project image"
+			cannotDel = True
+			
+		if len(resource.developer_set.all()) > 0:
+			print "cannot delete - being used as developer profile image"
+			errorMsg = "being used a developer profile image"
+			cannotDel = True
+
+	if cannotDel:
+		return JsonResponse({"SUCCESS": False, "REASON" : errorMsg},status=500)
+
+	print "resource to delete: ", resource
+	# for i in resource.__dict__.items():
+	# 	print i
+
+	# for i in dir(resource.project_set):
+	# 	print i
+
+	#print "len resource.project_set.all()", len(resource.project_set.all())
+	#print "len resource.developer_set.all()", len(resource.developer_set.all())
+	print len(resource.project_set.all())
+	print len(resource.developer_set.all())
+	#resource.delete()
 	print "Resource Deleted!"
+	print "DEBUG: Resource not actually deleted"
 	return JsonResponse({"SUCCESS": True})
 
 ########  ########  ######   #######  ##     ## ########   ######  ########    ########  #######  ########  ##     ##  ######
@@ -873,7 +903,8 @@ def createDeveloper(request):
 
 
 		if form.is_valid() and user is not None:
-
+			print "\n>>> Making new developer!"
+			print form.cleaned_data
 			print "User!", user
 			#Create developer 
 			#user, thumbnail, displayName
@@ -890,6 +921,7 @@ def createDeveloper(request):
 				caption = user.first_name
 			imageRes.caption = caption + " Profile Image"
  			imageRes.imageFile = form.cleaned_data['developerImage']
+ 			print imageRes.imageFile
 			imageRes.thumbnail = None
 			imageRes.public = True
 			imageRes.owner = developer
@@ -1010,7 +1042,8 @@ def getResourceManager(resType):
 	elif resType == "d":
 		return Resource_download
 	else:
-		return None
+		raise ValueError
+		#return None
 #i,c,d
 
 def dialogTest(request):
