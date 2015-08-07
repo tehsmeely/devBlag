@@ -1,6 +1,7 @@
 #TODO
 
 
+Post ordering doesnt currently work - needs fixing
 
 
 Add Logging *-This is special cos GAE* 

@@ -129,13 +129,13 @@
 			});
 
 			$("#sortDirectionButton").click(function(){
-				if ($(this).attr("star") == "down")
+				if ($(this).attr("star") == "of")
 				{
 					$(this).switchClass("fa-caret-down fa-caret-up");
-					$(this).attr("state", "up")
+					$(this).attr("state", "nf")
 				} else {
 					$(this).toggleClass("fa-caret-up fa-caret-down");
-					$(this).attr("state", "down")
+					$(this).attr("state", "of")
 				}
 				getPostJSON();
 			})
@@ -145,7 +145,7 @@
 
 
 			function getPostJSON()
-			{
+			{ 
 				var getCriteria = getFilterCriteria();
 				getCriteria.projectID = "{{project.id}}";
 				console.log(getCriteria);
@@ -188,7 +188,7 @@
 					"<div class='postControlButton' postID='" + post.id + "'>" + 
 						"<i class='fa fa-eye postViewButton'></i></i>" + 
 					"</div>" +
-					'<h3>' + post.title + ' AJAX </h3>' + 
+					'<h3>' + post.title + '</h3>' + 
 					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') + 
 					'<br>' +
 					'<div class="postInfoBar">' +
@@ -247,7 +247,7 @@
 				<option value="publishedDate">Published Date</option>
 				<option value="createdDate">Created Date</option>
 			</select>
-			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton" state="down"></i></p>
+			<i class="fa fa-caret-down fa-lg" id="sortDirectionButton" state="of"></i></p>
 		</div>
 		<div class="fBarLeft">
 			Filter by tags: <input id="tagFilterInput" type="text"></input><button id="filterButton">filter</button>

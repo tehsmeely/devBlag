@@ -182,8 +182,9 @@ def getPosts(request):
 	projectID = request.GET.get("projectID")
 	project = Project.objects.get(id=projectID)
 	#sort by newest first "nf" or oldest first "of"
-	sortCrit = request.GET.get("order", DEFAULT_POST_ORDER)
+	sortCrit = request.GET.get("orderDirection")#, DEFAULT_POST_ORDER)
 	if sortCrit not in ["nf", "of"]: #handle erroneous query values
+		print "invalid sort criterion {}, reverting to default {}".format(sortCrit, DEFAULT_POST_ORDER)
 		sortCrit = DEFAULT_POST_ORDER
 
 	orderByCrit = request.GET.get("orderDirection", "down")
@@ -204,6 +205,8 @@ def getPosts(request):
 
 	if len(tagFilters) > 0 and tagFilters != [""]:
 		posts = posts.filter(postTags__in=tagFilters)
+
+	print ">>> ordering posts by: ", order_byStr
 
 	posts = handlePosts(posts.order_by(order_byStr))
 
