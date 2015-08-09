@@ -147,7 +147,7 @@
 			function getPostJSON()
 			{ 
 				var getCriteria = getFilterCriteria();
-				getCriteria.projectID = "{{project.id}}";
+				getCriteria.projectID = $(".filterBar").attr("projectID");
 				console.log(getCriteria);
 				$.get(
 					$AJAX_POST_GET_URL,
@@ -240,7 +240,7 @@
 			<p>{% if project.inProgress %}This project is in active development{% else %}This project has been completed{% endif %}</p>
 		</div>
 	</div>
-	<div class="filterBar">
+	<div class="filterBar" projectID="{{project.id}}">
 		<div class="fBarRight">
 			<p>Order By:
 			<select id="orderCriterion" name"orderCriterion">
