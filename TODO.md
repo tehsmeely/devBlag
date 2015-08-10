@@ -62,17 +62,17 @@ On LIVE:
 
 Migration:
 | templateName                | Style | Script |
-|-----------------------------|-------|--------|
-| addPost                     |       |        |
-| -addPost_notDev             |       |        |
-| -addPostTest                |       |        |
-| addResource                 |       |        |
-| -addResource_standalone     |       |        |
-| base                        |       |        |
-| createDeveloper             |       |        |
-| developerProfile            |       |        |
-| index                       |       |        |
-| notFound                    |       |        |
-| post                        |       |        |
-| profile                     |       |        |
-| projectPosts                |       |        |
+| --------------------------- | ----- | ------ |
+| addPost                     |   N   |   N    |
+| -addPost_notDev             |   N   |   N    |
+| -addPostTest                |   N   |   N    |
+| addResource                 |   N   |   N    |
+| -addResource_standalone     |   N   |   N    |
+| base                        |   N   |   N    |
+| createDeveloper             |   N   |   N    |
+| developerProfile            |   N   |   N    |
+| index                       |   N   |   N    |
+| notFound                    |   N   |   N    |
+| post                        |   N   |   N    |
+| profile                     |   N   |   N    |
+| projectPosts                |   N   |   N    |
