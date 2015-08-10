@@ -57,3 +57,22 @@ On LIVE:
 
     Move all style and script to external files for CSP raisins
     See about getting a version of JQueryUI with just the used widgets 
+
+
+
+Migration:
+| templateName                | Style | Script |
+|-----------------------------|-------|--------|
+| addPost                     |       |        |
+| -addPost_notDev             |       |        |
+| -addPostTest                |       |        |
+| addResource                 |       |        |
+| -addResource_standalone     |       |        |
+| base                        |       |        |
+| createDeveloper             |       |        |
+| developerProfile            |       |        |
+| index                       |       |        |
+| notFound                    |       |        |
+| post                        |       |        |
+| profile                     |       |        |
+| projectPosts                |       |        |
