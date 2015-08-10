@@ -61,8 +61,8 @@ On LIVE:
 
 
 Migration:
-| templateName                | Style | Script |
-| --------------------------- | ----- | ------ |
+| templateName | Style | Script |
+| ------------ | ----- | ------ |
 | addPost                     |   N   |   N    |
 | -addPost_notDev             |   N   |   N    |
 | -addPostTest                |   N   |   N    |
