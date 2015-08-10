@@ -64,16 +64,16 @@ Migration:
 
 | Template Name               | Style | Script |
 | --------------------------: |:-----:|:------:|
-| addPost                     |   N   |   N    |
+| addPost                     |   Y   |   Y    |
 | -addPost_notDev             |   N   |   N    |
 | -addPostTest                |   N   |   N    |
-| addResource                 |   N   |   N    |
+| addResource                 |   Y   |   Y    |
 | -addResource_standalone     |   N   |   N    |
-| base                        |   N   |   N    |
-| createDeveloper             |   N   |   N    |
-| developerProfile            |   N   |   N    |
-| index                       |   N   |   N    |
-| notFound                    |   N   |   N    |
-| post                        |   N   |   N    |
-| profile                     |   N   |   N    |
-| projectPosts                |   N   |   N    |
+| base                        |   Y   |   Y    |
+| createDeveloper             |   Y   |   Y    |
+| developerProfile            |   Y   |   Y    |
+| index                       |   Y   |   Y    |
+| notFound                    |   Y   |   Y    |
+| post                        |   Y   |   Y    |
+| profile                     |   Y   |   Y    |
+| projectPosts                |   Y   |   Y    |

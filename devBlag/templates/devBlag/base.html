@@ -35,6 +35,11 @@
 	<!-- Lato Font -->
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
 
+
+	<!-- generic functions -->
+	<script type="text/javascript" src="{% static 'devBlag/js/base.js' %}"></script>
+
+<!--
 	<style>
 		/* Fonts! */
 		@font-face {
@@ -137,8 +142,10 @@
 			font-family: roboto;
 		}
 	</style>
+-->
 
 
+	<!--
 	<script>
 		$(function(){
 
@@ -157,7 +164,7 @@
 
 				if (state == "0") //Edit state
 				{
-					
+
 					var original = span.attr("actualVal");
 					$(this).switchClass("fa-pencil", "fa-check");
 					span.empty();
@@ -176,7 +183,7 @@
 					var route = span.attr("route");
 					console.log(newVal);
 
-					
+
 
 					//AJAX
 					var ajaxURL = $AJAX_URL_EDIT + route + "/";
@@ -186,7 +193,7 @@
 							var spanVal = span.attr("blankVal");
 						} else {
 							var spanVal = newVal;
-						} 
+						}
 						span.html(spanVal);
 						span.attr("actualVal", newVal);
 						editButton.switchClass("fa-check", "fa-pencil");
@@ -196,6 +203,7 @@
 			})
 		})
 	</script>
+	-->
 
 	{% block headerInsert %}
 	{% endblock %}

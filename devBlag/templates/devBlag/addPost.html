@@ -8,6 +8,10 @@
 
 	<title>DevBlag - Add Post</title>
 
+	<link href="stylesheet" type="text/css" href="{% static 'devBlag/css/addPost.css' %}">
+
+	<script type="text/javascript" src="{% static 'devBlag/js/addPost.js' %}"></script>
+<!--
 	<style>
 		.addForm
 		{
@@ -74,7 +78,7 @@
 		{
 			opacity: 0.8;
 		}
-		
+
 		.markupHintsText
 		{
 			text-align: left;
@@ -103,7 +107,7 @@
 			text-align: center;
 			width:70%;
 		}
-		
+
 
 /*
 		.resTab
@@ -136,7 +140,7 @@
 			border-left: solid black 1px;
 			border-right: solid black 1px;
 			/* this is 1/3 of the parent width, minus 2px for the border */
-			width: 33%; 
+			width: 33%;
 			text-align: center;
 			float: left;
 			cursor: pointer;
@@ -159,7 +163,11 @@
 
 
 	</style>
+-->
 
+
+
+<!--
 	<script>
 	$(function(){
 
@@ -183,7 +191,7 @@
 
 		//The update button sets the background of the form to the entered colour
 		$("#updateCol").click(updateColour);
-		
+
 		function updateColour(){
 			var colour = $(".color").val();
 			console.log(colour);
@@ -318,6 +326,7 @@
 		updateInsertClick();
 	})
 	</script>
+-->
 
 {% endblock %}
 
@@ -367,13 +376,13 @@
 	<div class="resourceBox">
 		<div id="currentResources">
 			<h2>Resources</h2>
-			
+
 			<p>
-				<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine 
+				<input type="radio" name="resourceOwner" value="mine" checked="checked">Mine
 				<input type="radio" name="resourceOwner" value="public">Public
 			</p>
 			<!--<p><button id="imageButton">image</button><button id="codeButton">code</button><button id="downloadButton">download</button></p>-->
-			
+
 			<div class="resourceListOuter">
 				<div class="tabContainer">
 					<div class="resTab t1" id="imageButton">Image</div>

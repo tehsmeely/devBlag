@@ -3,9 +3,16 @@
 {% load staticfiles %}
 
 {% block headerInsert %}
-	
+
 	<title>DevBlag - Profile</title>
 
+
+
+	<link href="stylesheet" type="text/css" href="{% static 'devBlag/css/profile.css' %}">
+
+	<script type="text/javascript" src="{% static 'devBlag/js/profile.js' %}"></script>
+
+	<!--
 	<style>
 		.userInfo
 		{
@@ -94,7 +101,7 @@
 			border-bottom-left-radius: 5px;
 		}
 		td.infoDeleteBox
-		{	
+		{
 			width: 15%;
 			text-align: center;
 			/*display: inline-block;*/
@@ -115,7 +122,7 @@
 			background-color: #ecc;
 		}
 		td.infoViewBox
-		{	
+		{
 			width: 15%;
 			height: 100%;
 			text-align: center;
@@ -137,8 +144,8 @@
 
 
 	</style>
-
-
+	-->
+	<!--
 	<script>
 		$(function(){
 
@@ -194,7 +201,7 @@
 				{
 					return;
 				}
-				
+
 				console.log(content);
 				$("#dialog").html(content);
 				$("#dialog").attr("Title", "")
@@ -240,13 +247,14 @@
 
 		})
 	</script>
+	-->
 {% endblock %}
 
 
 {% block container %}
 	<br><br>
 	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURLPath %}">{% endif %}
-	
+
 	<div class="userInfo">
 		<p>First Name: <span id="firstName" actualVal="{{user.first_name}}" blankVal="(blank)" method="updateFirstName" route="updateProfile">
 		{% if user.first_name == "" %}(blank){% else %}{{user.first_name}}{% endif %}</span>

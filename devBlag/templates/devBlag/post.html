@@ -6,6 +6,12 @@
 
 	<title>DevBlag - Post: {{post.title}}</title>
 
+
+	<link href="stylesheet" type="text/css" href="{% static 'devBlag/css/addPost.css' %}">
+
+	<script type="text/javascript" src="{% static 'devBlag/js/addPost.js' %}"></script>
+
+	<!--
 	<style>
 
 
@@ -30,8 +36,9 @@
 		}
 
 	</style>
+	-->
 
-
+	<!--
 	<script>
 		$(function(){
 
@@ -83,13 +90,14 @@
 
 		});
 	</script>
+	-->
 {% endblock %}
 
 
 {% block container %}
 	<br><br>
-	
-	
+
+
 	<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
 			style="background-color:#{{post.backgroundColour}}">
 		{% if isAuthor %}
