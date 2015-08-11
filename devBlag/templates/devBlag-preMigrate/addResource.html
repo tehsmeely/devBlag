@@ -1,7 +1,6 @@
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'devBlag/css/addResource.css' %}">
-<!--
+
 <style>
 	.resourceContainer
 	{
@@ -14,10 +13,7 @@
 		text-align: center;
 	}
 </style>
--->
 
-<script type="text/javascript" src="{% static 'devBlag/js/addResource.js' %}"></script>
-<!--
 <script>
 	$(function(){
 
@@ -33,7 +29,7 @@
 		$("#imageForm,#codeForm,#downloadForm").each(function(){
 			$(this).submit(function(event){
 				console.log("Submitting image");
-				var options = {
+				var options = { 
 					beforeSend: function(xhr, settings) {
 						console.log("csrfSafeMethod: " + csrfSafeMethod(settings.type));
 						console.log("this.crossDomain: " + this.crossDomain);
@@ -42,18 +38,18 @@
 						}
 					},
 					dataType: "json",
-					clearForm: true,        // clear all form fields after successful submit
+					clearForm: true,        // clear all form fields after successful submit 
 					//beforeSubmit - might be what is needed for CSRF.
 					success: function(responseJSON, statusText, xhr, jQwFE){
 						console.log("submit success!" + responseJSON)
 						console.log(responseJSON.resourceCreated)
 					}
-				};
+				}; 
 				$(this).ajaxSubmit(options);
-				return false;
+				return false; 
 			})
 		});
-
+	
 
 		var dialog_image = $( "#dialog-form-image" ).dialog({
 			autoOpen: false,
@@ -107,12 +103,11 @@
 			dialog_code.dialog("open");
 		});
 		$( "#addDownload" ).click(function() {
-			dialog_download.dialog("open");
+			dialog_download.dialog("open");				
 		});
 
 	});
 </script>
--->
 
 <br><br>
 

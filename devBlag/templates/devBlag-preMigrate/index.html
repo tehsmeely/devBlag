@@ -1,17 +1,10 @@
 {% extends 'devBlag/base.html' %}
 
-{% load staticfiles %}
-
 
 {% block headerInsert %}
 
 	<title>DevBlag - Home</title>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'devBlag/css/index.css' %}">
-
-	<script type="text/javascript" src="{% static 'devBlag/js/index.js' %}"></script>
-
-	<!--
 	<style>
 		.linkWrapper
 		{
@@ -43,7 +36,7 @@
 			display: inline-block;
 			margin-top: 19px;
 			margin-bottom: 19px;
-			float: left;
+			float: left;			
 		}
 
 		.circles4
@@ -62,7 +55,7 @@
 		.circles2
 		{
 			margin-left: 119px;
-			margin-right: 119px;
+			margin-right: 119px; 
 		}
 
 		.circles1
@@ -70,11 +63,10 @@
 			margin-left: 318px;
 			margin-right: 318px;
 		}
-
+		
 	</style>
-	-->
 
-	<!--
+
 	<script>
 		$(function(){
 
@@ -120,7 +112,6 @@
 
 		})
 	</script>
-	-->
 {% endblock %}
 
 
@@ -132,7 +123,7 @@
 	{% for quadProj in projects %}
 		<div class="linkWrapper">
 			{% for proj in quadProj %}
-
+			
 				<div class="circleBlock circles{{quadProj|length}}">
 					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"

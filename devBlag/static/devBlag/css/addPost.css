@@ -1,0 +1,147 @@
+.addForm
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid black 1px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #9a0000;
+}
+
+.resourceBox
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid black 1px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #ccc;
+    position: relative;
+}
+
+.resourceList
+{
+    /*width: 80%;*/
+    background-color: #fff;
+    min-height: 200px;
+    border-left: solid black 1px;
+    border-right: solid black 1px;
+    border-bottom: solid black 1px;
+}
+
+.resourceListOuter
+{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#{{form.body.id_for_label}}
+{
+    /*width: 500px;*/
+    width: 100%;
+    resize: vertical;
+}
+
+.bodyBlock
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+
+.markupHints
+{
+    text-align: left;
+    font-size: 0.8em;
+    border: solid black 1px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.markupHints:hover
+{
+    opacity: 0.8;
+}
+
+.markupHintsText
+{
+    text-align: left;
+    display: none;
+    padding: 0 5px 0 5px;
+}
+
+.resourceTable
+{
+    width:100%;
+}
+
+tr.resourceTr
+{
+    cursor: pointer;
+    background-color: #eee;
+}
+
+td.resourceTdCaption
+{
+    text-align: center;
+    width:70%;
+}
+td.resourceTdOwner
+{
+    text-align: center;
+    width:70%;
+}
+
+
+/*
+.resTab
+{
+    /*float:left;/
+    width: 30%;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #fff;
+    border-left: solid black 1px;
+    border-right: solid black 1px;
+    border-top: solid black 1px;
+
+}
+*/
+
+.resTab
+{
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: solid black 1px;
+    border-left: solid black 1px;
+    border-right: solid black 1px;
+    /* this is 1/3 of the parent width, minus 2px for the border */
+    width: 33%;
+    text-align: center;
+    float: left;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.t1 {background-color: #fff}
+.t1:hover {background-color: #eee}
+
+.t2 {background-color: #ddd}
+.t2:hover {background-color: #ccc}
+
+.t3 {background-color: #bbb}
+.t3:hover {background-color: #aaa}
+
+.tabContainer{
+    overflow: auto;
+}

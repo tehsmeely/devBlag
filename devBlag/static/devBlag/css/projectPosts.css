@@ -1,0 +1,114 @@
+.projectInfoBox
+{
+    /*border-bottom: solid black 1px;*/
+    border-top: solid black 1px;
+    padding: 5px;
+    background-color: #ddd;
+    min-height: 170px; /* height of image + add button + 10 */
+    position: relative;
+    /*overflow: hidden;*/
+}
+.projectTitle
+{
+    font-family: juice;
+    text-align: center;
+}
+.projectImage
+{
+    float: right;
+    border: solid black 1px;
+    border-radius: 5px;
+    height: 80px;
+    width: 80px;
+}
+.projectInfoInner
+{
+    padding-left: 10px;
+
+}
+
+.addPostButton
+{
+    border-radius: 5px;
+
+}
+
+.filterBar
+{
+    width: 100%;
+    background-color: #999; /* Same as postInfoBar */
+    overflow: hidden;
+    border-bottom: solid black 1px;
+}
+.fBarLeft
+{
+    width: 50%;
+    padding: 2px 0px 2px 10px;
+}
+.fBarRight
+{
+    width: 50%;
+    float: right;
+    text-align: right;
+    padding: 2px 10px 2px 0px;
+}
+
+.filterBar p
+{
+    margin: 0;
+}
+
+.postInfoBar
+{
+    width: 100%;
+    background-color: #999; /* Same as filterBar */
+    overflow: hidden;
+    -webkit-border-bottom-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    -moz-border-radius-bottomright: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    font-size: 0.7em;
+}
+.postInfoTags
+{
+    max-width: 59%;
+}
+.postInfoDates
+{
+    max-width: 39%;
+    float: right;
+}
+.postInfoDates p
+{
+    text-align: right;
+    margin: 0;
+    padding-right: 5px;
+}
+
+#sortDirectionButton
+{
+    cursor: pointer;
+}
+
+#sortDirectionButton:hover
+{
+    opacity 0.8;
+}
+
+.postControlButton
+{
+    float:right;
+    margin-right: 5px;
+}
+
+.postViewButton
+{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.postViewButton:hover
+{
+    opacity: 1;
+}

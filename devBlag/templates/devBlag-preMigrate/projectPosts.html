@@ -1,22 +1,15 @@
 {% extends 'devBlag/base.html' %}
 
-{% load staticfiles %}
-
 {% block headerInsert %}
 
 	<title>DevBlag - Project {{project.title}}</title>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'devBlag/css/projectPosts.css' %}">
-
-	<script type="text/javascript" src="{% static 'devBlag/js/projectPosts.js' %}"></script>
-
-	<!--
 	<style>
 		.projectInfoBox
 		{
 			/*border-bottom: solid black 1px;*/
 			border-top: solid black 1px;
-			padding: 5px;
+			padding: 5px; 
 			background-color: #ddd;
 			min-height: 170px; /* height of image + add button + 10 */
 			position: relative;
@@ -44,7 +37,7 @@
 		.addPostButton
 		{
 			border-radius: 5px;
-
+			
 		}
 
 		.filterBar
@@ -127,9 +120,7 @@
 			opacity: 1;
 		}
 	</style>
-	-->
 
-	<!--
 	<script>
 		$AJAX_POST_GET_URL = "/ajaxRouting/getPosts/";
 		$(function(){
@@ -154,7 +145,7 @@
 
 
 			function getPostJSON()
-			{
+			{ 
 				var getCriteria = getFilterCriteria();
 				getCriteria.projectID = $(".filterBar").attr("projectID");
 				console.log(getCriteria);
@@ -191,14 +182,14 @@
 			{
 				//linebreak regex from:
 				//http://stackoverflow.com/questions/784539/how-do-i-replace-all-line-breaks-in-a-string-with-br-tags
-				var divStr = "" +
+				var divStr = "" + 
 				'<div class="post ' + cornerClass +
 				'" style="background-color:#' +post.backgroundColour + '">' +
-					"<div class='postControlButton' postID='" + post.id + "'>" +
-						"<i class='fa fa-eye postViewButton'></i></i>" +
+					"<div class='postControlButton' postID='" + post.id + "'>" + 
+						"<i class='fa fa-eye postViewButton'></i></i>" + 
 					"</div>" +
-					'<h3>' + post.title + '</h3>' +
-					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') +
+					'<h3>' + post.title + '</h3>' + 
+					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') + 
 					'<br>' +
 					'<div class="postInfoBar">' +
 						'<div class="postInfoDates">' +
@@ -219,7 +210,6 @@
 			})
 		})
 	</script>
-	-->
 {% endblock %}
 
 
@@ -239,7 +229,7 @@
 	<div class="projectInfoBox">
 		{% if isDeveloper%}<a class="blankLink" href="/addPost/{{project.id}}/new/"><div class="projectAddPostButton">+</div></a>{% endif %}
 		<img class="projectImage" src="{{project.image.getServingURLPath}}">
-
+		
 		<h2 class="projectTitle">{{project.title}}</h2>
 		<div class="projectInfoInner">
 			{{project.description}}
@@ -283,7 +273,7 @@
 				</div>
 				<div class="postInfoTags">
 					{{post.getTags}}
-				</div>
+				</div>				
 			</div>
 		</div>
 		<br>

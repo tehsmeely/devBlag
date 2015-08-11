@@ -8,29 +8,22 @@
 
 	<title>DevBlag - Create Project</title>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'devBlag/css/createProject.css' %}">
-
-	<script type="text/javascript" src="{% static 'devBlag/js/createProject.js' %}"></script>
-
-	<!--
 	<style>
 		.projectForm
 		{
 			text-align: center;
 		}
 	</style>
-	-->
 
-	<!--
+
 	<script>
 	</script>
-	-->
 {% endblock %}
 
 
 {% block container %}
 	<br><br>
-
+	
 	<div class="projectForm">
 		<form action="/createProject/" enctype="multipart/form-data" method="post">{% csrf_token %}
 				<p><u><label for="{{ form.title.id_for_label }}">Title</label></u></p>

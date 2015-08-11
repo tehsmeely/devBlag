@@ -1,0 +1,11 @@
+
+.resourceContainer
+{
+	width: 100%;
+	background-color: #fdd;
+	border: solid black 2px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	text-align: center;
+}

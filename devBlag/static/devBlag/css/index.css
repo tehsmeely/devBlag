@@ -1,0 +1,57 @@
+.linkWrapper
+{
+    width: 800px;
+    height: 200px;
+
+}
+
+.circleLink
+{
+    margin: 0 0 0 0px;
+    width: 160px;
+    height: 160px;
+    border-radius: 80px;
+    -webkit-border-radius: 80px;
+    -moz-border-radius: 80px;
+    /*background: url("treeSq2.png") no-repeat;*/
+    border: solid black 1px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.circleLink:hover
+{
+    opacity: 1;
+}
+
+.circleBlock
+{
+    display: inline-block;
+    margin-top: 19px;
+    margin-bottom: 19px;
+    float: left;
+}
+
+.circles4
+{
+    /* width = (400/num circles) - 80 - 1 */
+    margin-left: 19px;
+    margin-right: 19px;
+}
+
+.circles3
+{
+    margin-left: 52px;
+    margin-right: 52px;
+}
+
+.circles2
+{
+    margin-left: 119px;
+    margin-right: 119px;
+}
+
+.circles1
+{
+    margin-left: 318px;
+    margin-right: 318px;
+}

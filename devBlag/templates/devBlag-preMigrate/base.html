@@ -1,0 +1,227 @@
+{% load staticfiles %}
+<meta http-equiv="Content-Security-Policy" content="default-src https://cdn.example.net 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; child-src 'none'; object-src 'none'">
+<head>
+
+	<link rel="icon" type="image/ico" href="{% static 'devBlag/resources/favicon.ico' %}">
+
+	<link rel="stylesheet" href="{% static 'devBlag/css/base.css' %}">
+
+	<!-- jQuery(UI) -->
+	<link rel="stylesheet" href="{% static 'devBlag/css/jQuery/jquery-ui.min.css' %}">
+	<script src="{% static 'devBlag/js/jQuery/external/jquery/jquery.js' %}"></script>
+	<script src="{% static 'devBlag/js/jQuery/jquery-ui.min.js' %}"></script>
+
+
+	<!-- jQuery Forms Plugin -->
+	<!-- http://jquery.malsup.com/form/ -->
+	<script src="{%static 'devBlag/js/jquery.form.min.js' %}"></script>
+
+	<!-- jQuery Cookie Plugin -->
+	<!-- https://github.com/carhartl/jquery-cookie -->
+	<script src="{%static 'devBlag/js/jq-cookie/jquery.cookie.js' %}"></script>
+
+
+	<!-- highlightJS -->
+	<!-- from CDN -->
+	<!--<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/default.min.css">-->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/monokai.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+
+
+	<!--FontAwesome -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+	<!-- Lato Font -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
+
+	<style>
+		/* Fonts! */
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Regular.ttf' %});
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Bold.ttf' %});
+			font-weight: bold;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Bold_Italic.ttf' %});
+			font-weight: bold;
+			font-style: italic;
+		}
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Light.ttf' %});
+			font-weight: 500;
+			font-size: normal;
+		}
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Light_Italic.ttf' %});
+			font-weight: 500;
+			font-size: italic;
+		}
+		@font-face {
+			font-family: juice;
+			src: url({% static 'devBlag/fonts/juice/JUICE_Italic.ttf' %});
+			font-weight: normal;
+			font-style: italic;
+		}
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Regular.ttf' %});
+			font-weight: normal;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Bold.ttf' %});
+			font-weight: bold;
+			font-style: normal;
+		}
+		@font-face {
+			font-family: roboto;
+			src: url({% static 'devBlag/fonts/roboto/Roboto-Italic.ttf' %});
+			font-weight: normal;
+			font-style: italic;
+		}
+
+		.menuButton
+		{
+			display: inline-block;
+			padding: 12px;
+			margin: 0px 20px;
+			position: relative;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			float: right;
+			text-align: center;
+			border: solid black 1px;
+			background-color: #ccc;
+			cursor: pointer;
+			color: #000;
+			font-family: juice;
+			font-weight: bold;
+			/*font-size: 1.2em;*/
+			/*opacity: 0.5;*/
+		}
+		.menuButton:hover
+		{
+			background-color: #bbb;
+		}
+
+		.userText
+		{
+			color: #fff;
+			float:right;
+			margin-right: 20px;
+			position: relative;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			font-family: roboto;
+		}
+	</style>
+
+
+	<script>
+		$(function(){
+
+			// Edit the contents of a sibling span when a class "editButton" is present
+			// To be used with FontAwesome, fa-pencil and fa-check
+			// Spans to be edited must include the followingf attributes
+			//	route: the routing for the get url: /ajaxRouting/<route>/
+			//  method: the method to act on the value of the span - in the view
+			//  blankVal: the value to display is span is blank: e.g. "(blank)"
+			$AJAX_URL_EDIT = "/ajaxRouting/";
+			$(".editbutton").click(function(){
+				var state = $(this).attr("state");
+				var parent = $(this).parent();
+				var span = $("span", parent);
+
+
+				if (state == "0") //Edit state
+				{
+					
+					var original = span.attr("actualVal");
+					$(this).switchClass("fa-pencil", "fa-check");
+					span.empty();
+					span.append("<input type='text' value='" + original + "'>");
+					$(this).attr("state", "1");
+
+				} else { //confirm state
+
+					//get value, store that in "actualVal".
+					//convert to blank message if blank when
+					//displaying in span
+
+					var newVal = $("input", span).val();
+					var editButton = $(this);
+					var method = span.attr("method");
+					var route = span.attr("route");
+					console.log(newVal);
+
+					
+
+					//AJAX
+					var ajaxURL = $AJAX_URL_EDIT + route + "/";
+					$.get(ajaxURL, {"method" : method,"newVal": newVal}, function(data){
+						if (newVal == ""){
+							//var spanVal = "(blank - displays as full name)";
+							var spanVal = span.attr("blankVal");
+						} else {
+							var spanVal = newVal;
+						} 
+						span.html(spanVal);
+						span.attr("actualVal", newVal);
+						editButton.switchClass("fa-check", "fa-pencil");
+						editButton.attr("state", "0");
+					});
+				}
+			})
+		})
+	</script>
+
+	{% block headerInsert %}
+	{% endblock %}
+
+</head>
+
+
+
+<body style="min-height: 100%; font: 300 100%/1.5em 'Lato', sans-serif;">
+	{% block banner %}
+	<div class="banner">
+		{% if user.is_authenticated %}
+			<a class="blankLink" href="/logout/?next=/"><div class="menuButton">Log Out</div></a>
+			<a class="blankLink" href="/profile/"><div class="menuButton">Profile</div></a>
+			<div class="userText"><b>{{user.email}}</b></div>
+		{% else %}
+			<a class="blankLink" href="/login/?next={{ request.path }}"><div class="menuButton">Log In</div></a>
+		{% endif %}
+		<a class="blankLink" href="/"><div class="titleText">DevBlag</div></a>
+	</div>
+	{% endblock %}
+	{% block preContainer %}{% endblock %}
+	<div class="container">
+		{% block container %}
+			<p>Container!</p>
+		{% endblock %}
+	</div>
+
+</body>
