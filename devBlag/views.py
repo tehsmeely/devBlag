@@ -1011,11 +1011,11 @@ def getResources2(request):
 		resFields = {}
 		## get the default ones
 		for field in RES_SERVING_FIELDS_ALL:
-			resFields[field.replace(".", "_")] = helpers.getattrd(res, field, "")
+			resFields[field.replace(".", "_")] = getattrd(res, field, "")
 
 		## get the specific ones
 		for field in resServingFields:
-			resFields[field.replace(".", "_")] = helpers.getattrd(res, field, "")
+			resFields[field.replace(".", "_")] = getattrd(res, field, "")
 
 		## get username, with 2 fallbacks for blank names
 		if res.owner.displayName != "":
