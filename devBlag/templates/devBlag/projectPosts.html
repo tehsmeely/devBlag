@@ -10,216 +10,7 @@
 
 	<script type="text/javascript" src="{% static 'devBlag/js/projectPosts.js' %}"></script>
 
-	<!--
-	<style>
-		.projectInfoBox
-		{
-			/*border-bottom: solid black 1px;*/
-			border-top: solid black 1px;
-			padding: 5px;
-			background-color: #ddd;
-			min-height: 170px; /* height of image + add button + 10 */
-			position: relative;
-			/*overflow: hidden;*/
-		}
-		.projectTitle
-		{
-			font-family: juice;
-			text-align: center;
-		}
-		.projectImage
-		{
-			float: right;
-			border: solid black 1px;
-			border-radius: 5px;
-			height: 80px;
-			width: 80px;
-		}
-		.projectInfoInner
-		{
-			padding-left: 10px;
 
-		}
-
-		.addPostButton
-		{
-			border-radius: 5px;
-
-		}
-
-		.filterBar
-		{
-			width: 100%;
-			background-color: #999; /* Same as postInfoBar */
-			overflow: hidden;
-			border-bottom: solid black 1px;
-		}
-		.fBarLeft
-		{
-			width: 50%;
-			padding: 2px 0px 2px 10px;
-		}
-		.fBarRight
-		{
-			width: 50%;
-			float: right;
-			text-align: right;
-			padding: 2px 10px 2px 0px;
-		}
-
-		.filterBar p
-		{
-			margin: 0;
-		}
-
-		.postInfoBar
-		{
-			width: 100%;
-			background-color: #999; /* Same as filterBar */
-			overflow: hidden;
-			-webkit-border-bottom-right-radius: 7px;
-			-webkit-border-bottom-left-radius: 7px;
-			-moz-border-radius-bottomright: 7px;
-			-moz-border-radius-bottomleft: 7px;
-			border-bottom-right-radius: 7px;
-			border-bottom-left-radius: 7px;
-			font-size: 0.7em;
-		}
-		.postInfoTags
-		{
-			max-width: 59%;
-		}
-		.postInfoDates
-		{
-			max-width: 39%;
-			float: right;
-		}
-		.postInfoDates p
-		{
-			text-align: right;
-			margin: 0;
-			padding-right: 5px;
-		}
-
-		#sortDirectionButton
-		{
-			cursor: pointer;
-		}
-
-		#sortDirectionButton:hover
-		{
-			opacity 0.8;
-		}
-
-		.postControlButton
-		{
-			float:right;
-			margin-right: 5px;
-		}
-
-		.postViewButton
-		{
-			opacity: 0.5;
-			cursor: pointer;
-		}
-		.postViewButton:hover
-		{
-			opacity: 1;
-		}
-	</style>
-	-->
-
-	<!--
-	<script>
-		$AJAX_POST_GET_URL = "/ajaxRouting/getPosts/";
-		$(function(){
-			$('pre code').each(function(i, block) {
-				hljs.highlightBlock(block);
-			});
-
-			$("#sortDirectionButton").click(function(){
-				if ($(this).attr("star") == "of")
-				{
-					$(this).switchClass("fa-caret-down fa-caret-up");
-					$(this).attr("state", "nf")
-				} else {
-					$(this).toggleClass("fa-caret-up fa-caret-down");
-					$(this).attr("state", "of")
-				}
-				getPostJSON();
-			})
-
-			$("#filterButton").click(getPostJSON);
-			$("#orderCriterion").change(getPostJSON);
-
-
-			function getPostJSON()
-			{
-				var getCriteria = getFilterCriteria();
-				getCriteria.projectID = $(".filterBar").attr("projectID");
-				console.log(getCriteria);
-				$.get(
-					$AJAX_POST_GET_URL,
-					getCriteria,
-					function(data, textStatus, jqXHR ){
-						console.log(data);
-						var postCont = $("#postContainer");
-						postCont.empty();
-						if (data.POSTS.length>0) {
-							for (iPost in data.POSTS){
-								if (iPost%2 === 0) { var cornerClass = "round7_tr_bl"; }
-								else { var cornerClass = "round7_tl_br"; }
-								var post = data.POSTS[iPost];
-								postCont.append(generatePostDiv(post, cornerClass));
-							}
-						}
-					}
-				)
-			}
-
-			function getFilterCriteria()
-			{
-				var orderCriterion = $("#orderCriterion").val();
-				var tagFilterInput = $("#tagFilterInput").val();
-				var orderDirection = $("#sortDirectionButton").attr("state");
-				return {"orderCriterion": orderCriterion,
-				"tagFilterInput": tagFilterInput,
-				"orderDirection": orderDirection};
-			}
-
-			function generatePostDiv(post, cornerClass)
-			{
-				//linebreak regex from:
-				//http://stackoverflow.com/questions/784539/how-do-i-replace-all-line-breaks-in-a-string-with-br-tags
-				var divStr = "" +
-				'<div class="post ' + cornerClass +
-				'" style="background-color:#' +post.backgroundColour + '">' +
-					"<div class='postControlButton' postID='" + post.id + "'>" +
-						"<i class='fa fa-eye postViewButton'></i></i>" +
-					"</div>" +
-					'<h3>' + post.title + '</h3>' +
-					post.body.replace(/(?:\r\n|\r|\n)/g, '<br />') +
-					'<br>' +
-					'<div class="postInfoBar">' +
-						'<div class="postInfoDates">' +
-							'<p>Published: ' + post.publishedDate + '</p>' +
-						'</div>' +
-						'<div class="postInfoTags">' +
-							post.postTags +
-						'</div>' +
-					'</div>' +
-				'</div>' +
-				'<br>';
-				return divStr;
-			}
-
-			$(".postViewButton").click(function(){
-				var postID = $(this).parent().attr("postID");
-				window.location = "/post/" + postID + "/";
-			})
-		})
-	</script>
-	-->
 {% endblock %}
 
 
@@ -237,7 +28,15 @@
 {% block preContainer %}
 	<br>
 	<div class="projectInfoBox">
+		<!--
 		{% if isDeveloper%}<a class="blankLink" href="/addPost/{{project.id}}/new/"><div class="projectAddPostButton">+</div></a>{% endif %}
+		-->
+		{% if isDeveloper%}
+			{% if isCreator%}
+			<a class="blankLink" href="/createProject/{{project.id}}/"><i class="editOrAdd fa fa-2x fa-pencil"></i></a>
+			{% endif %}
+		<a class="blankLink" href="/addPost/{{project.id}}/new/"><i class="editOrAdd fa fa-2x fa-plus"></i></a>
+		{% endif %}
 		<img class="projectImage" src="{{project.image.getServingURLPath}}">
 
 		<h2 class="projectTitle">{{project.title}}</h2>

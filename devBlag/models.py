@@ -60,7 +60,7 @@ class Project(models.Model):
 		"title" : self.title,
 		"description" : self.description,
 		"image" : self.image.imageFile.url,
-		"dateStarted" : self.dateStarted.strftime("%B %w, %Y, %I:%M %p"),
+		"dateStarted" : self.dateStarted.strftime("%B %w, %Y, %I:%M %p").replace("PM", "p.m.").replace("AM", "a.m"),
 		"inProgress" : self.inProgress,
 		"language" : self.language,
 		"engine" : self.engine,

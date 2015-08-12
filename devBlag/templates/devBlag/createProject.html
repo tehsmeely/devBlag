@@ -32,7 +32,7 @@
 	<br><br>
 
 	<div class="projectForm">
-		<form action="/createProject/" enctype="multipart/form-data" method="post">{% csrf_token %}
+		<form action="/createProject/{{projectID}}/" enctype="multipart/form-data" method="post">{% csrf_token %}
 				<p><u><label for="{{ form.title.id_for_label }}">Title</label></u></p>
 				<p>{{ form.title.errors }}</p>
 				<p>{{ form.title }}</p>

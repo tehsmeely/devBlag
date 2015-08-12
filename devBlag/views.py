@@ -183,6 +183,7 @@ def getPosts(request):
 	project = Project.objects.get(id=projectID)
 	#sort by newest first "nf" or oldest first "of"
 	sortCrit = request.GET.get("orderDirection")#, DEFAULT_POST_ORDER)
+	print ">>> sort crit from GET: ", sortCrit
 	if sortCrit not in ["nf", "of"]: #handle erroneous query values
 		print "invalid sort criterion {}, reverting to default {}".format(sortCrit, DEFAULT_POST_ORDER)
 		sortCrit = DEFAULT_POST_ORDER
@@ -191,7 +192,10 @@ def getPosts(request):
 	if orderByCrit not in ["publishedDate", "createdDate"]: #handle erroneous query values
 		orderByCrit = DEFAULT_POST_ORDER_BY
 
-	if sortCrit == "up":
+	print ">>> order criterion: ", orderByCrit
+	print ">>> sort criterion: ", sortCrit
+
+	if sortCrit == "of":
 		order_byStr = orderByCrit
 	else:
 		order_byStr = "-" + orderByCrit
@@ -258,7 +262,9 @@ def handleBody(body):
 ## Takes the body and handles it to be ready to inject
 	# linebreaks
 	# resource html tags
-	print "\nhandleBody before:\n", body
+
+	##print "\nhandleBody before:\n", body
+
 	#body = body.replace("\n", "<br />")
 	#print "\nhandleBody before2:\n", body
 
@@ -310,7 +316,7 @@ def handleBody(body):
 		replaceString = "<a href={}>{}</a>".format(url, name)
 		body = body.replace(link.group("all"), replaceString)
 
-	print "\nhandleBody after:\n", body
+	#print "\nhandleBody after:\n", body
 	return body
 
 def get_replaceString(resource, resType):
@@ -499,12 +505,12 @@ def resourceForms(request):
 
 
 ###VIEW /addPost
-@login_required()
+@developer_required()
 def addPost(request, projectID, postID):
 
 	##catch if user logged in but not developer, and send them a special message
-	if not getIsDeveloper():
-		return render(request, "devBlag/addPost_notDev.html")
+	# if not getIsDeveloper():
+	# 	return render(request, "devBlag/addPost_notDev.html")
 
 	try:
 		project = Project.objects.get(id=projectID)
@@ -612,11 +618,25 @@ def logout(request):
 
 #@login_required
 @developer_required#(login_url="/login/")
-def createProject(request):
+def createProject(request, projectID):
+
+
+
+	if projectID == "new":
+		project = None
+	else:
+		try:
+			project = Project.objects.get(id=projectID)
+			print "Editing a project"
+		except ObjectDoesNotExist:
+			print "ERROR: Invalid project ID, defaulting to blank"
+			project = None
 
 	if request.method == 'POST':
 		#title, description, dateStarted, language, engine, projectImage 
 		form = ProjectForm(request.POST, request.FILES)
+
+
 
 		if form.is_valid():
 			developer = getDeveloper()
@@ -632,7 +652,8 @@ def createProject(request):
 			print "Image Resource Created"
 
 			#title, description, image, dateStarted, inProgress, language, engine, creator, default_backgroundColour
-			project = Project()
+			if project is None:
+				project = Project()
 			project.title = form.cleaned_data['title']
 			project.description = form.cleaned_data['description']
 			project.image = imageRes
@@ -648,9 +669,21 @@ def createProject(request):
 
 	# if a GET (or any other method) we'll create a blank form
 	else:
-		form = ProjectForm()
+		if project is not None:
+			#title, description, dateStarted, language, engine, projectImage 
+			form = ProjectForm(initial={'title':project.title, 'description':project.description,
+										"language": project.language, "engine": project.engine,
+										"dateStarted": project.dateStarted, "projectImage": project.image.imageFile})
+		else:
+			print "NEW FORM"
+			form = ProjectForm()
 
-	return render(request, 'devBlag/createProject.html', {'form': form})
+	c = {
+		'form': form,
+		"projectID": projectID,
+		}
+
+	return render(request, 'devBlag/createProject.html', c)
 
 ########  ######## ##       ######## ######## ########    ########  ########   #######        ## ########  ######  ########
 ##     ## ##       ##       ##          ##    ##          ##     ## ##     ## ##     ##       ## ##       ##    ##    ##

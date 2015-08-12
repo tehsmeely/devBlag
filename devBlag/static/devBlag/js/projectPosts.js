@@ -5,14 +5,13 @@ $(function(){
     });
 
     $("#sortDirectionButton").click(function(){
-        if ($(this).attr("star") == "of")
+        if ($(this).attr("state") == "of")
         {
-            $(this).switchClass("fa-caret-down fa-caret-up");
             $(this).attr("state", "nf")
         } else {
-            $(this).toggleClass("fa-caret-up fa-caret-down");
             $(this).attr("state", "of")
         }
+        $(this).toggleClass("fa-caret-up fa-caret-down");
         getPostJSON();
     })
 
