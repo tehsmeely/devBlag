@@ -55,7 +55,7 @@ Enhance current "handle body" which is basically markup
 
 On LIVE:
 
-    Move all style and script to external files for CSP raisins
+    1 . ~~Move all style and script to external files for CSP raisins~~
     See about getting a version of JQueryUI with just the used widgets 
 
 
