@@ -105,6 +105,8 @@ h2 {
 }
 body{
 	margin: 0px;
+	min-height: 100%;
+	font: 300 100%/1.5em 'Lato', sans-serif;
 }
 
 

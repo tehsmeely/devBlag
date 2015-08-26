@@ -26,6 +26,8 @@ SECRET_KEY = get_app_config().secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+UNSAFE_INLINE = False
+
 LOGIN_URL="/login/"
 
 TEMPLATE_DEBUG = True
@@ -115,20 +117,18 @@ STATIC_URL = '/static/'
 
 
 
-if DEBUG:
-    print "DEBUG. Appplying unsafe CSP"
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 # sensible default CPS settings, feel free to modify them
 CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")
-CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com")
+CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com")
 CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com")
-CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com")
+CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com",
+ "cdnjs.cloudflare.com")
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com")
 CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com")
 
-if DEBUG:
+if DEBUG and UNSAFE_INLINE:
     print "DEBUG. Appplying unsafe CSP"
     CSP_STYLE_SRC += ("'unsafe-inline'",)
     CSP_SCRIPT_SRC += ("'unsafe-inline'",)

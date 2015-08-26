@@ -67,8 +67,9 @@
 	<br>
 	<span id="postContainer">
 	{% for post in posts %}
-		<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
-			style="background-color:#{{post.backgroundColour}}">
+<!--		<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
+			style="background-color:#{{post.backgroundColour}}" background-color="{{post.backgroundColour}}"> -->
+			<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}" background-color="{{post.backgroundColour}}">
 			<div class="postControlButton" postID="{{post.id}}">
 				<i class="fa fa-eye postViewButton"></i></i>
 			</div>

@@ -52,4 +52,11 @@ $(function(){
             });
         }
     })
+
+    //All post class divs have background-color set to their backgounr-color attribute
+    $(".post").each(function(){
+        console.log($(this).attr("background-color"))
+        $(this).css("background-color", $(this).attr("background-color"))
+    })
+
 })

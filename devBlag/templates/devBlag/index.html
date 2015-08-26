@@ -136,7 +136,7 @@
 				<div class="circleBlock circles{{quadProj|length}}">
 					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
-						class="circleLink projLink" style="background: url('{{ proj.image.getServingURLPath }}') no-repeat;"></div>
+						class="circleLink projLink" img-src="{{ proj.image.getServingURLPath }}"></div>
 					</a>
 				</div>
 			{% endfor %}
@@ -151,7 +151,7 @@
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
 						<div title="{{dev.user.username}}" name="{{dev.getName}}" displayName="{{dev.displayName}}"
-						class="circleLink devLink" style="background: url('{{ dev.thumbnail.getServingURLPath }}') no-repeat;"> </div>
+						class="circleLink devLink" img-src="{{ dev.thumbnail.getServingURLPath }}"></div>
 					</a>
 				</div>
 			{% endfor %}

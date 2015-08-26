@@ -40,4 +40,9 @@ $(function(){
         }
     });
 
+    //Circle links have dynamically templated image src, set this via JS to avoid CSP violation with inline style
+    $(".circleLink").each(function(){
+        $(this).css("background", "url('" + $(this).attr("img-src") + "') no-repeat")
+    })
+
 })

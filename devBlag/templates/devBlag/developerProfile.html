@@ -38,7 +38,7 @@
 	<p class="headerText">Recent Posts</p>
 	{% if latestPosts|length > 0 %}
 		{% for post in latestPosts %}
-			<div class="post" style="background-color:#{{post.backgroundColour}}">
+			<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}" background-color="{{post.backgroundColour}}">
 				<!--<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>-->
 				<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40"></a>
 				<h3>{{post.title}}</h3>
