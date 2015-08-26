@@ -1,46 +1,48 @@
 #TODO
 
 
-Post ordering doesnt currently work - needs fixing
+~~Post ordering doesnt currently work - needs fixing~~ *-done*
 
 
 Add Logging *-This is special cos GAE* 
 
 ~~ResID is redundant~~ *-removed*
 
-Decomm associatedProject on resources
-Decomm resource_mappings
-*-working on both*
+~~Decomm associatedProject on resources~~
+~~Decomm resource_mappings~~
+*-gone!*
 
 Migrate views to class-based
 *-Still not sure if i want to do this - update: no, though maybe from scratch in future!*
 
 
-developer_required view funct wrapper
-*- i believe this is sorted ... it's been a week*
+~~developer_required view funct wrapper~~
+*- i believe this is sorted ...*
 
 
 Post management.
-Creation vs Publishing to enable editing before release to the world at large
+~~Creation vs Publishing to enable editing before release to the world at large~~
 *-Post specific page? AddPost can redirect here on success then*
 	*-Done, pretty much!*
 
 Resource management.
-Developers can see, manage, [and delete]? their resources
+~~Developers can see, manage, [and delete]? their resources~~
 *-mostly done. can see and delete resources on profile page*
 
-Post Entry *-pretty much sorted*
-Project Creation **
-User Creation *-automatic, i dont need to worry about that!*
+~~Post Entry~~ *-pretty much sorted*
 
-User -> Developer upgrading *-a link on the profile page*
+~~Project Creation~~ *-exists*
+
+~~User Creation~ *-automatic, i dont need to worry about that!*
+
+~~User -> Developer upgrading~~ *-a link on the profile page*
 
 ~~Post Comments~~ *-Too much for this ... feature creep?*
 
 
 Ideas:
 
-Post tags
+~~Post tags~~
     *-added in a basic format, might be improved upon*
 ~~User chosen post background colours - need a non-intrusive way of picking~~
 	~~perhaps a dropdown list of a limited set of presets~~
@@ -49,7 +51,7 @@ Post tags
 ~~CSRF~~ *-sorted*
 
 Enhance current "handle body" which is basically markup
-	~~add support for named links in posts~~
+	~~add support for named links in posts~~ *-working nicely*
 
 
 

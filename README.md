@@ -13,6 +13,8 @@ build to specialise in blogging about software/game development
 ##Djangae
 This is made using Potato's Djangae and based off of [djangae scaffold](https://github.com/potatolondon/djangae-scaffold)
 
+##GAE hosting
+This post is hosted currently [here](https://dark-foundry-91520.appspot.com/), though it's not finished and optimised for this platform yet.
 
 ##The Resource system
 A resource being anything other than the raw text of post, so thats pictures, files to download, and code snippets. These are kept independent of posts, while a user may upload and link directly into a post, these are also viewable externaly, and used later without re-upload. They can also exist purely non-rerlated to a post, such as the icon for a project or a developer.
