@@ -18,7 +18,7 @@
 
 {% block container %}
 	<br><br>
-	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURLPath %}">{% endif %}
+	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURL %}">{% endif %}
 
 	<div class="userInfo">
 		<p>First Name: <span id="firstName" actualVal="{{user.first_name}}" blankVal="(blank)" method="updateFirstName" route="updateProfile">
@@ -75,7 +75,7 @@
 					<div class="postHeader"postID={{post.id}} background-color="{{post.backgroundColour}}">
 						<p class="postTitle">{{post.title}}</p>
 						<p class="postDate">{{post.createdDate}}</p>
-						<!--<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40" style="top: 0;"></a>-->
+						<!--<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURL }}" width="40" height="40" style="top: 0;"></a>-->
 					</div>
 				{% endfor %}
 			{% endif %}
@@ -90,7 +90,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Image">
+							<td class="infoViewBox" url="{{resource.getServingURL}}" type="Image">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox resDeleteBox">
@@ -130,7 +130,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" url="{{resource.getServingURLPath}}" type="Download">
+							<td class="infoViewBox" url="{{resource.getServingURL}}" type="Download">
 								<i class="fa fa-eye" ></i>
 							</td>
 							<td class="infoDeleteBox resDeleteBox">

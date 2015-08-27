@@ -11,86 +11,6 @@
 
 	<script type="text/javascript" src="{% static 'devBlag/js/addPost.js' %}"></script>
 
-	<!--
-	<style>
-
-
-		.projectLinkBox
-		{
-			cursor: pointer;
-			width: 80%;
-			background-color: #ddd;
-			min-height: 40px;
-			border: solid black 1px;
-			margin-left: auto;
-			margin-right: auto;
-			padding: 5px;
-			-webkit-border-radius: 8px;
-			-moz-border-radius: 8px;
-			border-radius: 8px;
-		}
-
-		.projectLinkBox:hover
-		{
-			opacity: 0.8;
-		}
-
-	</style>
-	-->
-
-	<!--
-	<script>
-		$(function(){
-
-			$("#publishButton").click(function(){
-				$.get(
-					"/publishPost/",
-					{"postID": $(this).attr("postID")},
-					function(){
-						window.location = "/project/{{post.project.id}}/";
-					}
-				)
-			});
-
-
-
-			$("#editPostButton").click(function(){
-				var projectID = $(this).attr("projectID");
-				var postID = $(this).attr("postID");
-				window.location = "/addPost/" + projectID + "/" + postID + "/";
-			});
-
-			$("#deletePostButton").click(function(){
-				var postID = $(this).attr("postID");
-				var projectID = $(this).attr("projectID");
-				var conf = confirm("Are you sure you wish to delete this post?")
-				if (conf==true)
-				{
-					$.get(
-					"/deletePost/",
-					{"postID": postID},
-					function(){
-						window.location = "/project/" + projectID + "/";
-					}
-					)
-				}
-			});
-
-			$("#publishButton").button({
-				icons:{ primary: "ui-icon-check" }
-			})
-
-			$("#deleteButton").button({
-				icons:{ primary: "ui-icon-trash" }
-			})
-
-			$(".projectLinkBox").click(function(){
-				window.location = "/project/" + $(this).attr("projectID") + "/";
-			})
-
-		});
-	</script>
-	-->
 {% endblock %}
 
 
@@ -119,7 +39,7 @@
 	</div>
 	<br>
 	<div class="projectLinkBox" projectID="{{post.project.id}}">
-		<img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40">
+		<img class="floatProjectImg" src="{{ post.project.image.getServingURL }}" width="40" height="40">
 		<h3>{{post.project.title}}</h3>
 		<p>{{post.project.description}}</p>
 	</div>

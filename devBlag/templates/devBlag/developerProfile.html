@@ -31,7 +31,7 @@
 
 {% block container %}
 	<br><br>
-	<img class="profilePic" src="{{developer.thumbnail.getServingURLPath}}">
+	<img class="profilePic" src="{{developer.thumbnail.getServingURL}}">
 	<p><b>Name:</b> {{developer.user.first_name}} {{developer.user.last_name}}</p>
 	<p><b>Date Joined:</b> {{developer.user.date_joined}}</p>
 	<br><br><br><br><br>
@@ -40,7 +40,7 @@
 		{% for post in latestPosts %}
 			<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}" background-color="{{post.backgroundColour}}">
 				<!--<p class="floatProjectLink"><a href="/project/{{ post.project.id }}/">P: {{post.project.title}}</a></p>-->
-				<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURLPath }}" width="40" height="40"></a>
+				<a href="/project/{{ post.project.id }}/"><img class="floatProjectImg" src="{{ post.project.image.getServingURL }}" width="40" height="40"></a>
 				<h3>{{post.title}}</h3>
 				{{post.body|safe|linebreaksbr}}
 				<br>
