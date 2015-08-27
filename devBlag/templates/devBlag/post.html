@@ -99,7 +99,7 @@
 
 
 	<div class="post {% cycle 'round7_tr_bl' 'round7_tl_br' %}"
-			style="background-color:#{{post.backgroundColour}}">
+			background-color="{{post.backgroundColour}}">
 		{% if isAuthor %}
 			<i id="editPostButton" class="fa fa-pencil fa-lg hoverButton" projectID="{{post.project.id}}" postID="{{post.id}}"></i>
 			<i id="deletePostButton" class="fa fa-times fa-lg hoverButton" projectID="{{post.project.id}}" postID="{{post.id}}"></i>
@@ -111,7 +111,7 @@
 		{% if post.publishedDate == none %}
 			<!-- as per the view serving function, a non-author cannot see the unpublished post -->
 			<p>
-				<button style="font-size:0.8em;" id="publishButton" postID="{{post.id}}">Publish</button>
+				<button id="publishButton" postID="{{post.id}}">Publish</button>
 			</p>
 		{% else %}
 			<p>Published Date: {{post.publishedDate}}</p>

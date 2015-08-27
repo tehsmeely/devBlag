@@ -19,6 +19,17 @@
     opacity: 1;
 }
 
+.editButton-override
+{
+    float: none;
+    padding-left: 5px;
+}
+
+#newProjectButton
+{
+    font-size:0.8em;
+}
+
 .devSection
 {
     text-align: center;

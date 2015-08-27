@@ -95,5 +95,8 @@ $(function(){
 
     });
 
+    $(".postHeader").each(function(){
+        $(this).css("background-color", $(this).attr("background-color"));
+    });
 
 })

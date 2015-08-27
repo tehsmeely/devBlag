@@ -119,7 +119,7 @@
 	<!-- Image form -->
 	<div id="dialog-form-image">
 		<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<p style="text-align: center;"><u>Image</u></p>
+			<p class="formHead"><u>Image</u></p>
 			<formset>
 				<input type="hidden" name="resType" value="image">
 				<p><u><label for="{{ imageForm.caption.id_for_label }}">Caption</label></u></p>
@@ -137,7 +137,7 @@
 	<!-- Code form -->
 	<div id="dialog-form-code">
 		<form id="codeForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<p style="text-align: center;"><u>Image</u></p>
+			<p class="formHead"><u>Code</u></p>
 			<formset>
 				<input type="hidden" name="resType" value="code">
 				{{ codeForm.as_p }}
@@ -147,7 +147,7 @@
 	<!-- Download form -->
 	<div id="dialog-form-download">
 		<form id="downloadForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
-			<p style="text-align: center;"><u>Image</u></p>
+			<p class="formHead"><u>Download</u></p>
 			<formset>
 				<input type="hidden" name="resType" value="download">
 				{{ downloadForm.as_p }}
