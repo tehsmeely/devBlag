@@ -145,7 +145,10 @@ class Resource_image(models.Model):
 	def getServingURLPath(self):
 		return urlparse.urlparse(self.imageFile.url).path
 	def getServingURL(self):
-		return self.imageFile.url
+		url = self.imageFile.url
+		#Terrible bruteforce localhost replace:
+		url = url.replace("localhost", "192.168.0.6")
+		return url
 
 #resID,caption,code,language,owner,associatedProject,public
 class Resource_code(models.Model):

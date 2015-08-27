@@ -101,27 +101,6 @@ def index(request):
 
 	developers = Developer.objects.all()
 
-	##Debug looking in to stuff
-	if len(developers) > 0:
-		dev = developers[0]
-
-		print "dev.thumbnail ", dev.thumbnail
-
-		print "dev.thumbnail.imageFile.url ", dev.thumbnail.imageFile.url
-
-		print "dev.thumbnail.getServingURL ", dev.thumbnail.getServingURL()
-
-		print "dev.thumbnail.getServingURLPath ", dev.thumbnail.getServingURLPath()
-
-		print "for item in dev.thumbnail.imageFile.__dict__:"
-		for item in dev.thumbnail.imageFile.__dict__:
-			print item, getattr(dev.thumbnail.imageFile, item)
-
-		# print "for item in dir(dev.thumbnail.imageFile):"
-		# for item in dir(dev.thumbnail.imageFile):
-		# 	print item
-
-
 
 	quadDev = sortToNumGroups(developers, 4)
 
