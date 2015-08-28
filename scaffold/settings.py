@@ -120,8 +120,9 @@ STATIC_URL = '/static/'
 
 # sensible default CPS settings, feel free to modify them
 CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")
-CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "maxcdn.bootstrapcdn.com")
-CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com")
+CSP_STYLE_SRC = ("'self'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com",
+"maxcdn.bootstrapcdn.com")
+CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com", "maxcdn.bootstrapcdn.com", "fonts.googleapis.com")
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com")
 CSP_SCRIPT_SRC = ("'self'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com",
  "cdnjs.cloudflare.com")
