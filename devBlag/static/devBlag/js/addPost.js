@@ -49,7 +49,8 @@ $(function(){
             if (resType == "image"){resChar = "i";}
             else if (resType == "code") {resChar = "c";}
             else { resChar = "d"; }
-            typeInTextarea($("#{{form.body.id_for_label}}"), "<<"+resChar+":"+resID+">>");
+            typeInTextarea($(".bodyTA"), "<<"+resChar+":"+resID+">>");
+            /* bodyTA is class of text area - Set in form definition for body TextField */
             return false
         })
     };

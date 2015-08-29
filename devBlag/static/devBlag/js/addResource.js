@@ -47,7 +47,8 @@ $(function(){
         Cancel: function() {
             $( "#dialog-form-image" ).dialog("close");
             }
-        }
+        },
+        title: "Image"
     });
     var dialog_code = $( "#dialog-form-code" ).dialog({
         autoOpen: false,
@@ -62,7 +63,8 @@ $(function(){
         Cancel: function() {
             $( "#dialog-form-code" ).dialog("close");
             }
-        }
+        },
+        title: "Code"
     });
     var dialog_download = $( "#dialog-form-download" ).dialog({
         autoOpen: false,
@@ -77,7 +79,8 @@ $(function(){
         Cancel: function() {
             $( "#dialog-form-download" ).dialog("close");
             }
-        }
+        },
+        title: "Download"
     });
     $( "#addImage" ).click(function() {
         dialog_image.dialog("open");
