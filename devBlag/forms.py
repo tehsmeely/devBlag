@@ -60,6 +60,10 @@ class PostForm(forms.ModelForm):
 	#Force background colour to use class "color" for the colour picker JS addin
 	backgroundColour = forms.CharField(widget=forms.TextInput(attrs={'class': "color"}))
 
+	#Force body to Textarea with class "bodyTA" for styling - set in addPost.css
+	body = forms.CharField(widget=forms.Textarea(attrs={'class': "bodyTA"}))
+
+
 	class Meta:
 		model = Post
 		fields = ('title', 'body', "backgroundColour", "postTags")

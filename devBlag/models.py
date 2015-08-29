@@ -32,14 +32,6 @@ class Developer(models.Model):
 		return c
 	
 
-#mapping for many-to-many recording of developers to projects
-class DevProj_mapping(models.Model):
-	developer = models.ForeignKey('Developer')
-	project = models.ForeignKey('Project')
-
-	def __str__(self):
-		return str(self.developer) + "--" + str(self.project)
-
 #title, description, image, dateStarted, inProgress, language, engine, creator, default_backgroundColour
 class Project(models.Model):
 	title = models.CharField(max_length=200, unique=True)
@@ -105,28 +97,6 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-## maps mmultiple rousources defined in Resourse_base to Post
-# class Resource_map(models.Model):
-# 	post = models.ForeignKey('Post')
-# 	resource = models.ForeignKey('Resource_image')
-
-
-# 	def __str__(self):
-# 		return str(self.post) + "->" + str(self.resource)
-# this leaves resource and post independant
-
-# class Resource(models.Model):
-# 	resID = models.IntegerField(unique=True)
-# 	filePath = models.CharField(max_length=260, blank=True) #this is the full path
-# 	caption = models.TextField(blank=True)
-# 	contentType = models.CharField(max_length=50, help_text="(image/code)")
-# 	thumbnail = models.ForeignKey('Resource', null=True, blank=True)
-# 	language = models.CharField(max_length=50, blank=True)
-# 	code = models.TextField(blank=True)
-# 	owner = models.ForeignKey('developer')
-# 	associatedProject = models.ForeignKey('Project', blank=True, null=True)
-# 	def __str__(self):
-# 		return str(self.resID) + ": " + str(self.caption)
 
 #resID,caption,imageFile,thumbnail,owner,associatedProject,public
 class Resource_image(models.Model):
@@ -141,13 +111,11 @@ class Resource_image(models.Model):
 		return str(self.owner) + ": " + str(self.caption)
 
 	
-
-	def getServingURLPath(self):
-		return urlparse.urlparse(self.imageFile.url).path
 	def getServingURL(self):
 		url = self.imageFile.url
 		#Terrible bruteforce localhost replace:
-		url = url.replace("localhost", "192.168.0.6")
+		if scaffold.settings.DEBUG == True:
+			url = url.replace("localhost", scaffold.settings.LOCAL_HOST_ADDRESS)
 		return url
 
 #resID,caption,code,language,owner,associatedProject,public
@@ -169,13 +137,18 @@ class Resource_download(models.Model):
 	#resID = models.IntegerField(unique=True)
 	caption = models.TextField(blank=True)
 	resFile = models.FileField(blank=False)
+	#filename length max is 255 : http://serverfault.com/questions/9546/filename-length-limits-on-linux
+	filename = models.CharField(max_length=255)
 	owner = models.ForeignKey('developer')
 	#associatedProject = models.ForeignKey('Project', blank=True, null=True)
 	public = models.BooleanField(default=False)
 	def __str__(self):
 		return str(self.owner) + ": " + str(self.caption)
 
-	def getServingURLPath(self):
-		return urlparse.urlparse(self.resFile.url).path
 	def getServingURL(self):
-		return self.resFile.url
+		url = self.resFile.url + "/" + str(self.filename)
+		#Terrible bruteforce localhost replace:
+		if scaffold.settings.DEBUG == True:
+			url = url.replace("localhost", scaffold.settings.LOCAL_HOST_ADDRESS)
+
+		return url

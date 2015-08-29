@@ -90,7 +90,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" url="{{resource.getServingURL}}" type="Image">
+							<td class="infoViewBox" url="{{resource.getServingURL}}" caption="{{resource.caption}}" type="Image">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox resDeleteBox">
@@ -110,7 +110,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" code="{{resource.code}}" type="Code">
+							<td class="infoViewBox" code="{{resource.code}}" caption="{{resource.caption}}" type="Code">
 								<i class="fa fa-eye"></i>
 							</td>
 							<td class="infoDeleteBox resDeleteBox">
@@ -130,7 +130,7 @@
 							<td class="infoTextBox">
 								{{resource.caption}}
 							</td>
-							<td class="infoViewBox" url="{{resource.getServingURL}}" type="Download">
+							<td class="infoViewBox" url="{{resource.getServingURL}}" caption="{{resource.caption}}" filename="{{resource.filename}}" type="Download">
 								<i class="fa fa-eye" ></i>
 							</td>
 							<td class="infoDeleteBox resDeleteBox">
@@ -144,6 +144,8 @@
 			{% endif %}
 			<br>
 			{% include "devBlag/addResource.html" %}
+			<br>
+			<br>
 		</div>
 	{% else %}
 		<p><a href="/devApply/">Apply to post as a developer on this site</a><p>

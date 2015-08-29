@@ -35,18 +35,29 @@ $(function(){
     });
     $(".infoViewBox").on("click", function(e) {
         e.preventDefault();
-        var type = $(this).attr("type")
+        var type = $(this).attr("type");
+        var title = "";
         if (type == "Image")
         {
-            var content = "<img src='" + $(this).attr("url") + "' >";
+            var content =   "<div class='dialogCenter'>" +
+                            "<img src='" + $(this).attr("url") + "' >" +
+                            "<p class='dialogCenter'>" + $(this).attr("caption") + "</p>" + 
+                            "</div>";
         }
         else if (type == "Code")
         {
-            var content = "<p>" + $(this).attr("code") + "</p>";
+            var content =   "<p class='dialogCenter'>" + $(this).attr("caption") + "</p>" +
+                            "<br>" +
+                            "<p>" + $(this).attr("code") + "</p>";
         }
         else if (type == "Download")
         {
-            var content = "<a href='" + $(this).attr("url") + "'>Download</a>";
+            var content =   "<div class='dialogCenter'>" +
+                            "<p><u>" + $(this).attr("filename") + "</u></p>" + 
+                            "<p><a href='" + $(this).attr("url") + "' download><i class='fa fa-download fa-lg'></i></a></p>" +
+                            "<p>" + $(this).attr("caption") + "</p>" +
+                            "</div>";
+            
         }
         else //Fail when views for other view buttons without types
         {
@@ -55,11 +66,13 @@ $(function(){
 
         console.log(content);
         $("#dialog").html(content);
-        $("#dialog").attr("Title", "")
-        $("#dialog").dialog("option", "position", {
-            my: "center",
-            at: "center",
-            of: "#resTable_image"
+        $("#dialog").attr("title", "")
+        $("#dialog").dialog("option", {
+            position: {
+                my: "center",
+                at: "center",
+                of: "#resTable_image"
+            }
         });
         if ($("#dialog").dialog("isOpen") == false) {
             $("#dialog").dialog("open");

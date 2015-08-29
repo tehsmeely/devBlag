@@ -406,8 +406,12 @@ def addResource(request):
 				downloadRes = Resource_download()
 				downloadRes.caption = downloadForm.cleaned_data['caption']
 				downloadRes.resFile = downloadForm.cleaned_data['resFile']
+				downloadRes.filename = downloadForm.cleaned_data['resFile'].name
+				print "Filename for download: ", downloadRes.filename
 				#downloadRes.public = downloadForm.cleaned_data['public']
 				downloadRes.owner = getDeveloper()
+
+				#print ">>> DEBUG - NOT SAVING DOWNLOAD RESOURCE"
 				downloadRes.save()
 				print "Download Resource Created"
 				return JsonResponse({"resourceCreated": True})

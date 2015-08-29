@@ -28,6 +28,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: devBlag_devproj_mapping
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: devBlag_post
   properties:
   - name: __key__

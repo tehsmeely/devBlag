@@ -114,7 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+LOCAL_HOST_ADDRESS = "192.168.0.6"
 
 
 

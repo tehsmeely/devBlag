@@ -136,3 +136,9 @@ td.buttonIcon
     margin-top: auto;
     margin-bottom: auto;
 }
+
+
+.dialogCenter
+{
+    text-align: center;
+}

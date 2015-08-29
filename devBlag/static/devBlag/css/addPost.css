@@ -36,7 +36,7 @@
     margin-right: auto;
 }
 
-#{{form.body.id_for_label}}
+.bodyTA /* - Set in form definition for body TextField */
 {
     /*width: 500px;*/
     width: 100%;
