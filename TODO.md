@@ -39,6 +39,8 @@ Resource management.
 
 ~~Post Comments~~ *-Too much for this ... feature creep?*
 
+Personal/Public Resources - get this working or remove it!
+
 
 Ideas:
 
