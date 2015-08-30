@@ -5,22 +5,31 @@
 <script type="text/javascript" src="{% static 'devBlag/js/addResource.js' %}"></script>
 
 <br><br>
-
+	<input id="reloadOnCompleteMarker" type="hidden" reloadOnComplete="{{reloadOnComplete}}">
 	<!-- Image form -->
 	<div id="dialog-form-image">
 		<form id="imageForm" enctype="multipart/form-data" action="/addResource/" method="post">{% csrf_token %}
 			<!--<p class="formHead"><u>Image</u></p>-->
 			<formset>
 				<input type="hidden" name="resType" value="image">
+
 				<p><u><label for="{{ imageForm.caption.id_for_label }}">Caption</label></u></p>
-				<p>{{ imageForm.caption.errors }}</p>
+				<p class="formErrorText"><span id="captionError">{{ imageForm.caption.errors }}</span></p>
 				<p>{{ imageForm.caption }}</p>
+
 				<p><u><label for="{{ imageForm.imageFile.id_for_label }}">Image File</label></u></p>
-				<p>{{ imageForm.imageFile.errors }}</p>
+				<p class="formErrorText"><span id="imageFileError">{{ imageForm.imageFile.errors }}</span></p>
 				<p>{{ imageForm.imageFile }}</p>
+
 				<p><u><label for="{{ imageForm.thumbnail.id_for_label }}">Thumbnail</label></u></p>
-				<p>{{ imageForm.thumbnail.errors }}</p>
+				<p class="formErrorText"><span id="thumbnailError">{{ imageForm.thumbnail.errors }}</span></p>
 				<p>{{ imageForm.thumbnail }}</p>
+
+				<p>
+					<u><label for="{{ downloadForm.public.id_for_label }}">Public: </label></u>
+					{{ downloadForm.public }}
+				</p>
+				<p class="formErrorText"><span id="publicError">{{ downloadForm.public.errors }}</span></p>
 			</formset>
 		</form>
 	</div>
@@ -31,15 +40,25 @@
 			<!--<p class="formHead"><u>Code</u></p>-->
 			<formset>
 				<input type="hidden" name="resType" value="code">
+
 				<p><u><label for="{{ codeForm.caption.id_for_label }}">Caption</label></u></p>
-				<p>{{ codeForm.caption.errors }}</p>
+				<p class="formErrorText"><span id="captionError">{{ codeForm.caption.errors }}</span></p>
 				<p>{{ codeForm.caption }}</p>
+
 				<p><u><label for="{{ codeForm.language.id_for_label }}">Language</label></u></p>
-				<p>{{ codeForm.language.errors }}</p>
+				<p class="formErrorText"><span id="languageError">{{ codeForm.language.errors }}</span></p>
 				<p>{{ codeForm.language }}</p>
+
 				<p><u><label for="{{ codeForm.code.id_for_label }}">Code</label></u></p>
-				<p>{{ codeForm.code.errors }}</p>
+				<p class="formErrorText"><span id="codeError">{{ codeForm.code.errors }}</span></p>
 				<p>{{ codeForm.code }}</p>
+
+				<p>
+					<u><label for="{{ downloadForm.public.id_for_label }}">Public: </label></u>
+					{{ downloadForm.public }}
+				</p>
+				<p class="formErrorText"><span id="publicError">{{ downloadForm.public.errors }}</span></p>
+				
 			</formset>
 		</form>
 	</div>
@@ -50,16 +69,24 @@
 			<!--<p class="formHead"><u>Download</u></p>-->
 			<formset>
 				<input type="hidden" name="resType" value="download">
+
 				<p><u><label for="{{ downloadForm.caption.id_for_label }}">Caption</label></u></p>
-				<p>{{ downloadForm.caption.errors }}</p>
+				<p class="formErrorText"><span id="captionError">{{ downloadForm.caption.errors }}</span></p>
 				<p>{{ downloadForm.caption }}</p>
+
 				<p><u><label for="{{ downloadForm.resFile.id_for_label }}">File</label></u></p>
-				<p>{{ downloadForm.resFile.errors }}</p>
+				<p class="formErrorText"><span id="resFileError">{{ downloadForm.resFile.errors }}</span></p>
 				<p>{{ downloadForm.resFile }}</p>
+				
+				<p>
+					<u><label for="{{ downloadForm.public.id_for_label }}">Public: </label></u>
+					{{ downloadForm.public }}
+				</p>
+				<p class="formErrorText"><span id="publicError">{{ downloadForm.public.errors }}</span></p>
 			</formset>
 		</form>
 	</div>
-
+	
 	<button id="addImage">Add Image</button>
 	<button id="addCode">Add Code</button>
 	<button id="addDownload">Add Download</button>

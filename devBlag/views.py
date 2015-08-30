@@ -369,14 +369,16 @@ def addResource(request):
 				imageRes.caption = imageForm.cleaned_data['caption']
 				imageRes.imageFile = imageForm.cleaned_data['imageFile']
 				imageRes.thumbnail = imageForm.cleaned_data['thumbnail']
-				#imageRes.public = imageForm.cleaned_data['public']
+				imageRes.public = imageForm.cleaned_data['public']
 				imageRes.owner = getDeveloper()
 				imageRes.save()
 				print "Image Resource Created"
-				return JsonResponse({"resourceCreated": True})
+				return JsonResponse({"resourceCreated": True,
+				"resType": resType})
 			else:
 				c = {"resourceCreated": False,
-				"errors" : imageForm.errors}
+				"errors" : imageForm.errors,
+				"resType": resType}
 				return JsonResponse(c)
 
 		if resType == "code":
@@ -388,14 +390,16 @@ def addResource(request):
 				codeRes.caption = codeForm.cleaned_data['caption']
 				codeRes.code = codeForm.cleaned_data['code']
 				codeRes.language = codeForm.cleaned_data['language']
-				#codeRes.public = codeForm.cleaned_data['public']
+				codeRes.public = codeForm.cleaned_data['public']
 				codeRes.owner = getDeveloper()
 				codeRes.save()
 				print "Code Resource Created"
-				return JsonResponse({"resourceCreated": True})
+				return JsonResponse({"resourceCreated": True,
+				"resType": resType})
 			else:
 				c = {"resourceCreated": False,
-				"errors" : imageForm.errors}
+				"errors" : imageForm.errors,
+				"resType": resType}
 				return JsonResponse(c)
 
 		if resType == "download":
@@ -408,16 +412,18 @@ def addResource(request):
 				downloadRes.resFile = downloadForm.cleaned_data['resFile']
 				downloadRes.filename = downloadForm.cleaned_data['resFile'].name
 				print "Filename for download: ", downloadRes.filename
-				#downloadRes.public = downloadForm.cleaned_data['public']
+				downloadRes.public = downloadForm.cleaned_data['public']
 				downloadRes.owner = getDeveloper()
 
 				#print ">>> DEBUG - NOT SAVING DOWNLOAD RESOURCE"
 				downloadRes.save()
 				print "Download Resource Created"
-				return JsonResponse({"resourceCreated": True})
+				return JsonResponse({"resourceCreated": True,
+				"resType": resType})
 			else:
 				c = {"resourceCreated": False,
-				"errors" : imageForm.errors}
+				"errors" : imageForm.errors,
+				"resType": resType}
 				return JsonResponse(c)
 
 	else:

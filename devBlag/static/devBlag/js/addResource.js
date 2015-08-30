@@ -7,7 +7,11 @@ $(function(){
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
 
-
+    var dialogNames = {
+        image: "#dialog-form-image",
+        code: "#dialog-form-code",
+        download: "#dialog-form-download"
+    };
 
     $("#imageForm,#codeForm,#downloadForm").each(function(){
         $(this).submit(function(event){
@@ -22,16 +26,31 @@ $(function(){
                 },
                 dataType: "json",
                 clearForm: true,        // clear all form fields after successful submit
-                //beforeSubmit - might be what is needed for CSRF.
+
                 success: function(responseJSON, statusText, xhr, jQwFE){
                     console.log("submit success!" + responseJSON)
                     console.log(responseJSON.resourceCreated)
+                    if (responseJSON.resourceCreated == false)
+                    {
+                        console.log("There were errors!");
+                        console.log(responseJSON.errors);
+                        var dialogName = dialogNames[responseJSON.resType];
+                        console.log(dialogName);
+                        for (fieldName in responseJSON.errors){
+                            console.log ("Error span: " + "#" + fieldName + "Error")
+                            $("#" + fieldName + "Error", $(dialogName)).text(responseJSON.errors[fieldName])
+                        }
+                    }
+                    console.log("reloadOnComplete: " + $("#reloadOnCompleteMarker").attr("reloadOnComplete"))
+                    if ($("#reloadOnCompleteMarker").attr("reloadOnComplete") == "True")
+                    {    location.reload(true);}
                 }
             };
             $(this).ajaxSubmit(options);
             return false;
         })
     });
+
 
 
     var dialog_image = $( "#dialog-form-image" ).dialog({
@@ -59,6 +78,7 @@ $(function(){
         "Add Resource": function(){
             console.log("Add Resource Button clicked");
             $('#codeForm').submit();
+            $( "#dialog-form-code" ).dialog("close");
         },
         Cancel: function() {
             $( "#dialog-form-code" ).dialog("close");

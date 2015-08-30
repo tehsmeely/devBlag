@@ -13,7 +13,7 @@ Add Logging *-This is special cos GAE*
 *-gone!*
 
 Migrate views to class-based
-*-Still not sure if i want to do this - update: no, though maybe from scratch in future!*
+*-Still not sure if i want to do this - update: no, though maybe from scratch in future projects!*
 
 
 ~~developer_required view funct wrapper~~
@@ -39,7 +39,7 @@ Resource management.
 
 ~~Post Comments~~ *-Too much for this ... feature creep?*
 
-Personal/Public Resources - get this working or remove it!
+~~Personal/Public Resources - get this working or remove it!~~ *-Doney done!*
 
 
 Ideas:

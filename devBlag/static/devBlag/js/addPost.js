@@ -89,9 +89,14 @@ $(function(){
     function updateResGrid(resType){
         $("#resTableBody").empty()
                           .append("<tr><td style='text-align: center;'><i class='fa fa-cog fa-spin'></i></td></tr>")
+
+        //"mine" or "public" -> True/False
+        var resourceOwner = $("input[name=resourceOwner]:checked").val();
+        var publicVal = resourceOwner=="public";
+        console.log("publicVal  " + publicVal);
         $.get(
             "/getResources/",
-            {"resourceType": resType, "public": "false"},
+            {"resourceType": resType, "public": publicVal},
             function(data, textStatus, jqXHR){
                 console.log("Success! textStatus: " + textStatus);
                 console.log(data)
@@ -136,18 +141,24 @@ $(function(){
     }
     $("#imageButton").click(function(){
         updateResGrid("image");
+        $(".resourceList").attr("resType", "image");
         $(".resourceList").css("background-color", "#fff");
         //$("#resTableBody").append("<tr><td style='text-align: center;'><i class='fa fa-cog fa-spin'></i></td></tr>")
     })
     $("#codeButton").click(function(){
         updateResGrid("code");
+        $(".resourceList").attr("resType", "code");
         $(".resourceList").css("background-color", "#ddd");
         //$("#resTableBody")
     })
     $("#downloadButton").click(function(){
         updateResGrid("download");
+        $(".resourceList").attr("resType", "download");
         $(".resourceList").css("background-color", "#bbb");
         //$("#resTableBody").append("<tr><td style='text-align: center;'><i class='fa fa-cog fa-spin'></i></td></tr>")
+    })
+    $("input[name=resourceOwner]").change(function(){
+        updateResGrid($(".resourceList").attr("resType"));
     })
 
 

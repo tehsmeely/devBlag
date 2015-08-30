@@ -19,11 +19,9 @@
 	<br>
 	<br>
 	<p class="headerText">Projects</p>
-	<br>
 	{% for quadProj in projects %}
 		<div class="linkWrapper">
 			{% for proj in quadProj %}
-
 				<div class="circleBlock circles{{quadProj|length}}">
 					<a href="/project/{{ proj.id }}/">
 						<div title="{{proj.title}}" inProgress="{{proj.inProgress}}" language="{{proj.language}}" engine="{{proj.engine}}"
@@ -35,9 +33,8 @@
 	{% endfor %}
 	<br><br><br>
 	<p class="headerText">Developers</p>
-	<!--<table>-->
-		{% for quadDevs in developers %}
-		<!--<tr>-->
+	{% for quadDevs in developers %}
+		<div class="linkWrapper">
 			{% for dev in quadDevs %}
 				<div class="circleBlock circles{{quadDevs|length}}">
 					<a href="/developer/{{dev.user.id}}/">
@@ -46,7 +43,6 @@
 					</a>
 				</div>
 			{% endfor %}
-		<!--</tr>-->
-		{% endfor %}
-	<!--</table>-->
+		</div>
+	{% endfor %}
 {% endblock %}
