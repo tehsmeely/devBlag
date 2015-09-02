@@ -49,6 +49,12 @@ indexes:
   - name: postTags
   - name: project_id
   - name: publishedDate
+
+- kind: devBlag_post
+  properties:
+  - name: postTags
+  - name: project_id
+  - name: publishedDate
     direction: desc
 
 - kind: devBlag_post

@@ -16,6 +16,7 @@ With the benefit of hindsight and having learnt the basics of Django and GAE, th
 + Design for mobile, aim for responsive design - which i prefer and seems most sensible for small projects
 + Use frameworks available to increase productivity
 + Make the most of html5 and css3 - modernizr (as above) can help for browser coverage
++ Testing! That's a thing, and I've never used test-driven development before, or even used tests in development.
 
 
 Now,
