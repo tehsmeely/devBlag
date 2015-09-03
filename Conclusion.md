@@ -11,6 +11,7 @@ So Django and GAE (and non-relationals as a whole) as new to me - the learning c
 With the benefit of hindsight and having learnt the basics of Django and GAE, there are some things I think I would have done differently if starting again:
 
 + Class-based views - views.py is >1000 lines, I'm sure there is plenty that could be done with mixins etc, and so would be better off with Class based view functions
++ As well as this, non-hardcoded URLs would be a good idea
 + More thorough plan of pages and routing around them for styling and functional reasons - buttons, form structure, etc, could be pre-organised and hence more continuity
 + Use more Django functionality if present to help with such things
 + Design for mobile, aim for responsive design - which i prefer and seems most sensible for small projects

@@ -5,7 +5,8 @@ $(function(){
             "/publishPost/",
             {"postID": $(this).attr("postID")},
             function(){
-                window.location = "/project/{{post.project.id}}/";
+                var projectID = $(".projectLinkBox").attr("projectID")
+                window.location = "/project/" + projectID + "/";
             }
         )
     });
