@@ -43,7 +43,7 @@
 		<div class="projectInfoInner">
 			{{project.description}}
 			<br>
-			<p>Date Started: </p>
+			<p>Date Started: {{project.dateStarted}}</p>
 			{% if project.engine != "" %}<p>Engine: {{project.engine}}</p>{% endif %}
 			{% if project.language != "" %}<p>Language: {{project.language}}</p>{% endif %}
 			<p>{% if project.inProgress %}This project is in active development{% else %}This project has been completed{% endif %}</p>
