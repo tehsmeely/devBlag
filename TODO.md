@@ -69,7 +69,7 @@ On LIVE:
 2. ~~Add Post: Tags input still limits on length of string, not individual strings once split~~
 3. ~~Post: Publish goes to invalid URL - but still publishes~~
 4. ~~Post displaying: Tags should have padding to left~~
-5. Unpublished posts show up on developer profile
+5. ~~Unpublished posts show up on developer profile~~
 
 
 Migration:

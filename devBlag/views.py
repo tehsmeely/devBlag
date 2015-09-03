@@ -216,7 +216,6 @@ def getPosts(request):
 
 	posts = handlePosts(posts.order_by(order_byStr))
 
-	
 
 	return JsonResponse({"POSTS": [post.as_JSON() for post in posts]})
 	#return JsonResponse(posts[0].as_JSON())
@@ -235,7 +234,7 @@ def getPosts(request):
 ###VIEW /developer/<did>
 def developerProfile(request, did):  #developer id
 	developer = Developer.objects.get(user__id=did)
-	latestPosts = Post.objects.filter(author=developer).order_by("-publishedDate")[:10]
+	latestPosts = Post.objects.filter(author=developer).exclude(publishedDate=None).order_by("-publishedDate")[:10]
 	for post in latestPosts:
 		post.body = handleBody(post.body)
 	return render(request, "devBlag/developerProfile.html", {'developer':developer, 'latestPosts':latestPosts})
