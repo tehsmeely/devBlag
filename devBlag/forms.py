@@ -64,9 +64,23 @@ class PostForm(forms.ModelForm):
 	body = forms.CharField(widget=forms.Textarea(attrs={'class': "bodyTA"}))
 
 
+	postTags = forms.CharField(widget=forms.TextInput)
+
+
 	class Meta:
 		model = Post
 		fields = ('title', 'body', "backgroundColour", "postTags")
+
+	def clean_postTags(self):
+		#Cleans the post tags from a space seperated list of tags, to comma separated in braces
+		postTags = self.cleaned_data.get("postTags")
+		print "cleaning postTags"
+		print "input: ", postTags
+		postTags = "{{{}}}".format(",".join(postTags.split(" ")))  ##this is horrendously illegible!
+		print "cleaned output: ", postTags 
+		# if :
+		# 	raise ValidationError("")
+		return postTags
 
 
 

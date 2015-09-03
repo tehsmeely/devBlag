@@ -72,7 +72,7 @@ class Post(models.Model):
     publishedDate = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey('Project')
     backgroundColour = models.CharField(max_length=6)#colour in hex "FFFFFF" with no #
-    postTags = SetField(models.CharField(max_length=10))
+    postTags = SetField(models.CharField(max_length=10, error_messages={'max_length':"Tags should be max 10 characters each"}))
 
     def publish(self):
             self.publishedDate = timezone.now()
