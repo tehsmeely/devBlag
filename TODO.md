@@ -70,6 +70,10 @@ On LIVE:
 3. ~~Post: Publish goes to invalid URL - but still publishes~~
 4. ~~Post displaying: Tags should have padding to left~~
 5. ~~Unpublished posts show up on developer profile~~
+6. Adding resources in addPost does not trigger reloading of resources via AJAX
+7. post tags should be allowed to be empty on addPost
+8. Tags should maybe be homogenised to lowercase ascii, on search aswell
+9. Post submit (addPost) should have a nice name
 
 
 Migration:
