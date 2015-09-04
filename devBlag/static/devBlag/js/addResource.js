@@ -95,6 +95,7 @@ $(function(){
         "Add Resource": function(){
             console.log("Add Resource Button clicked");
             $('#downloadForm').submit();
+            $( "#dialog-form-download" ).dialog("close");
         },
         Cancel: function() {
             $( "#dialog-form-download" ).dialog("close");
