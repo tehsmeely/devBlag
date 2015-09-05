@@ -3,12 +3,11 @@ A Blog using Django and Djangae on Google app engine,
 build to specialise in blogging about software/game development
 
 
-##Feature Wishlist
+##Feature List
 
 * code blocks with syntax highlighting
-* Markdown in posts, such as adding links
-* Linkable screenshots with previews
-* source downloads support.
+* Markup in posts, such as adding links
+* Shareable resources for images, code snippets and downloads, which can be linked in posts.
 
 ##Djangae
 This is made using Potato's Djangae and based off of [djangae scaffold](https://github.com/potatolondon/djangae-scaffold)
@@ -25,7 +24,6 @@ Normal users can apply to become developers, who can then post into projects and
 
 ##Projects
 An individual project being worked on by one or more developers, posts are entered under these as topics.
-
 
 ##Post Markup
 Resources are added to post bodies and inserted via a custom regex markup.
