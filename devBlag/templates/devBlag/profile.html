@@ -18,7 +18,7 @@
 
 {% block container %}
 	<br><br>
-	{% if isDeveloper %}<img class="profilePic" src="{% static developer.thumbnail.getServingURL %}">{% endif %}
+	{% if isDeveloper %}<img class="profilePic" src="{{developer.thumbnail.getServingURL }}">{% endif %}
 
 	<div class="userInfo">
 		<p>First Name: <span id="firstName" actualVal="{{user.first_name}}" blankVal="(blank)" method="updateFirstName" route="updateProfile">

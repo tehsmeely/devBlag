@@ -73,7 +73,7 @@ On LIVE:
 6. ~~Adding resources in addPost does not trigger reloading of resources via AJAX~~ *-whew! big'n, solved by adding custom jQuery.trigger on resource add*
 7. ~~post tags should be allowed to be empty on addPost~~
 8. ~~Tags should maybe be homogenised to lowercase ascii, on search aswell~~
-9. Post submit (addPost) should have a nice name
+9. ~~Post submit (addPost) should have a nice name~~
 
 
 Migration:
