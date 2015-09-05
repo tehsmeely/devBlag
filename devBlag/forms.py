@@ -64,7 +64,7 @@ class PostForm(forms.ModelForm):
 	body = forms.CharField(widget=forms.Textarea(attrs={'class': "bodyTA"}))
 
 
-	postTags = forms.CharField(widget=forms.TextInput(attrs={'class': "postTags"}))
+	postTags = forms.CharField(widget=forms.TextInput(attrs={'class': "postTags"}), required=False)
 
 
 	class Meta:
