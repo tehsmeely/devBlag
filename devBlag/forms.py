@@ -64,7 +64,7 @@ class PostForm(forms.ModelForm):
 	body = forms.CharField(widget=forms.Textarea(attrs={'class': "bodyTA"}))
 
 
-	postTags = forms.CharField(widget=forms.TextInput)
+	postTags = forms.CharField(widget=forms.TextInput(attrs={'class': "postTags"}))
 
 
 	class Meta:
@@ -74,8 +74,11 @@ class PostForm(forms.ModelForm):
 	def clean_postTags(self):
 		#Cleans the post tags from a space seperated list of tags, to comma separated in braces
 		postTags = self.cleaned_data.get("postTags")
-		print "cleaning postTags"
-		print "input: ", postTags
+		#clean it up a bit: lowercase and remove a few invalid chars
+		postTags = postTags.lower()
+		for c in "{}[];_,":
+			postTags = postTags.replace(c, "")
+
 		postTags = "{{{}}}".format(",".join(postTags.split(" ")))  ##this is horrendously illegible!
 		print "cleaned output: ", postTags 
 		# if :

@@ -83,4 +83,14 @@ $(function(){
         var postID = $(this).parent().attr("postID");
         window.location = "/post/" + postID + "/";
     })
+
+    //This function will make all text in the input lowercase
+    // It is subsequently triggered on change and keydown events
+    // id of input: "postTags" defined in html template
+    var lowercasify = function(){
+        text = $("#tagFilterInput").val();
+        $('#tagFilterInput').val(text.toLowerCase());
+    }
+    $("#tagFilterInput").change(lowercasify);
+    $("#tagFilterInput").keydown(lowercasify);
 })

@@ -162,6 +162,18 @@ $(function(){
     })
 
 
+    //This function will make all text in the input lowercase
+    // It is subsequently triggered on change and keydown events
+    // class of input: "postTags" defined in forms
+    var lowercasify = function(){
+        text = $(".postTags").val();
+        $('.postTags').val(text.toLowerCase());
+    }
+    $(".postTags").change(lowercasify);
+    $(".postTags").keydown(lowercasify);
+})
+
+
     updateColour();
     updateResGrid("image");
     updateInsertClick();
