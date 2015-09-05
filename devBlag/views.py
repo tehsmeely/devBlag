@@ -397,7 +397,7 @@ def addResource(request):
 				"resType": resType})
 			else:
 				c = {"resourceCreated": False,
-				"errors" : imageForm.errors,
+				"errors" : codeForm.errors,
 				"resType": resType}
 				return JsonResponse(c)
 
@@ -421,7 +421,7 @@ def addResource(request):
 				"resType": resType})
 			else:
 				c = {"resourceCreated": False,
-				"errors" : imageForm.errors,
+				"errors" : downloadForm.errors,
 				"resType": resType}
 				return JsonResponse(c)
 

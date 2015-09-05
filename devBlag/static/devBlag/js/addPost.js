@@ -144,23 +144,30 @@ $(function(){
         $(".resourceList").attr("resType", "image");
         $(".resourceList").css("background-color", "#fff");
         //$("#resTableBody").append("<tr><td style='text-align: center;'><i class='fa fa-cog fa-spin'></i></td></tr>")
-    })
+    });
     $("#codeButton").click(function(){
         updateResGrid("code");
         $(".resourceList").attr("resType", "code");
         $(".resourceList").css("background-color", "#ddd");
         //$("#resTableBody")
-    })
+    });
     $("#downloadButton").click(function(){
         updateResGrid("download");
         $(".resourceList").attr("resType", "download");
         $(".resourceList").css("background-color", "#bbb");
         //$("#resTableBody").append("<tr><td style='text-align: center;'><i class='fa fa-cog fa-spin'></i></td></tr>")
-    })
+    });
     $("input[name=resourceOwner]").change(function(){
         updateResGrid($(".resourceList").attr("resType"));
-    })
+    });
 
+    //This event is triggered in addResource.js when a resource add is successful
+    //$("body").on("resourceAdded", updateResGrid($(".resourceList").attr("resType")))
+    $("body").on("resourceAdded", function(){
+        console.log("resourceAdded - updating resGrid");
+        //250ms delay for model to show up
+        setTimeout(updateResGrid($(".resourceList").attr("resType")), 250);
+    });
 
     //This function will make all text in the input lowercase
     // It is subsequently triggered on change and keydown events
@@ -171,7 +178,7 @@ $(function(){
     }
     $(".postTags").change(lowercasify);
     $(".postTags").keydown(lowercasify);
-})
+//})
 
 
     updateColour();

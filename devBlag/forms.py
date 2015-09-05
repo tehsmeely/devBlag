@@ -94,18 +94,18 @@ class ResourceImageForm(forms.Form):
 	caption = forms.CharField(widget=forms.Textarea, required=False)
 	imageFile = forms.ImageField()
 	thumbnail = forms.ImageField(required=False)
-	public = forms.BooleanField()
+	public = forms.BooleanField(required=False)
 
 class ResourceCodeForm(forms.Form):
 	caption = forms.CharField(widget=forms.Textarea, required=False)
 	language = forms.CharField(required=False)
 	code = forms.CharField(widget=forms.Textarea)
-	public = forms.BooleanField()
+	public = forms.BooleanField(required=False)
 
 class ResourceDownloadForm(forms.Form):
 	caption = forms.CharField(widget=forms.Textarea, required=False)
 	resFile = forms.FileField()
-	public = forms.BooleanField()
+	public = forms.BooleanField(required=False)
 
 #						user enter		required
 # Resource

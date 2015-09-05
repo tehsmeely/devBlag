@@ -41,9 +41,12 @@ $(function(){
                             $("#" + fieldName + "Error", $(dialogName)).text(responseJSON.errors[fieldName])
                         }
                     }
+                    console.log("triggering 'resourceAdded'")
+                    $("body").trigger("resourceAdded");
                     console.log("reloadOnComplete: " + $("#reloadOnCompleteMarker").attr("reloadOnComplete"))
                     if ($("#reloadOnCompleteMarker").attr("reloadOnComplete") == "True")
                     {    location.reload(true);}
+
                 }
             };
             $(this).ajaxSubmit(options);
