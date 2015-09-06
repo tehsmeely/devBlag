@@ -325,7 +325,7 @@ def get_replaceString(resource, resType):
 	if resType == "i":
 		#return "<img src='"+ os.path.join(STATIC_URL, resource.filePath) + "'>"
 
-		return "<img src='" + urlparse.urlparse(resource.imageFile.url).path + "'>"
+		return "<img src='" + resource.getServingURL() + "'>"
 
 	elif resType == "c":
 		language = resource.language
@@ -333,7 +333,11 @@ def get_replaceString(resource, resType):
 		return "<pre><code class='" + resource.language + "'>" + resource.code + "</code></pre>"
 
 	elif resType == "d":
-		return "<a href='" + urlparse.urlparse(resource.resFile.url).path + "'>Download</a>"
+		#return "<a href='" + urlparse.urlparse(resource.resFile.url).path + "'>Download</a>"
+		return "<p><a class='blankLink' href='" + resource.getServingURL() + "' download><i class='fa fa-download fa-lg'></i></a></p>"
+
+
+
 
 	else:
 		print "CONTENT TYPE NOT FOUND"
