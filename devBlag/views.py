@@ -571,7 +571,7 @@ def addPost(request, projectID, postID):
 	else:
 		#form = PostForm()
 		if post is not None:
-			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour, "postTags": post.postTags})
+			form = PostForm(initial={'title':post.title, 'body':post.body, "backgroundColour": post.backgroundColour, "postTags": " ".join(post.postTags)})
 		else:
 			print "NEW FORM"
 			form = PostForm(initial={"backgroundColour":project.default_backgroundColour})
