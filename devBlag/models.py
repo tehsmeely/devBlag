@@ -112,7 +112,7 @@ class Resource_image(models.Model):
 
 	
 	def getServingURL(self):
-		url = self.imageFile.url
+		url = str(self.imageFile.url)
 		#Terrible bruteforce localhost replace:
 		if scaffold.settings.DEBUG == True:
 			url = url.replace("localhost", scaffold.settings.LOCAL_HOST_ADDRESS)
@@ -146,7 +146,7 @@ class Resource_download(models.Model):
 		return str(self.owner) + ": " + str(self.caption)
 
 	def getServingURL(self):
-		url = self.resFile.url + "/" + str(self.filename)
+		url = str(self.resFile.url) + "/" + str(self.filename)
 		#Terrible bruteforce localhost replace:
 		if scaffold.settings.DEBUG == True:
 			url = url.replace("localhost", scaffold.settings.LOCAL_HOST_ADDRESS)
